@@ -1,0 +1,14 @@
+.App {
+  background: hsla(18, 100%, 53%, 1);
+
+  background: linear-gradient(225deg, hsla(18, 100%, 53%, 1) 0%, hsla(268, 98%, 67%, 1) 100%);
+
+  background: -moz-linear-gradient(225deg, hsla(18, 100%, 53%, 1) 0%, hsla(268, 98%, 67%, 1) 100%);
+
+  background: -webkit-linear-gradient(225deg, hsla(18, 100%, 53%, 1) 0%, hsla(268, 98%, 67%, 1) 100%);
+
+  filter: progid: DXImageTransform.Microsoft.gradient(startColorstr="#FF5710", endColorstr="#A659FD", GradientType=1);
+
+  height: 100%;
+  min-height: 100vh;
+}
