@@ -15,6 +15,5 @@ namespace Identity_Models.DTO.Registration
         public string Email { get; set; }
         [Required]
         public string Password { get; set; }
-        public string ImgUrl { get; set; } = string.Empty;
     }
 }

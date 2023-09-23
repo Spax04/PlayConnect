@@ -25,12 +25,12 @@ namespace Backgammon_Backend.Controllers
         {
             if (request == null)
                 return BadRequest("User input error");
-
+           
             return Ok(await _authRepository.RegisterationAsync(request));
         }
 
-        [HttpGet("login"), AllowAnonymous]
-        public async Task<ActionResult<AuthenticationResponse>> Login([FromQuery] AuthenticationRequest request)
+        [HttpPost("login"), AllowAnonymous]
+        public async Task<ActionResult<AuthenticationResponse>> Login( AuthenticationRequest request)
         {
             if (request == null)
                 return BadRequest("User input error");

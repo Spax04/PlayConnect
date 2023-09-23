@@ -7,6 +7,7 @@ using Identity_Models.Authentication;
 using Identity_Models.DTO.Registration;
 using Identity_Models.Helpers;
 using Identity_Models.Users;
+using Identity_Models.Users.Dto.Registration;
 using Microsoft.Extensions.Configuration;
 
 namespace Backgammon_Backend.Services
@@ -39,22 +40,27 @@ namespace Backgammon_Backend.Services
             if (request == null)
                 return new FailedResponse("Request is null");
 
-            if (_context.Users.Any(x => x.Username == request.Username))
-                return new FailedResponse($"Username {request.Username} is taken");
+            if (_context.Users!.Any(x => x.Email == request.Email))
+                return new FailedResponse($"Email {request.Email} is taken");
 
             _hashUtilits.CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
             User user = new User();
             user.Username = request.Username;
             user.Email = request.Email;
-            user.ImgUrl = request.ImgUrl;
+            user.ImgUrl = "";
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
 
-            _context.Users.Add(user);
+            _context.Users!.Add(user);
             _context.SaveChanges();
 
-            return new SucceedResponse($"User with username {user.Username} was registred");
+            RegistrationResponse response = new RegistrationResponse()
+            {
+                Token = _jwtUtilits.CreateToken(user)
+            };
+
+            return response;
         }
         public Task<Response> RegisterationAsync(RegistrationRequest request) => Task.Run(() => Registration(request));
 
@@ -62,11 +68,11 @@ namespace Backgammon_Backend.Services
         // Login layer
         private Response Login(AuthenticationRequest request)
         {
-            User user = _context.Users.FirstOrDefault(user => user.Username == request.Username);
+            User user = _context.Users.FirstOrDefault(user => user.Email == request.Email);
 
             if (user == null)
             {
-                return new FailedResponse($"User with username {request.Username} doesn't exist");
+                return new FailedResponse($"User with username {request.Email} doesn't exist");
             }
 
 

@@ -39,7 +39,7 @@ namespace Identity_DAL.Repositories
                 return new FailedResponse("Id is not correct");
             }
 
-            var user = _context.Users.First(x=> x.UserId == userIdDb);
+            var user = _context.Users!.First(x=> x.UserId == userIdDb);
             if(user == null)
             {
                 return new FailedResponse("This user does not exist");
