@@ -1,19 +1,18 @@
-using Backgammon_Backend.Hubs;
-using Microsoft.OpenApi.Models;
 using Backgammon_Backend.Data;
-using Microsoft.EntityFrameworkCore;
 using Backgammon_Backend.Services;
 using Backgammon_Backend.Services.Service_Interfaces;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using Swashbuckle.AspNetCore.Filters;
-using Identity_DAL.Authorization.Interfaces;
 using Identity_DAL.Authorization;
+using Identity_DAL.Authorization.Interfaces;
 using Identity_DAL.AuthorizationUtilits;
 using Identity_DAL.AuthorizationUtilits.Interfaces;
-using Identity_DAL.Repositories.Interfaces;
 using Identity_DAL.Repositories;
+using Identity_DAL.Repositories.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Filters;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -58,7 +57,7 @@ builder.Services.AddAutoMapper(typeof(Program));
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen( swaggerGenOptions =>
+builder.Services.AddSwaggerGen(swaggerGenOptions =>
 {
     swaggerGenOptions.SwaggerDoc("v1.0", new OpenApiInfo { Title = "Backgammon & Chat - ASP.NET React App ", Version = "v1.0" });
     swaggerGenOptions.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
@@ -78,7 +77,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuerSigningKey = true,
-           IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value)),
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value)),
             ValidateIssuer = false,
             ValidateAudience = false
         };
@@ -90,7 +89,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI( swaggerUIOptions =>
+    app.UseSwaggerUI(swaggerUIOptions =>
     {
         swaggerUIOptions.DocumentTitle = "Backgammon game - ASP.NET React app";
         swaggerUIOptions.SwaggerEndpoint("/swagger/v1.0/swagger.json", "Web API serving Identity information");  // Need to change?
@@ -102,6 +101,4 @@ app.UseCors("CORSPolicy");
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
-app.MapHub<ChatHub>("/hubs/chat");
-
 app.Run();

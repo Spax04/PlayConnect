@@ -7,14 +7,7 @@ using Identity_Models.Authentication;
 using Identity_Models.DTO.Registration;
 using Identity_Models.Helpers;
 using Identity_Models.Users;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using System.Data;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace Backgammon_Backend.Services
 {
@@ -43,7 +36,7 @@ namespace Backgammon_Backend.Services
         // Registaration layer
         private Response Registration(RegistrationRequest request)
         {
-            if(request == null)
+            if (request == null)
                 return new FailedResponse("Request is null");
 
             if (_context.Users.Any(x => x.Username == request.Username))
@@ -63,7 +56,7 @@ namespace Backgammon_Backend.Services
 
             return new SucceedResponse($"User with username {user.Username} was registred");
         }
-        public Task<Response> RegisterationAsync(RegistrationRequest request) => Task.Run(()=> Registration(request));
+        public Task<Response> RegisterationAsync(RegistrationRequest request) => Task.Run(() => Registration(request));
 
 
         // Login layer
@@ -71,11 +64,11 @@ namespace Backgammon_Backend.Services
         {
             User user = _context.Users.FirstOrDefault(user => user.Username == request.Username);
 
-            if(user == null)
+            if (user == null)
             {
-                return new FailedResponse($"User wuth username {request.Username} doesn't exist");
+                return new FailedResponse($"User with username {request.Username} doesn't exist");
             }
-            
+
 
             if (!_hashUtilits.VerifyPasswordHash(request.Password, user.PasswordHash, user.PasswordSalt))
             {
@@ -84,9 +77,9 @@ namespace Backgammon_Backend.Services
 
             AuthenticationResponse response = new AuthenticationResponse()
             {
-               Token = _jwtUtilits.CreateToken(user)
+                Token = _jwtUtilits.CreateToken(user)
             };
-            
+
 
             //response.RefreshToken = _jwtUtilits.RefreshToken();
             return response;

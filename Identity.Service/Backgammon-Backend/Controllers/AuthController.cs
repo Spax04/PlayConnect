@@ -4,7 +4,6 @@ using Identity_Models.DTO.Registration;
 using Identity_Models.Helpers;
 using Identity_Models.Users;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backgammon_Backend.Controllers
@@ -30,39 +29,33 @@ namespace Backgammon_Backend.Controllers
             return Ok(await _authRepository.RegisterationAsync(request));
         }
 
-        [HttpPost("login"), AllowAnonymous]
-        public async Task<ActionResult<AuthenticationResponse>> Login(AuthenticationRequest request)
+        [HttpGet("login"), AllowAnonymous]
+        public async Task<ActionResult<AuthenticationResponse>> Login([FromQuery] AuthenticationRequest request)
         {
             if (request == null)
                 return BadRequest("User input error");
             AuthenticationResponse authResponse;
             try
             {
-                 authResponse = (AuthenticationResponse)await _authRepository.LoginAsync(request);
+                authResponse = (AuthenticationResponse)await _authRepository.LoginAsync(request);
             }
             catch
             {
                 return BadRequest("User input error");
             }
-            
-            Response.Cookies.Append("jwt", authResponse.Token!, new CookieOptions { HttpOnly = true });
+
+
 
             return Ok(await _authRepository.LoginAsync(request));
         }
 
-        [HttpPost("logout")]
-        public async Task<ActionResult> Logout()
-        {
-           Response.Cookies.Delete("jwt");
 
-            return Ok( "Coockies was deleted");
-        }
 
         [HttpGet("getTest")]
-        public  ActionResult<IEnumerable<User>> Get()
+        public ActionResult<IEnumerable<User>> Get()
         {
 
-            return Ok( _authRepository.GetAllUsers());
+            return Ok(_authRepository.GetAllUsers());
         }
 
     }
