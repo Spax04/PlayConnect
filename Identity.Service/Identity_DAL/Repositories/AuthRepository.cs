@@ -57,6 +57,9 @@ namespace Backgammon_Backend.Services
 
             RegistrationResponse response = new RegistrationResponse()
             {
+                UserId = user.UserId.ToString(),
+                Username = user.Username,
+                Email = user.Email,
                 Token = _jwtUtilits.CreateToken(user)
             };
 
@@ -83,6 +86,9 @@ namespace Backgammon_Backend.Services
 
             AuthenticationResponse response = new AuthenticationResponse()
             {
+                UserId = user.UserId.ToString(),
+                Username = user.Username,
+                Email = user.Email,
                 Token = _jwtUtilits.CreateToken(user)
             };
 

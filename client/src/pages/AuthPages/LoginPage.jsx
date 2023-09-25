@@ -5,11 +5,15 @@ import Button from 'react-bootstrap/Button'
 import axios from 'axios'
 import './auth.css'
 import { useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { setUser } from '../../context/slices/user'
 
 function LoginPage () {
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const user = useSelector(state => state.user.user)
+  const dispatch = useDispatch()
 
   const onLogin = async e => {
     e.preventDefault()
@@ -20,11 +24,20 @@ function LoginPage () {
       })
       .then(({ data }) => {
         if (data.isSucceed) {
-          console.log(data)
-          // REDUX SIGNIN
+          
+          const user = {
+            token: data.token,
+            userid: data.userId,
+            username: data.username,
+            email: data.email
+          }
+          console.log("From page "+user.userId);
+          dispatch(setUser(user))
         }
       })
       .catch(err => console.log(err))
+
+    navigate('/')
   }
 
   return (

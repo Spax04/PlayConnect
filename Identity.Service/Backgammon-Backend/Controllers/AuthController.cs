@@ -46,7 +46,7 @@ namespace Backgammon_Backend.Controllers
 
 
 
-            return Ok(await _authRepository.LoginAsync(request));
+            return Ok(authResponse);
         }
 
 

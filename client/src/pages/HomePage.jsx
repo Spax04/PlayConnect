@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 function HomePage () {
   const navigate = useNavigate()
   useEffect(() => {
-    if (!localStorage.getItem('token')) {
+    if (!localStorage.getItem('user')) {
       navigate('/login')
     }
   }, [])
