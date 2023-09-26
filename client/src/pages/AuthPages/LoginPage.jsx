@@ -7,6 +7,7 @@ import './auth.css'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { setUser } from '../../context/slices/user'
+import { ROUTES } from '../../constants'
 
 function LoginPage () {
   const navigate = useNavigate()
@@ -37,7 +38,7 @@ function LoginPage () {
       })
       .catch(err => console.log(err))
 
-    navigate('/')
+    navigate(ROUTES.HOME_PAGE)
   }
 
   return (
@@ -69,7 +70,7 @@ function LoginPage () {
 
         <p className='authNavText'>
           Do not have any accaount?{' '}
-          <span onClick={() => navigate('/signin')} className='authNavLink'>
+          <span onClick={() => navigate(ROUTES.SIGNIN_PAGE)} className='authNavLink'>
             Sing up
           </span>{' '}
         </p>

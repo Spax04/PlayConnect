@@ -11,7 +11,7 @@ import {
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/AuthPages/LoginPage';
 import SigninPage from './pages/AuthPages/SigninPage';
-
+import { ROUTES } from './constants';
 import './styles/Home.css'
 import axios from 'axios';
 
@@ -27,9 +27,9 @@ function App() {
         <main >
           <Container className="main-content">
             <Routes>
-              <Route path='/' element={<HomePage />} />
-              <Route path='/login' element={<LoginPage />} />
-              <Route path='/signin' element={<SigninPage />} />
+              <Route path={ROUTES.HOME_PAGE} element={<HomePage />} />
+              <Route path={ROUTES.LOGIN_PAGE} element={<LoginPage />} />
+              <Route path={ROUTES.SIGNIN_PAGE} element={<SigninPage />} />
             </Routes>
           </Container>
         </main>

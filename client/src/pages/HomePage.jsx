@@ -5,22 +5,26 @@ import Nav from 'react-bootstrap/Nav'
 import NavDropdown from 'react-bootstrap/NavDropdown'
 import './home.css'
 import { BsFillPersonFill } from 'react-icons/bs'
-import { COLORS } from '../constants'
+import { COLORS, ROUTES } from '../constants'
+import Navbar from 'react-bootstrap/Navbar';
 
 function HomePage () {
   const navigate = useNavigate()
   useEffect(() => {
     if (!localStorage.getItem('user')) {
-      navigate('/login')
+      navigate(ROUTES.LOGIN_PAGE)
     }
   }, [])
   return (
     <Container className='container'>
+     
+      
       <Nav
         className='navBar justify-content-between'
         variant='pills'
         activeKey='1'
       >
+        
         <div className='logoDiv'>
           <img
             className='logo'
@@ -58,6 +62,7 @@ function HomePage () {
           </div>
         </div>
       </Nav>
+
     </Container>
   )
 }

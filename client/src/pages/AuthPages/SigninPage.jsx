@@ -7,6 +7,7 @@ import './auth.css'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { setUser } from '../../context/slices/user'
+import { ROUTES } from '../../constants'
 
 function SigninPage () {
   const navigate = useNavigate()
@@ -40,7 +41,7 @@ function SigninPage () {
       })
       .catch(err => console.log(err))
 
-    navigate('/')
+    navigate(ROUTES.HOME_PAGE)
   }
 
   return (
@@ -53,7 +54,7 @@ function SigninPage () {
         />
       </div>
 
-      <div className=' formDiv'>
+      <div className='formDiv'>
         <Form onSubmit={onSignIn} className='formStyle'>
           <Form.Group className='mb-3' controlId='username'>
             <Form.Label>Username</Form.Label>
@@ -77,7 +78,7 @@ function SigninPage () {
 
         <p className='authNavText'>
           Already have an account?{' '}
-          <span onClick={() => navigate('/login')} className='authNavLink'>
+          <span onClick={() => navigate(ROUTES.LOGIN_PAGE)} className='authNavLink'>
             Login
           </span>{' '}
         </p>
