@@ -15,6 +15,7 @@ function HomePage () {
       navigate(ROUTES.LOGIN_PAGE)
     }
   }, [])
+  const profile = ( <BsFillPersonFill size='2rem' color={COLORS.dark}/>);
   return (
     <Container className='container'>
      
@@ -49,8 +50,7 @@ function HomePage () {
             </Nav.Link>
           </Nav.Item>
           <div className='d-flex'>
-          <BsFillPersonFill size='2.3rem' color={COLORS.dark}/>
-            <NavDropdown id='nav-dropdown'>
+            <NavDropdown title={profile} id='basic-nav-dropdown'>
               <NavDropdown.Item eventKey='4.1'>Profile</NavDropdown.Item>
               <NavDropdown.Item eventKey='4.2'>Settings</NavDropdown.Item>
               <NavDropdown.Item eventKey='4.3'>
