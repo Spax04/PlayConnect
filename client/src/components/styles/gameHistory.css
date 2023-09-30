@@ -1,0 +1,39 @@
+.mainBlock {
+    display: flex;
+    justify-content: space-around;
+    align-items:center;
+    background-color: #4f4f4f;
+    max-width: 300px;
+    height: 140px;
+    margin: 1.5rem;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+}
+
+.icon{
+    width: 100%;
+    height: 100%;
+}
+
+.statusDiv{
+    width: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+    
+}
+
+.gameDiv{
+    width: 40px;
+    height: 40px;
+}
+
+.statusText{
+    color:#FFFFF0;
+    font-size:1.4rem;
+}
+
+.ditailText{
+    color:#FFFFF0;
+    font-size:1rem;
+}
+

@@ -1,0 +1,30 @@
+.textbox {
+    border: 1px solid #f3f3f3;
+    height: 2rem;
+    width: 26rem;
+    box-sizing: border-box;
+    padding: 1px 10px;
+    outline: none;
+    transition: 0.2s ease-in-out;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+
+  }
+  
+  .textbox:focus {
+    transition: 0.2s ease-in-out;
+    border: 1px solid blue;
+  }
+
+  .searchContainer{
+   display: flex;
+   margin-top: 3rem;
+  }
+
+  .searchBtn{
+    margin: 0 1rem;
+    width: 3rem;
+    border-radius:50px;
+    border:none;
+    background-color:#fffff0;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+  }

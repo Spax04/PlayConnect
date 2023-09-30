@@ -1,0 +1,30 @@
+.challengeMainBlock {
+    width: 90%;
+    margin: 1rem auto;
+
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+}
+
+.leftText {
+    padding-left: 1rem;
+    padding-top: 1rem;
+    font-family: 'Kanit', sans-serif;
+}
+
+.closeBtn {
+    border: none;
+    background-color: #fffff0;
+    margin-bottom: 1.5rem;
+}
+
+.processText{
+    text-align: center;
+}
+
+.prizeBtn{
+    height: 30px;
+    width: 70px;
+    font-family: 'Kanit', sans-serif;
+    border-radius:25px;
+    text-align: center;
+}

@@ -6,12 +6,15 @@ body {
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
+/* font-family: 'Montserrat', sans-serif;
+font-family: 'Sedgwick Ave Display', cursive; */
+
 body {
   background-image: url("/bg.jpeg");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 a {
