@@ -21,7 +21,7 @@ function SigninPage () {
   const onSignIn = async e => {
     e.preventDefault()
     await axios
-      .post(`${process.env.REACT_APP_IDENTITY_SERVICE_URL}/api/Auth/register`, {
+      .post(`${process.env.REACT_APP_IDENTITY_SERVICE_URL}/api/auth/register`, {
         username:username,
         email: email,
         password: password

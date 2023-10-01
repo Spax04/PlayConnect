@@ -1,6 +1,6 @@
 ﻿using Backgammon_Backend.Data;
 using Identity_DAL.Authorization.Interfaces;
-using Identity_Models.Users;
+using Identity_Models.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;

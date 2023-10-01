@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
-namespace Identity_Models.Users
+namespace Identity_Models.Models
 {
     public class User
     {
@@ -17,7 +17,14 @@ namespace Identity_Models.Users
         public byte[] PasswordSalt { get; set; }
         public string? Email { get; set; }
         public string ImgUrl { get; set; } = string.Empty;
+        public int Coins { get; set; }
+        public Guid CountryId { get; set; }
+        [ForeignKey(nameof(CountryId))]
+        public Country Country { get; set; }
 
-
+        [JsonIgnore]
+        public List<Friendship> Friendships1 { get; set; } // User1 in friendships
+        [JsonIgnore]
+        public List<Friendship> Friendships2 { get; set; } // User2 in friendships
     }
 }

@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Identity_DAL.Data
+namespace Identity_Models.Models
 {
-    internal interface IDataContext
+    public class Country
     {
+        public Guid Id { get; set; }
+        public string Name { get; set; }
     }
 }

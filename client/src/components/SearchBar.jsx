@@ -34,7 +34,7 @@ function SearchBar() {
         <input
           type="text"
           className='textbox'
-          placeholder="Search data..."
+          placeholder="Search user..."
           value={value}
           onChange={(e) => {
             setValue(e.target.value);

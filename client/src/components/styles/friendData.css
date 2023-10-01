@@ -1,0 +1,59 @@
+.friendMainBlock {
+    width: 80%;
+
+    background-color: #fffff0;
+    margin: 1rem auto;
+    box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 1px, rgba(0, 0, 0, 0.07) 0px 2px 2px, rgba(0, 0, 0, 0.07) 0px 4px 4px, rgba(0, 0, 0, 0.07) 0px 8px 8px, rgba(0, 0, 0, 0.07) 0px 16px 16px;
+}
+
+.userImgDiv {
+    width: 150px;
+    height: 150px;
+}
+
+.userImg {
+    width: 100%;
+    height: 100%;
+}
+
+.interactBtn {
+    font-size: 1.5rem;
+    font-family: 'Kanit', sans-serif;
+    margin: auto;
+    padding: 0.5rem;
+    border: none;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+}
+
+.inviteBtn {
+    font-size: 1.5rem;
+    padding: 0.5rem;
+    margin: auto;
+    font-family: 'Kanit', sans-serif;
+    border: none;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+}
+
+.deleteBtn {
+    font-size: 1.5rem;
+    padding: 0.5rem;
+    margin: auto;
+    font-family: 'Kanit', sans-serif;
+    border: none;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+}
+
+.btnCol {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.nameText {
+    font-family: 'Kanit', sans-serif;
+}
+
+.icnoStyle {
+    margin-right: 0.5rem !important;
+
+}

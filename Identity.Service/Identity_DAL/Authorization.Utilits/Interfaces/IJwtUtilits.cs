@@ -1,4 +1,4 @@
-﻿using Identity_Models.Users;
+﻿using Identity_Models.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

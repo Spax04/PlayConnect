@@ -18,7 +18,7 @@ const chellanges = [
     description:
       'Win a specified number of matches in different ways (e.g., horizontal, vertical, diagonal) over the course of a week.',
     progress: 0,
-    purpose:1,
+    purpose: 1,
 
     prize: 1500
   },
@@ -27,7 +27,7 @@ const chellanges = [
     description:
       'Achieve a specified number of wins without the opponent blocking any of your winning moves.',
     progress: 0,
-    purpose:6,
+    purpose: 6,
     prize: 2500
   },
   {
@@ -35,7 +35,7 @@ const chellanges = [
     description:
       'Challenge a certain number of friends or opponents to matches within the week.',
     progress: 3,
-    purpose:3,
+    purpose: 3,
 
     prize: 2000
   }
@@ -67,7 +67,7 @@ function HomePage () {
     if (!user) {
       navigate(ROUTES.LOGIN_PAGE)
     }
-  }, [ user])
+  }, [user])
 
   return (
     <Container id='container'>
@@ -105,7 +105,7 @@ function HomePage () {
               <p className='scoreText'>Best of the week</p>
             </div>
             <div className='tableDiv'>
-              <Table border hover size='sm'>
+              <Table  hover size='sm'>
                 <thead>
                   <tr>
                     <th>#</th>
@@ -182,9 +182,9 @@ function HomePage () {
               </div>
               <p className='challengesText'>My Weekly challenges</p>
             </div>
-            {chellanges.map((index,i) => (
+            {chellanges.map(( i,index) => (
               <Challenge
-              key={index}
+                key={index}
                 title={i.title}
                 description={i.description}
                 progress={i.progress}

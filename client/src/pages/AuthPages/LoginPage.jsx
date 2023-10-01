@@ -19,7 +19,7 @@ function LoginPage () {
   const onLogin = async e => {
     e.preventDefault()
     await axios
-      .post(`${process.env.REACT_APP_IDENTITY_SERVICE_URL}/api/Auth/login`, {
+      .post(`${process.env.REACT_APP_IDENTITY_SERVICE_URL}/api/auth/login`, {
         email: email,
         password: password
       })

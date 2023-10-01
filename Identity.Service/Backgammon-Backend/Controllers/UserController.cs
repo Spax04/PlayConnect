@@ -11,7 +11,7 @@ using System.IdentityModel.Tokens.Jwt;
 
 namespace Backgammon_Backend.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/user")]
     [ApiController]
     [Authorize]
     public class UserController : ControllerBase
@@ -27,8 +27,6 @@ namespace Backgammon_Backend.Controllers
         {
             if (token == string.Empty || token == null)
                 return BadRequest("User input error");
-
-            //var testToken = Request.Cookies["jwt"];
 
             var tokenCheck = new JwtSecurityToken(token);
             string id = tokenCheck.Claims.First(x => x.Type == "userId").Value;
