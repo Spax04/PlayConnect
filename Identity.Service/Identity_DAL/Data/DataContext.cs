@@ -232,7 +232,28 @@ namespace Backgammon_Backend.Data
                 new Country { Id = Guid.NewGuid(), Code = "ZM", Name = "Zambia" },
                 new Country { Id = Guid.NewGuid(), Code = "ZW", Name = "Zimbabwe" },
             };
+
+
             modelBuilder.Entity<Country>().HasData(countries);
+
+            /*   public Guid UserId { get; set; }
+          public string? Username { get; set; }
+          [JsonIgnore]
+          public byte[] PasswordHash { get; set; }
+          [JsonIgnore]
+          public byte[] PasswordSalt { get; set; }
+          public string? Email { get; set; }
+          public string ImgUrl { get; set; } = string.Empty;
+          public int Coins { get; set; }
+
+          public Guid CountryId { get; set; }
+          [ForeignKey("CountryId")]
+          public Country Country { get; set; }
+
+          [JsonIgnore]
+          public List<Friendship> Friendships1 { get; set; } // User1 in friendships
+          [JsonIgnore]
+          public List<Friendship> Friendships2 { get; set; } // User2 in friendships*/
 
         }
     }

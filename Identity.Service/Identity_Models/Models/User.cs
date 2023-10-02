@@ -18,8 +18,9 @@ namespace Identity_Models.Models
         public string? Email { get; set; }
         public string ImgUrl { get; set; } = string.Empty;
         public int Coins { get; set; }
+
         public Guid CountryId { get; set; }
-        [ForeignKey(nameof(CountryId))]
+        [ForeignKey("CountryId")]
         public Country Country { get; set; }
 
         [JsonIgnore]

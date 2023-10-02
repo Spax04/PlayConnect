@@ -26,8 +26,18 @@ namespace Backgammon_Backend.Controllers
         {
             if (request == null)
                 return BadRequest("User input error");
+
+            Response response;
+            try
+            {
+                 response = await _authRepository.RegisterationAsync(request);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest("Error on trying to registre new user: " + ex);
+            }
            
-            return Ok(await _authRepository.RegisterationAsync(request));
+            return Ok(response);
         }
 
         [HttpPost("login"), AllowAnonymous]

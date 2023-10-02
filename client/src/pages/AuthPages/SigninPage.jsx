@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Container from 'react-bootstrap/esm/Container'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
@@ -12,11 +12,27 @@ import { ROUTES } from '../../constants'
 function SigninPage () {
   const navigate = useNavigate()
   const [username, setUsername] = useState('')
+  const [countries,setCountries] = useState([])
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const user = useSelector(state => state.user.user)
   const dispatch = useDispatch()
+
+  useEffect( ()=>{
+
+    const getCountries = async ()=>{
+      await axios
+      .get(`${process.env.REACT_APP_IDENTITY_SERVICE_URL}/api/country/`)
+      .then(({ data }) => {
+        console.log(data);
+      })
+      .catch(err => console.log(err))
+    }
+
+    getCountries()
+   
+  },[])
 
   const onSignIn = async e => {
     e.preventDefault()

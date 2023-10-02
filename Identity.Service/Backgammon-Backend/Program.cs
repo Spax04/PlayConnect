@@ -20,6 +20,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddTransient<IAuthRepository, AuthRepository>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
+builder.Services.AddTransient<ICountryRepository, CountryRepository>();
 builder.Services.AddScoped<IJwtUtilits, JwtUtilits>();
 builder.Services.AddScoped<IHashUtilits, HashUtilits>();
 
