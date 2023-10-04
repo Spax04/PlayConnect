@@ -7,14 +7,16 @@ export const userSlice = createSlice({
         token: JSON.parse(localStorage.getItem('user')).token,
         userid: JSON.parse(localStorage.getItem('user')).userid,
         username: JSON.parse(localStorage.getItem('user')).username,
-        email: JSON.parse(localStorage.getItem('user')).email
+        email: JSON.parse(localStorage.getItem('user')).email,
+        coins: JSON.parse(localStorage.getItem('user')).coins,
+        country: { ...JSON.parse(localStorage.getItem('user')).country }
       }
     : {
         token: '',
         userid: '',
         username: '',
         email: '',
-        coins: '',
+        coins: 0,
         country: {
           id: '',
           code: '',
@@ -27,18 +29,15 @@ export const userSlice = createSlice({
       state.userid = action.payload.userid
       state.username = action.payload.username
       state.email = action.payload.email
-       console.log(action.payload)
+      state.country = {...action.payload.country}
+      console.log('Payload: ' + JSON.stringify(action.payload))
       const user = {
         token: action.payload.token,
         userid: action.payload.userid,
         username: action.payload.username,
         email: action.payload.email,
         coins: action.payload.coins,
-        country: {
-          id: action.payload.id,
-          code: action.payload.code,
-          name: action.payload.name
-        }
+        country: {...action.payload.country}
       }
       console.log(user)
       localStorage.setItem('user', JSON.stringify(user))
@@ -48,6 +47,12 @@ export const userSlice = createSlice({
       state.userid = ''
       state.username = ''
       state.email = ''
+      state.coins = 0
+      state.country = {
+        id: '',
+        code: '',
+        name: ''
+      }
 
       localStorage.removeItem('user')
     }

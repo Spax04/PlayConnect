@@ -4,6 +4,7 @@ using Identity_Models.Dto.Registration;
 using Identity_Models.DTO.Registration;
 using Identity_Models.Helpers;
 using Identity_Models.Models;
+using Identity_Models.Users.Dto.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -41,14 +42,14 @@ namespace Backgammon_Backend.Controllers
         }
 
         [HttpPost("login"), AllowAnonymous]
-        public async Task<ActionResult<AuthenticationResponse>> Login( AuthenticationRequest request)
+        public async Task<ActionResult<UserResponse>> Login( AuthenticationRequest request)
         {
             if (request == null)
                 return BadRequest("User input error");
-            AuthenticationResponse authResponse;
+            UserResponse authResponse;
             try
             {
-                authResponse = (AuthenticationResponse)await _authRepository.LoginAsync(request);
+                authResponse = (UserResponse)await _authRepository.LoginAsync(request);
             }
             catch
             {

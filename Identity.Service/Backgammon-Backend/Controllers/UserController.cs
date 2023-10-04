@@ -1,7 +1,9 @@
 ﻿using Backgammon_Backend.Services.Service_Interfaces;
 using Identity_DAL.Repositories.Interfaces;
+using Identity_Models.Dto.Responses;
 using Identity_Models.DTO.Registration;
 using Identity_Models.Helpers;
+using Identity_Models.Models;
 using Identity_Models.Users;
 using Identity_Models.Users.Dto.User;
 using Microsoft.AspNetCore.Authorization;
@@ -21,18 +23,39 @@ namespace Backgammon_Backend.Controllers
         {
             _userRepository = userRepository;
         }
-        
-        [HttpGet("{token}")]
-        public async Task<ActionResult<UserResponse>> Get(string token)
+
+        [HttpGet("{userId}/{username}")]
+        [AllowAnonymous]
+        public async Task<ActionResult<OtherUserResponse>> GetUsersByName(string userId,string username)
         {
-            if (token == string.Empty || token == null)
-                return BadRequest("User input error");
+            if (username == string.Empty || username == null)
+                return BadRequest("Username in null");
 
-            var tokenCheck = new JwtSecurityToken(token);
-            string id = tokenCheck.Claims.First(x => x.Type == "userId").Value;
+            if(!Guid.TryParse(userId, out var id))
+            {
+                return BadRequest("Not correct user id!");
+            }
+            
 
+            IEnumerable<OtherUserResponse> friends = await _userRepository.GetUsersByUsernameAsync(id,username);
 
-            return Ok(await _userRepository.GetUserByIdAsync(id));
+            return Ok(friends);
+        }
+
+        [HttpGet("friends/{userId}")]
+        public async Task<ActionResult<OtherUserResponse>> GetFriends(string userId)
+        {
+            if (userId == string.Empty || userId == null)
+                return BadRequest("User id in null");
+            
+            if(!Guid.TryParse(userId,out var userIdDb))
+            {
+                return BadRequest("Not correct user id");
+            }
+
+            IEnumerable<OtherUserResponse> friends = await _userRepository.GetFriendsByUserIdAsync(userIdDb);
+
+            return Ok(friends);
         }
     }
 }

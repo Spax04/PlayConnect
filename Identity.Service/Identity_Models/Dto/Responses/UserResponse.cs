@@ -1,11 +1,19 @@
 ﻿using Identity_Models.Helpers;
 using Identity_Models.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Identity_Models.Authentication
+namespace Identity_Models.Users.Dto.User
 {
-    public class AuthenticationResponse : Response
+    public class UserResponse : Response
     {
-        public AuthenticationResponse() : base(true) { }
+        public UserResponse() : base(true)
+        {
+        }
+
         public string? UserId { get; set; }
         public string? Username { get; set; }
         public string? Email { get; set; }
@@ -13,6 +21,5 @@ namespace Identity_Models.Authentication
         public string? RefreshToken { get; set; }
         public int Coins { get; set; }
         public Country Country { get; set; }
-
     }
 }

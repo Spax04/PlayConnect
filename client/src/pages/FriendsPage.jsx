@@ -1,18 +1,32 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import SearchBar from '../components/SearchBar'
 
 import './styles/friends.css'
 import FriendData from '../components/FriendData'
 
 function FriendsPage () {
+  const [friendList, setFriendList] = useState([])
+
+  useEffect(() => {
+    console.log(friendList)
+  }, [friendList])
   return (
     <div className='friendsMainBlock'>
-      <SearchBar />
+      <SearchBar setFriendList={setFriendList} />
       <div className='friendList'>
-        <FriendData username='Alex' isOnline={true} countryCode='ua' favoriteGame={'Tic-Tac-Toe'} />
-        <FriendData username='Anton' isOnline={false} countryCode='ru' favoriteGame={'Backgammon'}/>
-        <FriendData username='Ariel' isOnline={true} countryCode='il' favoriteGame={'Chess'}/>
-        
+        {friendList ? (
+          friendList.map(friend => 
+            <FriendData
+              username={friend.username}
+              isFriend={friend.isFriend}
+              isOnline={true}
+              countryCode={friend.country.code}
+              favoriteGame={'Tic-Tac-Toe'}
+            />
+          )
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   )

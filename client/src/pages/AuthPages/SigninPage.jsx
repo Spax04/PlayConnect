@@ -38,8 +38,19 @@ function SigninPage () {
   const onSignIn = async e => {
     e.preventDefault()
 
-    if (password != confirmPassword) {
+    if (password !== confirmPassword) {
       toast.error('Wrong confirm password', {
+        position: 'bottom-center',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light'
+      })
+    }else if(selectedOption === '0'){
+      toast.error('Select your country', {
         position: 'bottom-center',
         autoClose: 5000,
         hideProgressBar: false,
@@ -69,11 +80,7 @@ function SigninPage () {
               username: data.username,
               email: data.email,
               coins: data.coins,
-              country: {
-                id: data.country.id,
-                code: data.country.code,
-                name: data.country.name
-              }
+              country:{...data.country}
             }
             dispatch(setUser(user))
           }
@@ -100,7 +107,6 @@ function SigninPage () {
   }
 
   const handleSelectChange = event => {
-    // Step 3: Update the state variable with the selected option value
     setSelectedOption(event.target.value)
   }
 
@@ -138,7 +144,7 @@ function SigninPage () {
           <Form.Group className='mb-3' controlId='country'>
             <Form.Label>Country</Form.Label>
             <Form.Select value={selectedOption} onChange={handleSelectChange}>
-              <option>Select your country</option>
+              <option value='0'>Select your country</option>
               {countries ? (
                 countries.map(country => (
                   <option key={country.id} value={country.id}>

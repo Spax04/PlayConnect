@@ -8,7 +8,7 @@ using Identity_Models.Authentication;
 using Identity_Models.DTO.Registration;
 using Identity_Models.Helpers;
 using Identity_Models.Models;
-using Identity_Models.Users.Dto.Registration;
+using Identity_Models.Users.Dto.User;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -45,7 +45,7 @@ namespace Backgammon_Backend.Services
             if (request == null)
                 return new FailedResponse("Request is null");
 
-            if (_context.Users!.Any(x => x.Email == request.Email))
+            if (await _context.Users!.AnyAsync(x => x.Email == request.Email))
                 return new FailedResponse($"Email {request.Email} is taken");
 
             _hashUtilits.CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
@@ -67,6 +67,7 @@ namespace Backgammon_Backend.Services
 
 
             User user = new User();
+            user.UserId = Guid.NewGuid();
             user.Username = request.Username;
             user.Email = request.Email;
             user.ImgUrl = "";
@@ -76,11 +77,11 @@ namespace Backgammon_Backend.Services
             user.CountryId = countryId;
 
 
-
+            await _context.Users!.AddAsync(user);
 
             await _context.SaveChangesAsync();
 
-            RegistrationResponse response = new RegistrationResponse()
+            UserResponse response = new UserResponse()
             {
                 UserId = user.UserId.ToString(),
                 Username = user.Username,
@@ -119,7 +120,7 @@ namespace Backgammon_Backend.Services
                 return new FailedResponse($"Wrong password");
             }
 
-            AuthenticationResponse response = new AuthenticationResponse()
+            UserResponse response = new UserResponse()
             {
                 UserId = user.UserId.ToString(),
                 Username = user.Username,
