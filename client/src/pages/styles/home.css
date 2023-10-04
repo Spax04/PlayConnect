@@ -21,6 +21,9 @@
     color:#fffada;
 }
 
+.tableCustome{
+    --bs-table-bg: #fffff0 !important;
+}
 
 #container {
     margin-top: 3rem;

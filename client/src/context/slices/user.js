@@ -13,7 +13,13 @@ export const userSlice = createSlice({
         token: '',
         userid: '',
         username: '',
-        email: ''
+        email: '',
+        coins: '',
+        country: {
+          id: '',
+          code: '',
+          name: ''
+        }
       },
   reducers: {
     setUser: (state, action) => {
@@ -21,12 +27,18 @@ export const userSlice = createSlice({
       state.userid = action.payload.userid
       state.username = action.payload.username
       state.email = action.payload.email
-
+       console.log(action.payload)
       const user = {
         token: action.payload.token,
         userid: action.payload.userid,
         username: action.payload.username,
-        email: action.payload.email
+        email: action.payload.email,
+        coins: action.payload.coins,
+        country: {
+          id: action.payload.id,
+          code: action.payload.code,
+          name: action.payload.name
+        }
       }
       console.log(user)
       localStorage.setItem('user', JSON.stringify(user))

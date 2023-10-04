@@ -42,7 +42,7 @@ function LoginPage () {
   }
 
   return (
-    <Container className='justify-content-center align-items-center container'>
+    <Container className='d-flex justify-content-center align-items-center customeContainer' style={{ minHeight: '100vh' }}>
       <div className='imgDiv'>
         <img
           className='logo'

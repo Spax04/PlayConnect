@@ -11,7 +11,6 @@ using Identity_Models.Models;
 using Identity_Models.Users.Dto.Registration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using System.Diagnostics.Metrics;
 
 namespace Backgammon_Backend.Services
 {
@@ -87,17 +86,18 @@ namespace Backgammon_Backend.Services
                 Username = user.Username,
                 Email = user.Email,
                 Token = _jwtUtilits.CreateToken(user),
-                Country = new Country() 
-                { 
+                Coins = 0,
+                Country = new Country()
+                {
                     Id = country.Id,
                     Code = country.Code,
-                    Name = country.Name 
+                    Name = country.Name
                 }
             };
 
             return response;
         }
-       // public Task<Response> RegisterationAsync(RegistrationRequest request) => Task.Run(() => Registration(request));
+        // public Task<Response> RegisterationAsync(RegistrationRequest request) => Task.Run(() => Registration(request));
 
 
         // Login layer
@@ -125,7 +125,7 @@ namespace Backgammon_Backend.Services
                 Username = user.Username,
                 Email = user.Email,
                 Token = _jwtUtilits.CreateToken(user),
-                
+                Coins = user.Coins,
                 Country = new Country()
                 {
                     Id = country.Id,

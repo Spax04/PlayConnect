@@ -22,7 +22,7 @@
     height: 100%;
 }
 
-.container {
+.customeContainer {
     flex-direction: column;
 }
 

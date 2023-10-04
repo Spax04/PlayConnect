@@ -14,26 +14,28 @@ import { useDispatch, useSelector } from 'react-redux'
 import Footer from './components/Footer'
 import { setUser } from './context/slices/user'
 import FriendsPage from './pages/FriendsPage'
+const emojiSupport = require('detect-emoji-support')
 
 function App () {
   const [isSIgnedIn, setIsSignedIn] = useState(false)
   const user = useSelector(state => state.user)
   const dispatch = useDispatch()
   useEffect(() => {
-    if (user) {
+    if (user.token) {
       setIsSignedIn(true)
     } else {
       setIsSignedIn(false)
     }
 
-    console.log(user);
+  
+    console.log(user)
   }, [dispatch, user])
   return (
     <BrowserRouter>
-      <div className='d-flex flex-column App'>
+      <div className='d-flex flex-column'>
         <ToastContainer position='bottom-center' limit={1} />
 
-        <Container className='main-content'>
+        <Container className='main-content App'>
           {isSIgnedIn ? <NavBar /> : <></>}
           <main>
             <Routes>

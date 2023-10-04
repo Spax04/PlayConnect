@@ -64,7 +64,7 @@ function HomePage () {
   const navigate = useNavigate()
   const user = useSelector(state => state.user)
   useEffect(() => {
-    if (!user) {
+    if (!user.token) {
       navigate(ROUTES.LOGIN_PAGE)
     }
   }, [user])
@@ -105,7 +105,7 @@ function HomePage () {
               <p className='scoreText'>Best of the week</p>
             </div>
             <div className='tableDiv'>
-              <Table  hover size='sm'>
+              <Table className='tableCustome'  hover size='sm'>
                 <thead>
                   <tr>
                     <th>#</th>
