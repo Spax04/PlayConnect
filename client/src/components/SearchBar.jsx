@@ -8,28 +8,13 @@ import { useSelector } from 'react-redux'
 
 function SearchBar ({ setFriendList }) {
   const [searchValue, setSearchValue] = useState('')
-  const [selectedOption, setSelectedOption] = useState('Looking for...')
-  const [selectedItem,setSelectedItem] = useState('Looking for...')
+  const [selectedItem,setSelectedItem] = useState('My Friends')
   const user = useSelector(state => state.user)
   const handleItemSelect = item => {
     setSelectedItem(item)
   }
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const { data } = await axios.get(
-  //         `https://dummyjson.com/products/search?q=${value}`
-  //       );
-
-  //       setSuggestions(data.products);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, [value]);
+  
   const onUsersSearch = async () => {
     await axios
       .get(
@@ -47,7 +32,7 @@ function SearchBar ({ setFriendList }) {
         `${process.env.REACT_APP_IDENTITY_SERVICE_URL}/api/user/friends/${user.userid}`
       )
       .then(({ data }) => {
-        // setFriendList(data)
+        setFriendList(data)
       })
       .catch(err => console.log(err))
   }
@@ -80,7 +65,7 @@ function SearchBar ({ setFriendList }) {
         </Dropdown.Toggle>
 
         <Dropdown.Menu>
-          <Dropdown.Item eventKey={"My Friends"}>
+          <Dropdown.Item active eventKey={"My Friends"}>
             My Friends
           </Dropdown.Item>
           <Dropdown.Item eventKey={"New Friends"}>

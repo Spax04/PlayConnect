@@ -91,9 +91,9 @@ namespace Identity_DAL.Repositories
 
         }
 
-        public async Task<IEnumerable<OtherUserResponse>> GetUsersByUsernameAsync(Guid id,string username)
+        public async Task<IEnumerable<OtherUserResponse>> GetUsersByUsernameAsync(Guid id, string username)
         {
-            IEnumerable<User> users = await _context.Users!.Where(u => u.Username!.Contains(username) ).ToListAsync();
+            IEnumerable<User> users = await _context.Users!.Where(u => u.Username!.Contains(username)).ToListAsync();
             IEnumerable<Country> countries = await _countryRepository.GetAllAsync();
 
             Country country;
@@ -110,7 +110,7 @@ namespace Identity_DAL.Repositories
                     Email = user.Email,
                     Token = _jwtUtilits.CreateToken(user),
                     Coins = user.Coins,
-                    IsFriend = await AreFriends(id,user.UserId),
+                    IsFriend = await AreFriendsAsync(id, user.UserId),
                     Country = new Country()
                     {
                         Id = country.Id,
@@ -123,10 +123,33 @@ namespace Identity_DAL.Repositories
             return usersResponse;
         }
 
-        public async Task<bool> AreFriends(Guid user1, Guid user2)
+        public async Task<bool> AreFriendsAsync(Guid user1, Guid user2)
         {
             var friendship = await _context.Friendships.Where(u => (u.User1Id == user1 && u.User2Id == user2) || (u.User1Id == user2 && u.User2Id == user1)).FirstOrDefaultAsync();
             return friendship == null ? false : true;
+        }
+
+        public async Task<bool> CreateFriendshipAsync(Guid userid1, Guid userid2)
+        {
+            var areAlreadyFriends = await AreFriendsAsync(userid1, userid2);
+
+            Friendship newFrinedship = new Friendship()
+            {
+                User1Id = userid1,
+                User1Accepted = true,
+                User2Id = userid2,
+                User2Accepted = false
+            };
+
+            await _context.Friendships!.AddAsync(newFrinedship);
+
+            return await Save();
+        }
+
+        public async Task<bool> Save()
+        {
+            var saved = await _context.SaveChangesAsync();
+            return saved > 0 ? true : false;
         }
     }
 }

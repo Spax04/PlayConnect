@@ -9,12 +9,17 @@ import { COLORS } from '../constants'
 import ReactCountryFlag from 'react-country-flag'
 
 function FriendData ({
+  userid,
   username,
   isOnline,
   countryCode,
   favoriteGame,
   isFriend
 }) {
+
+  const onFriendshipRequest = async ()=>{
+
+  }
   return (
     <div className='friendMainBlock'>
       <Row className='p-3'>
@@ -88,6 +93,7 @@ function FriendData ({
             <button
               className='interactBtn'
               style={{ backgroundColor: COLORS.darkGreen }}
+              onClick={onFriendshipRequest}
             >
               <AiOutlineUserAdd className='icnoStyle' />
               Add

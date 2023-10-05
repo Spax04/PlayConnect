@@ -17,6 +17,7 @@ function FriendsPage () {
         {friendList ? (
           friendList.map(friend => 
             <FriendData
+            userid={friend.userid}
               username={friend.username}
               isFriend={friend.isFriend}
               isOnline={true}

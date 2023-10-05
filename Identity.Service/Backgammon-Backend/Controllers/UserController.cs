@@ -1,21 +1,14 @@
-﻿using Backgammon_Backend.Services.Service_Interfaces;
-using Identity_DAL.Repositories.Interfaces;
+﻿using Identity_DAL.Repositories.Interfaces;
+using Identity_Models.Dto.Requests;
 using Identity_Models.Dto.Responses;
-using Identity_Models.DTO.Registration;
-using Identity_Models.Helpers;
-using Identity_Models.Models;
-using Identity_Models.Users;
-using Identity_Models.Users.Dto.User;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.IdentityModel.Tokens.Jwt;
 
 namespace Backgammon_Backend.Controllers
 {
     [Route("api/user")]
     [ApiController]
-    [Authorize]
+    [AllowAnonymous]
     public class UserController : ControllerBase
     {
         private IUserRepository _userRepository;
@@ -26,18 +19,18 @@ namespace Backgammon_Backend.Controllers
 
         [HttpGet("{userId}/{username}")]
         [AllowAnonymous]
-        public async Task<ActionResult<OtherUserResponse>> GetUsersByName(string userId,string username)
+        public async Task<ActionResult<OtherUserResponse>> GetUsersByName(string userId, string username)
         {
             if (username == string.Empty || username == null)
                 return BadRequest("Username in null");
 
-            if(!Guid.TryParse(userId, out var id))
+            if (!Guid.TryParse(userId, out var id))
             {
                 return BadRequest("Not correct user id!");
             }
-            
 
-            IEnumerable<OtherUserResponse> friends = await _userRepository.GetUsersByUsernameAsync(id,username);
+
+            IEnumerable<OtherUserResponse> friends = await _userRepository.GetUsersByUsernameAsync(id, username);
 
             return Ok(friends);
         }
@@ -47,8 +40,8 @@ namespace Backgammon_Backend.Controllers
         {
             if (userId == string.Empty || userId == null)
                 return BadRequest("User id in null");
-            
-            if(!Guid.TryParse(userId,out var userIdDb))
+
+            if (!Guid.TryParse(userId, out var userIdDb))
             {
                 return BadRequest("Not correct user id");
             }
@@ -56,6 +49,19 @@ namespace Backgammon_Backend.Controllers
             IEnumerable<OtherUserResponse> friends = await _userRepository.GetFriendsByUserIdAsync(userIdDb);
 
             return Ok(friends);
+        }
+
+        [HttpPost("friends/add/")]
+        public async Task<ActionResult<bool>> CreateFriendship(FriendshipRequest friendshipRequest)
+        {
+            if (friendshipRequest == null)
+                return BadRequest("Request body is null");
+
+            if (!Guid.TryParse(friendshipRequest.UserId1, out var userId1Db) || !Guid.TryParse(friendshipRequest.UserId2, out var userId2Db))
+                return BadRequest("Users id are not correct!");
+
+            return await _userRepository.CreateFriendshipAsync(userId1Db, userId2Db);
+
         }
     }
 }

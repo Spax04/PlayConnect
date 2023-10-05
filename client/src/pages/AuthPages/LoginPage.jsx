@@ -8,6 +8,8 @@ import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { setUser } from '../../context/slices/user'
 import { ROUTES } from '../../constants'
+import { toast } from 'react-toastify'
+
 
 function LoginPage () {
   const navigate = useNavigate()
@@ -18,6 +20,8 @@ function LoginPage () {
 
   const onLogin = async e => {
     e.preventDefault()
+    let toastId = toast.loading('Loading please wait...')
+
     await axios
       .post(`${process.env.REACT_APP_IDENTITY_SERVICE_URL}/api/auth/login`, {
         email: email,
@@ -25,24 +29,42 @@ function LoginPage () {
       })
       .then(({ data }) => {
         if (data.isSucceed) {
-          
           const user = {
             token: data.token,
             userid: data.userId,
             username: data.username,
-            email: data.email
+            email: data.email,
+            coins: data.coins,
+            country: { ...data.country }
           }
-          console.log("From page "+user.userId);
           dispatch(setUser(user))
         }
+        toast.update(toastId, {
+          render: 'All is good',
+          type: toast.TYPE.SUCCESS,
+          autoClose: 3000,
+          closeButton: true,
+          isLoading: false
+        })
+
+        navigate(ROUTES.HOME_PAGE)
       })
-      .catch(err => console.log(err))
+      .catch(err => toast.update(toastId, {
+        render: 'Some error',
+        type: toast.TYPE.ERROR,
+        autoClose: 3000,
+        closeButton: true,
+        isLoading: false
+      }))
 
     navigate(ROUTES.HOME_PAGE)
   }
 
   return (
-    <Container className='d-flex justify-content-center align-items-center customeContainer' style={{ minHeight: '100vh' }}>
+    <Container
+      className='d-flex justify-content-center align-items-center customeContainer'
+      style={{ minHeight: '100vh' }}
+    >
       <div className='imgDiv'>
         <img
           className='logo'
@@ -60,7 +82,7 @@ function LoginPage () {
 
           <Form.Group className='mb-3' controlId='password'>
             <Form.Label>Password</Form.Label>
-            <Form.Control onChange={e => setPassword(e.target.value)} />
+            <Form.Control type='password' onChange={e => setPassword(e.target.value)} />
           </Form.Group>
 
           <Button type='submit' variant='primary'>
@@ -70,7 +92,10 @@ function LoginPage () {
 
         <p className='authNavText'>
           Do not have any accaount?{' '}
-          <span onClick={() => navigate(ROUTES.SIGNIN_PAGE)} className='authNavLink'>
+          <span
+            onClick={() => navigate(ROUTES.SIGNIN_PAGE)}
+            className='authNavLink'
+          >
             Sing up
           </span>{' '}
         </p>
