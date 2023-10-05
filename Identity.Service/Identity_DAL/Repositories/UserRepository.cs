@@ -136,9 +136,9 @@ namespace Identity_DAL.Repositories
             Friendship newFrinedship = new Friendship()
             {
                 User1Id = userid1,
-                User1Accepted = true,
+
                 User2Id = userid2,
-                User2Accepted = false
+                IsAccepted = false
             };
 
             await _context.Friendships!.AddAsync(newFrinedship);
