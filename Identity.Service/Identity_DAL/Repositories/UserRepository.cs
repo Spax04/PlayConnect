@@ -56,8 +56,10 @@ namespace Identity_DAL.Repositories
 
         public async Task<IEnumerable<OtherUserResponse>> GetFriendsByUserIdAsync(Guid userId)
         {
-            IEnumerable<User> usersOne = await _context.Friendships.Where(u => u.User1Id == userId).Select(u => u.User2).ToListAsync();
-            IEnumerable<User> usersTwo = await _context.Friendships.Where(u => u.User2Id == userId).Select(u => u.User1).ToListAsync();
+            IEnumerable<Friendship> friendships = await _context.Friendships.Where(u => (u.SenderId == userId) || (u.RecieverId == userId)).ToListAsync();
+            IEnumerable<Friendship> friendIsReciver =  friendships.Where(f => f.SenderId == userId).ToList();
+            IEnumerable<Friendship> userIsReciver = friendships.Where(f => f.SenderId == userId).ToList();
+
             IEnumerable<Country> countries = await _countryRepository.GetAllAsync();
 
             List<User> friendsList = new List<User>();
@@ -125,7 +127,7 @@ namespace Identity_DAL.Repositories
 
         public async Task<bool> AreFriendsAsync(Guid user1, Guid user2)
         {
-            var friendship = await _context.Friendships.Where(u => (u.User1Id == user1 && u.User2Id == user2) || (u.User1Id == user2 && u.User2Id == user1)).FirstOrDefaultAsync();
+            var friendship = await _context.Friendships.Where(u => (u.SenderId == user1 && u.RecieverId == user2) || (u.SenderId == user2 && u.RecieverId == user1)).FirstOrDefaultAsync();
             return friendship == null ? false : true;
         }
 
@@ -135,9 +137,8 @@ namespace Identity_DAL.Repositories
 
             Friendship newFrinedship = new Friendship()
             {
-                User1Id = userid1,
-
-                User2Id = userid2,
+                SenderId = userid1,
+                RecieverId = userid2,
                 IsAccepted = false
             };
 
