@@ -51,21 +51,22 @@ namespace Identity_DAL.Migrations
                 columns: table => new
                 {
                     FriendshipId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    User1Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    User2Id = table.Column<Guid>(type: "TEXT", nullable: false)
+                    SenderId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    RecieverId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    IsAccepted = table.Column<bool>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Friendships", x => x.FriendshipId);
                     table.ForeignKey(
-                        name: "FK_Friendships_Users_User1Id",
-                        column: x => x.User1Id,
+                        name: "FK_Friendships_Users_RecieverId",
+                        column: x => x.RecieverId,
                         principalTable: "Users",
                         principalColumn: "UserId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Friendships_Users_User2Id",
-                        column: x => x.User2Id,
+                        name: "FK_Friendships_Users_SenderId",
+                        column: x => x.SenderId,
                         principalTable: "Users",
                         principalColumn: "UserId",
                         onDelete: ReferentialAction.Restrict);
@@ -74,992 +75,992 @@ namespace Identity_DAL.Migrations
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("015e3ccc-3ca6-4a1d-90d4-ea50468918bd"), "TT", "Trinidad and Tobago" });
+                values: new object[] { new Guid("00256718-0645-452f-b892-b7748d4d04bb"), "QA", "Qatar" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("01b94eec-1f5a-4a75-992c-da822e2f9b84"), "SE", "Sweden" });
+                values: new object[] { new Guid("002c149d-d7cd-475a-b2f6-ab451eb9e41f"), "FI", "Finland" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("01bd5247-4d4c-4064-ba38-ad18bc1ad92c"), "SO", "Somalia" });
+                values: new object[] { new Guid("04be5b0a-981e-4901-b13a-6ab1c3270c41"), "MW", "Malawi" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("0462132b-4e34-4efd-99f0-cedbb155acaa"), "DJ", "Djibouti" });
+                values: new object[] { new Guid("08c995e3-1697-4d35-8330-94c9d030dfbd"), "SY", "Syria" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("059b2b14-793f-4dae-a19c-068706364cd8"), "BI", "Burundi" });
+                values: new object[] { new Guid("08e40902-f09a-440b-95d8-c7f74af5e4cb"), "SI", "Slovenia" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("05c0a7ef-a9e8-4bdb-99a2-632582d6ad45"), "TO", "Tonga" });
+                values: new object[] { new Guid("0980b42e-6508-4535-a966-3d9f769796c5"), "BG", "Bulgaria" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("0722de72-83d9-499a-a968-1014e3d88100"), "LK", "Sri Lanka" });
+                values: new object[] { new Guid("0a8d4ca8-8786-4e09-94c2-7e25ce8b34bc"), "GT", "Guatemala" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("078a63b1-a1b8-4fcb-8021-4caf60f34982"), "LI", "Liechtenstein" });
+                values: new object[] { new Guid("0ad65b8d-c346-4436-908e-099b2fde81c0"), "UY", "Uruguay" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("09521deb-5be2-4c80-9510-5eb7c677d8cf"), "LY", "Libya" });
+                values: new object[] { new Guid("0b0b3450-e584-4764-b445-fe2d44fed022"), "DO", "Dominican Republic" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("0960cf41-2afb-41f1-85ee-6e573f6f54a6"), "TN", "Tunisia" });
+                values: new object[] { new Guid("0c8634e2-7b8d-4c19-a213-09e6cfdecc85"), "PA", "Panama" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("0a5fb770-5607-4ff1-ac4d-f2418d575aa3"), "ML", "Mali" });
+                values: new object[] { new Guid("0dc3d79f-acfb-4756-8096-0887fa5e676e"), "LR", "Liberia" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("0b1b8212-c7d6-447d-b342-99c322d3f5e2"), "GW", "Guinea-Bissau" });
+                values: new object[] { new Guid("0f6c60e0-aaab-491c-9f34-2feed260f4b7"), "PW", "Palau" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("0c511fec-9b8e-466c-9b3e-2ed15f99e5cf"), "MY", "Malaysia" });
+                values: new object[] { new Guid("110c1777-a954-427c-926f-06051aab2640"), "GM", "Gambia" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("0c730c27-459f-43cc-8de7-eb6fa61df69b"), "GH", "Ghana" });
+                values: new object[] { new Guid("1186054b-1e31-4cd8-88a3-f61529d6d545"), "NR", "Nauru" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("0cdf545d-82cb-4821-af40-9b71b3022d73"), "NE", "Niger" });
+                values: new object[] { new Guid("18011210-dfd6-401e-aa28-d52ec782c6aa"), "CU", "Cuba" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("0d5bbbe7-5c87-4406-930c-c8e3e3d5dcc7"), "EE", "Estonia" });
+                values: new object[] { new Guid("18112fa9-10ec-4919-9187-281e635b8c06"), "IT", "Italy" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("0d621fa1-e6d4-46d5-8c33-37b6d3866bb4"), "BE", "Belgium" });
+                values: new object[] { new Guid("1898dbf3-c1eb-4050-a953-552bb97f34ed"), "VC", "Saint Vincent and the Grenadines" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("0db51aeb-872b-4399-b614-f7a3285e7e2f"), "OM", "Oman" });
+                values: new object[] { new Guid("18c4dcbd-8640-4a8e-8478-140535d8f4b8"), "AF", "Afghanistan" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("0f1d0d2b-e3ed-4b4b-b27f-b63a7bb1ffbd"), "CV", "Cabo Verde" });
+                values: new object[] { new Guid("19464ce6-cd5f-4f88-b192-107c51479316"), "CL", "Chile" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("12c092f8-2113-4769-b283-a62c7325ae17"), "BN", "Brunei" });
+                values: new object[] { new Guid("1b56e461-cb9b-4186-927d-50b3c2d0d57c"), "GD", "Grenada" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("139f0701-4220-43b2-b3ef-8300fdb21961"), "ER", "Eritrea" });
+                values: new object[] { new Guid("1c919bc4-b019-43b4-9bb9-da249306f6a4"), "RW", "Rwanda" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("150175c8-28e3-424d-bc34-b7f395fa4a71"), "BW", "Botswana" });
+                values: new object[] { new Guid("1f220f4a-7ffb-4802-b7c8-b9fe029ffa47"), "BA", "Bosnia and Herzegovina" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("16ccf353-339e-41f3-8039-301b6a076ca6"), "VU", "Vanuatu" });
+                values: new object[] { new Guid("200b8d48-0893-4072-acaf-d96acd446566"), "BS", "Bahamas" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("1855c093-c94d-4657-bff9-a30e41d78747"), "SS", "South Sudan" });
+                values: new object[] { new Guid("2026bb6c-aa79-4203-946c-3907ed37eb43"), "ST", "Sao Tome and Principe" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("1a6446e2-4bcd-4eef-86ad-3272fb8476b8"), "IQ", "Iraq" });
+                values: new object[] { new Guid("202f6c75-46a0-4b04-91b1-401438cb31d1"), "BW", "Botswana" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("1c0dd7d6-7efb-4de3-b454-236d4c0d79e3"), "VC", "Saint Vincent and the Grenadines" });
+                values: new object[] { new Guid("206c3a29-e323-4976-bb42-ffadd136d4da"), "LS", "Lesotho" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("201e5dcc-24d4-4552-be85-90c6d8a25072"), "CD", "Democratic Republic of the Congo" });
+                values: new object[] { new Guid("22a61788-7f0d-4736-b2eb-89cd2d5335be"), "UZ", "Uzbekistan" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("235362d1-e99c-4793-ae34-8a745c442ec7"), "AR", "Argentina" });
+                values: new object[] { new Guid("2483a5c4-baa1-4594-9d59-345a376cd3b6"), "AT", "Austria" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("24f4b7c9-56ed-475e-abc2-28e6ef3600a5"), "LC", "Saint Lucia" });
+                values: new object[] { new Guid("26711de2-5ea3-491c-bb0c-e5538950c5ae"), "LA", "Laos" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("268d6cfa-d8ee-4c78-920c-997c8b9383a6"), "MT", "Malta" });
+                values: new object[] { new Guid("29d8cfc7-2cfb-4a27-a784-11cd9989bdce"), "NZ", "New Zealand" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("26be7e96-68e7-429c-a019-87bcbf737039"), "EG", "Egypt" });
+                values: new object[] { new Guid("29fe781e-1989-44b6-b10f-08a67db2aff5"), "ZA", "South Africa" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("26e33d10-4c32-480a-9395-73916a17276f"), "GM", "Gambia" });
+                values: new object[] { new Guid("2a81010a-bfea-43b3-9ef4-b10a475940af"), "CA", "Canada" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("28b6e698-f70c-4465-ae30-e219fbe4f2a2"), "SR", "Suriname" });
+                values: new object[] { new Guid("2b91492c-5f44-4048-bdc7-424427cd70b5"), "SV", "El Salvador" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("2b0429ad-590f-4bee-8fe1-32fa948f6dbc"), "SM", "San Marino" });
+                values: new object[] { new Guid("2c220c1d-e4f0-4931-b6c9-1f86082881a8"), "TO", "Tonga" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("2db0f22a-f09e-4678-bbe0-d64e60bbcc74"), "FM", "Micronesia" });
+                values: new object[] { new Guid("2e68c194-eba2-44b4-ba14-1c7274c043b5"), "HT", "Haiti" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("2f042b21-8b27-46a0-8672-c8a423d29357"), "BY", "Belarus" });
+                values: new object[] { new Guid("2e885738-1981-4e1f-a814-0a9268468639"), "CR", "Costa Rica" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("2f111b83-35e4-4cbf-b1f5-d42effeeeb47"), "MZ", "Mozambique" });
+                values: new object[] { new Guid("2fa1ac81-890d-46c7-ad15-c445936acac6"), "TZ", "Tanzania" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("30002a71-58b2-4488-9230-a0c835bd03eb"), "NG", "Nigeria" });
+                values: new object[] { new Guid("3013fbf4-de55-4309-a913-521337b6a47b"), "MM", "Myanmar" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("30c05b94-7e9c-426b-80cb-a79dfc41e3ec"), "BB", "Barbados" });
+                values: new object[] { new Guid("30386db6-64b7-4c7b-8a4f-9b328ee0d560"), "GE", "Georgia" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("313cc2e1-8ab9-487c-afeb-3066629bf6a9"), "UZ", "Uzbekistan" });
+                values: new object[] { new Guid("31e612fc-33c9-4062-a789-9d9e4ba6ef6f"), "VE", "Venezuela" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("31c32ec4-d55d-4ee4-a98c-bfd0f688a3ff"), "BS", "Bahamas" });
+                values: new object[] { new Guid("33517525-1bcc-461c-a753-03334b95e347"), "IR", "Iran" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("3887dfea-e873-47ea-b0fa-1dfcc1ddfbb9"), "BA", "Bosnia and Herzegovina" });
+                values: new object[] { new Guid("33a8c1bc-e976-4bf0-81cb-de00150e6ad9"), "IE", "Ireland" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("38f9c37c-e526-41f3-a69b-449cf6366b0b"), "QA", "Qatar" });
+                values: new object[] { new Guid("368d2e22-7594-4107-bfdc-85a75647ba1f"), "FR", "France" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("3929091b-28b0-4b54-9371-239e4b66ece2"), "RW", "Rwanda" });
+                values: new object[] { new Guid("384aec82-5dab-4397-9076-9dee2d75ea3b"), "AO", "Angola" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("39a1e659-54cd-4973-a1f4-df6e9373e34a"), "IR", "Iran" });
+                values: new object[] { new Guid("386b45ca-3060-4e19-892a-22acb3ace47a"), "NL", "Netherlands" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("39ad4dc5-8827-42f9-9434-ba514940690b"), "LA", "Laos" });
+                values: new object[] { new Guid("39c60555-351f-40a5-8f22-8f0882f00e67"), "PY", "Paraguay" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("39dfdf7e-fdee-4518-8af4-cea4d1f3ce78"), "CM", "Cameroon" });
+                values: new object[] { new Guid("3a5161da-0007-4d05-bbf3-4d50141d5b97"), "GY", "Guyana" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("3a3a2217-1d0c-43cd-8347-86039a80d738"), "BO", "Bolivia" });
+                values: new object[] { new Guid("3c744cfe-99f2-4266-bbd6-df94d03f34fe"), "MK", "North Macedonia" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("3b6d62a8-a9bc-4ba3-990c-2d19ef9248ea"), "BH", "Bahrain" });
+                values: new object[] { new Guid("3d9bb8bc-d4cb-4758-8601-3c6483295a19"), "KM", "Comoros" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("3df36860-fd45-4e0c-acf9-622ba5bb31d3"), "SD", "Sudan" });
+                values: new object[] { new Guid("3e93e919-3194-473e-b2bb-f0a7be99289d"), "YE", "Yemen" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("3ff4e6e7-3841-410c-b716-70aa376a218d"), "IN", "India" });
+                values: new object[] { new Guid("3e9aebce-1fad-4376-96d1-165fc5416897"), "VU", "Vanuatu" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("4377ca83-a9c6-4fb2-b86a-b1f6ece9d78b"), "SC", "Seychelles" });
+                values: new object[] { new Guid("435f64d0-b1c0-4734-9e12-1909bcd45fb2"), "MN", "Mongolia" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("4450fcf4-d331-495c-a2b0-e9529d4d672b"), "MA", "Morocco" });
+                values: new object[] { new Guid("46628149-0121-41bd-9b53-24486ba1bd12"), "MT", "Malta" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("47da3ea3-be48-45ce-b858-67861fd3a4ac"), "MW", "Malawi" });
+                values: new object[] { new Guid("46d871c5-9681-4317-b927-aa78e4ef8356"), "CH", "Switzerland" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("487a59ea-a45b-4eda-a89b-dbc49e62e3f3"), "SA", "Saudi Arabia" });
+                values: new object[] { new Guid("475b1af4-5774-4187-bf53-7d4813b301bd"), "TR", "Turkey" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("4ba978db-8ad6-474e-8d77-8afb65e3974a"), "ID", "Indonesia" });
+                values: new object[] { new Guid("494d2331-8364-40ea-ae87-09b0dcf5c444"), "GR", "Greece" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("4c0b8292-47a2-4826-ac76-939f158e9114"), "ZW", "Zimbabwe" });
+                values: new object[] { new Guid("4d44c1f1-ec76-4f1a-9090-cf680d88ee03"), "KI", "Kiribati" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("4ca19e5a-cf1c-4fda-8566-2819f84e60de"), "SI", "Slovenia" });
+                values: new object[] { new Guid("4db0cf4a-3f17-4017-afcf-941c6f30fc59"), "MA", "Morocco" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("4ebb7900-4691-4fe7-8750-07e6d407e923"), "BT", "Bhutan" });
+                values: new object[] { new Guid("4f0720c3-e3cb-4457-8d0a-47b332baa551"), "KN", "Saint Kitts and Nevis" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("5051b074-b9a9-46bc-a40f-a4c354aa9552"), "AT", "Austria" });
+                values: new object[] { new Guid("500ef857-be6f-41e2-8ede-471573f7b2f7"), "GA", "Gabon" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("50a83f80-3655-40a2-a475-afbe24db1d01"), "NR", "Nauru" });
+                values: new object[] { new Guid("50750ab2-1bbd-4446-8745-fb32c9a27db8"), "KE", "Kenya" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("50b464dc-22a9-44b7-889c-da457735ac90"), "RS", "Serbia" });
+                values: new object[] { new Guid("51780af8-e55f-4a47-9951-1c7ae1f2e3d1"), "CG", "Congo" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("50d57734-5c36-43e5-a475-fb8bd211a01f"), "KM", "Comoros" });
+                values: new object[] { new Guid("54aa0887-f5a6-43c7-af04-b9c8e46d8bb6"), "MY", "Malaysia" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("53cb5eef-4515-45e3-b4b4-3f7fff271d6e"), "AF", "Afghanistan" });
+                values: new object[] { new Guid("54d6424b-aee2-442a-a756-4dad51d8a773"), "DM", "Dominica" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("5826e189-01d1-46ab-9774-65e00574d559"), "AE", "United Arab Emirates" });
+                values: new object[] { new Guid("54d833ff-b826-4b7f-b24d-115a589a74fd"), "TN", "Tunisia" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("5f3f7283-df27-47ae-98b1-4fc4302ff1bf"), "ZM", "Zambia" });
+                values: new object[] { new Guid("550a4cdf-a5e1-4a85-a484-a3f2e08bf243"), "IQ", "Iraq" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("5f7934b1-c5ee-4859-9661-bbbee5b7aff8"), "CH", "Switzerland" });
+                values: new object[] { new Guid("5770bcc1-7eb1-4127-a640-f53d8b6630ed"), "NO", "Norway" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("60cd7c0b-6e8e-4c69-95ba-b40f6b5a5393"), "CI", "Ivory Coast" });
+                values: new object[] { new Guid("57c3001d-bb10-4017-8ecd-ac7027c44e95"), "BT", "Bhutan" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("62eb4737-186f-4a09-9ebd-607701113369"), "ST", "Sao Tome and Principe" });
+                values: new object[] { new Guid("57f78ec0-058b-4f94-a122-97e1e8751d17"), "ML", "Mali" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("640d705f-1257-4ec7-b69c-118f4c7cefb2"), "HN", "Honduras" });
+                values: new object[] { new Guid("5827ee0d-fd4f-4476-8482-5abbec399041"), "ZM", "Zambia" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("64168c91-38fa-4e51-a9e9-418a56b1ff3a"), "HR", "Croatia" });
+                values: new object[] { new Guid("59052215-0e18-40ff-a238-c760350be706"), "SK", "Slovakia" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("6a3e9d92-c973-4799-97b3-6ff627503e46"), "AL", "Albania" });
+                values: new object[] { new Guid("590aea67-1560-43a6-9c45-4fb84663ca97"), "US", "United States" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("6a4a8add-8c8a-4a27-8c38-596f0e3b7993"), "DK", "Denmark" });
+                values: new object[] { new Guid("5947c494-0db1-403c-9279-057a68590685"), "SC", "Seychelles" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("6aa67903-75e4-433b-ac58-638f2a9707cd"), "IS", "Iceland" });
+                values: new object[] { new Guid("59fd20e3-1f82-471b-a621-0c815f8860df"), "FM", "Micronesia" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("6c9d0c68-eb00-4901-bbca-ae6d6330b41e"), "KE", "Kenya" });
+                values: new object[] { new Guid("5a368985-9374-4599-93ed-670736cb7996"), "GQ", "Equatorial Guinea" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("71941a6d-29cb-42c6-89e3-ca0622397edc"), "NP", "Nepal" });
+                values: new object[] { new Guid("5a43bfd2-b76a-4e10-b3ec-f9d44f8e99dc"), "KZ", "Kazakhstan" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("7246b93d-fd6f-44bb-b45e-48b16c57bb79"), "KG", "Kyrgyzstan" });
+                values: new object[] { new Guid("5acd97b2-c322-4de1-988a-7f268c9350fa"), "GN", "Guinea" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("727af034-18e2-42c8-b96d-5bc5ccfa40ed"), "IL", "Israel" });
+                values: new object[] { new Guid("5b42422f-20db-4e87-9fff-1a5f87e379b0"), "BR", "Brazil" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("732f8f05-796f-4966-ad66-9815f8faeae9"), "PG", "Papua New Guinea" });
+                values: new object[] { new Guid("5cdb9d5f-2a53-412e-97dd-1149bfdb18ab"), "WS", "Samoa" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("73767928-46c2-438a-98a2-85440641b54c"), "GN", "Guinea" });
+                values: new object[] { new Guid("5d1d2625-95c5-40a3-b37e-43c7ff101ce0"), "BF", "Burkina Faso" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("7412238d-3c41-4b30-a229-77c29a2e5c87"), "NA", "Namibia" });
+                values: new object[] { new Guid("5de4ce15-dd45-48c9-b0fa-ba2d8b17d733"), "GW", "Guinea-Bissau" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("756c9bfa-ffd1-47f6-adb8-2122fdf9d5e6"), "ES", "Spain" });
+                values: new object[] { new Guid("5df6461d-b0be-4f14-9d42-b7d370e83aed"), "LK", "Sri Lanka" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("75f1fcdb-609f-4729-928c-877ca0a7edb7"), "UG", "Uganda" });
+                values: new object[] { new Guid("602bc458-2596-4105-bf90-6fbaf525fc04"), "AZ", "Azerbaijan" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("77edfad3-40f2-4bf9-9786-26e76b9e92a8"), "CG", "Congo" });
+                values: new object[] { new Guid("61b599bf-d512-483a-91f0-702a2b953182"), "EE", "Estonia" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("78e00ae6-6092-4b77-8337-8f9c1317995f"), "UA", "Ukraine" });
+                values: new object[] { new Guid("62ba217f-496d-4d55-bf07-d61fa06dbf0e"), "SR", "Suriname" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("790e7bc3-36c6-4022-bdeb-f0db7c730b05"), "KP", "North Korea" });
+                values: new object[] { new Guid("665a991d-b96d-4eec-9d42-b387616c6d2d"), "SA", "Saudi Arabia" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("7b03e37b-618b-4d32-966a-24a6ced0dc53"), "SL", "Sierra Leone" });
+                values: new object[] { new Guid("665c321b-5ebf-492d-b1d4-be698c879b2a"), "AE", "United Arab Emirates" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("7c566f95-60bc-43f7-889b-49c059ccf72f"), "TD", "Chad" });
+                values: new object[] { new Guid("66de0e91-2d02-480f-82f5-9112a36aa8f6"), "TW", "Taiwan" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("7c91e7b1-4f1d-4e07-9f22-96583c8ccb21"), "KI", "Kiribati" });
+                values: new object[] { new Guid("68a85cf1-ac4f-49bc-99f1-79fd9631c7e0"), "SB", "Solomon Islands" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("7e66f41e-051b-4ef7-b05f-0cc8d85f37d1"), "CZ", "Czech Republic" });
+                values: new object[] { new Guid("6d864aae-6787-4d53-9c9a-b1f1d3a2d862"), "JP", "Japan" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("7f3064f8-a541-419a-b8dc-bcafb8542e2c"), "GR", "Greece" });
+                values: new object[] { new Guid("6dec78a0-772c-4d23-8d3b-b40c71490f94"), "DZ", "Algeria" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("7fe883f3-2289-422a-8797-958f4b1c76d3"), "PK", "Pakistan" });
+                values: new object[] { new Guid("7071d3d6-b4cf-400a-a888-d43eac718d36"), "AR", "Argentina" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("80b3e4ed-a7be-4e45-be56-a0fb86828a1b"), "TW", "Taiwan" });
+                values: new object[] { new Guid("7077875f-6bd8-42ad-bbc3-e3c79762591b"), "CD", "Democratic Republic of the Congo" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("815e244d-9c37-4cb5-b993-56d80fd19211"), "DO", "Dominican Republic" });
+                values: new object[] { new Guid("71d5cdf9-5ee6-4a0c-b0a1-5faa8426f090"), "LY", "Libya" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("82bcf0f6-760a-4bfd-b080-96a17dafc03a"), "PY", "Paraguay" });
+                values: new object[] { new Guid("72925270-4819-491e-970a-db8daa07d742"), "DJ", "Djibouti" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("8481ad95-0e57-4c9f-8731-df2d44acb595"), "DM", "Dominica" });
+                values: new object[] { new Guid("740641dc-a154-458b-8263-0a398d91fbd3"), "NE", "Niger" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("85802fd0-e281-4165-a74b-0fa793baaddf"), "SZ", "Swaziland" });
+                values: new object[] { new Guid("762e9d7d-75f6-478f-bfb8-20b874d297ae"), "TL", "East Timor" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("85a14c12-340f-4d65-aa0f-998ee1dc5779"), "CR", "Costa Rica" });
+                values: new object[] { new Guid("767ab7b2-2ffa-4af6-bb07-cf40d64a4b94"), "EG", "Egypt" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("89082e5f-27df-4dab-ad7a-ad3ecd1de762"), "WS", "Samoa" });
+                values: new object[] { new Guid("78e4806c-04a7-481b-9894-26db9d9b5f2f"), "SL", "Sierra Leone" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("8920398d-f7ff-46c7-a030-b6756269353b"), "FJ", "Fiji" });
+                values: new object[] { new Guid("7a131a0e-c101-4461-898b-ebc7c097a444"), "SO", "Somalia" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("89cb2d36-fe50-4f6b-990a-4674ae2922de"), "SB", "Solomon Islands" });
+                values: new object[] { new Guid("7a33fd3c-2637-4b2a-92fb-e34cfb5e6010"), "NP", "Nepal" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("8b0043c4-e31c-43ac-b7d7-f3c6d48180f3"), "PT", "Portugal" });
+                values: new object[] { new Guid("7a797905-c5da-46d0-ad80-85c51c903b42"), "CO", "Colombia" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("8ca86f0b-eeb9-4b16-a43c-0e4dc775964b"), "KN", "Saint Kitts and Nevis" });
+                values: new object[] { new Guid("7a98444b-6e62-4789-9508-69cd1f6664d0"), "MZ", "Mozambique" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("8cd5401a-a9e0-4fe4-9e96-bf0bc2cd51aa"), "RU", "Russia" });
+                values: new object[] { new Guid("7dc4cd88-167b-4578-8d61-56260b4df1fb"), "JM", "Jamaica" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("8d804ccf-dba5-4fb8-a2a4-5546bb9d4408"), "AZ", "Azerbaijan" });
+                values: new object[] { new Guid("7ee6dad1-f3cd-41e2-ba83-23accf48f3f9"), "SD", "Sudan" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("8e991626-2978-470d-93f7-e7eb95b85a13"), "IT", "Italy" });
+                values: new object[] { new Guid("8014daef-10e5-4703-8d8c-7a54cc16eaaa"), "BJ", "Benin" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("8f49f625-2a53-428a-9216-8c4fbb22979f"), "MD", "Moldova" });
+                values: new object[] { new Guid("8065eced-3562-4888-8da3-5cb91197dde7"), "VA", "Vatican City" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("8fca7d6a-9e6c-4e03-9f0e-51241ff56a15"), "MC", "Monaco" });
+                values: new object[] { new Guid("80ca4c44-a2c7-4ba5-b4ce-da93b28c057b"), "NG", "Nigeria" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("91210d9d-62b9-4962-a4d1-d13f64cfffc1"), "GT", "Guatemala" });
+                values: new object[] { new Guid("8275479a-5ebe-40d9-9a49-a4aaffdb71fe"), "DK", "Denmark" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("97d9a390-c8e8-4844-946b-5ec7dd97735d"), "SK", "Slovakia" });
+                values: new object[] { new Guid("82b4c627-9baf-4aed-8de0-b44b91a111be"), "ES", "Spain" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("980f5a71-3be8-4e80-8ac5-d70b5c4c5c96"), "SY", "Syria" });
+                values: new object[] { new Guid("866b084c-8615-4289-b315-4ccd57d6bd25"), "DE", "Germany" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("986165ea-bae2-4d87-b056-36b8cd8e1b7b"), "MH", "Marshall Islands" });
+                values: new object[] { new Guid("88277c30-4e55-4204-b138-6b8e2149a805"), "TG", "Togo" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("9863157a-2b4b-436b-9683-22d6a1c2ddd5"), "BD", "Bangladesh" });
+                values: new object[] { new Guid("890aecd2-28c1-482d-bd7a-aadbe92a6325"), "KW", "Kuwait" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("9a549cf2-6031-4653-bd11-c3bed172d09f"), "NL", "Netherlands" });
+                values: new object[] { new Guid("8c43616c-c7a1-4130-aa7b-be329fc67d8a"), "BN", "Brunei" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("9a73121b-50be-4efa-98bf-714ac247cc61"), "CY", "Cyprus" });
+                values: new object[] { new Guid("9163826e-bf38-482e-8025-afb03ca71dab"), "BH", "Bahrain" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("9a9c057e-9718-47dc-87b2-17d631bf2fd3"), "TG", "Togo" });
+                values: new object[] { new Guid("933fe465-655f-4b66-96df-e3fd1c591d90"), "BI", "Burundi" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("9cef34c3-25e6-485e-baf8-9adf246ce701"), "MK", "North Macedonia" });
+                values: new object[] { new Guid("97b62cc1-3f46-408e-a240-6bd875f8a85a"), "IL", "Israel" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("9da79f09-ac0d-426c-956b-1596f503691c"), "NZ", "New Zealand" });
+                values: new object[] { new Guid("98598d6c-02bd-41e4-8ab6-6cab266635fa"), "MC", "Monaco" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("9e4b69ea-d65f-4f16-8aec-f47c3cbea439"), "PH", "Philippines" });
+                values: new object[] { new Guid("9dc91d9c-f0de-4ba7-a2c0-76134e1f5e91"), "LU", "Luxembourg" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("9e59be87-b4d3-4e53-8130-5b3120e52e74"), "MG", "Madagascar" });
+                values: new object[] { new Guid("a184fb5e-512c-47a5-8659-6d933137e197"), "BD", "Bangladesh" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("a14708c3-3ed1-4cfe-a070-9246654b6e0d"), "TH", "Thailand" });
+                values: new object[] { new Guid("a2d0d92a-5035-4f67-8e23-e782dc02c519"), "MV", "Maldives" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("a17679df-0dfb-49be-8ccc-56a014a706c3"), "CU", "Cuba" });
+                values: new object[] { new Guid("a32e845c-de98-4858-a50b-8978eef4418d"), "TH", "Thailand" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("a1e2e20c-35c5-4194-9dd6-a6133044f3fa"), "JO", "Jordan" });
+                values: new object[] { new Guid("a45efe3d-d3e9-4c01-8ecc-68d5a57c0652"), "ET", "Ethiopia" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("a28011db-f99f-4e7d-a4fe-abb92074d207"), "BZ", "Belize" });
+                values: new object[] { new Guid("a6dd67c6-660e-4489-accd-769643c0e5a0"), "FJ", "Fiji" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("a2997a60-58a2-470f-b5b1-86cba082223c"), "FI", "Finland" });
+                values: new object[] { new Guid("a8a77514-e35b-4ceb-9260-9761c647e484"), "MD", "Moldova" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("a3e7f2a5-22d2-450c-8bcd-ce647ad98b92"), "LB", "Lebanon" });
+                values: new object[] { new Guid("a8ff0ec2-720c-4e91-a2d5-50cd96cedbb2"), "HU", "Hungary" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("a5ac83df-0a2b-40ec-963c-9b8be6d84bf1"), "AG", "Antigua and Barbuda" });
+                values: new object[] { new Guid("ac02a0f9-7f30-4135-9079-23d6c210858c"), "MU", "Mauritius" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("aa8474d1-e7dc-49c5-bfda-89959e65b1b5"), "TM", "Turkmenistan" });
+                values: new object[] { new Guid("ac687e1e-5f63-4cbc-952b-dfbca6a55b12"), "SE", "Sweden" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("ad40310a-c006-4fdb-8464-c7f4b0cef68a"), "MV", "Maldives" });
+                values: new object[] { new Guid("ad353a6f-9520-4c5b-a871-beb77e46726c"), "AM", "Armenia" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("ae4f898a-ed20-4120-a428-37af7c3bfd79"), "RO", "Romania" });
+                values: new object[] { new Guid("ae2b8fab-d23b-4c31-bdb5-2817dcfef5e6"), "SN", "Senegal" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("af3f8748-2d73-46de-afb2-2582e653eb05"), "DZ", "Algeria" });
+                values: new object[] { new Guid("ae3b87ec-2cef-4909-9a38-e0fa841ea1bb"), "TT", "Trinidad and Tobago" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("b0090dda-1b93-44f3-8d15-85613ad9211d"), "LU", "Luxembourg" });
+                values: new object[] { new Guid("ae8d0f26-3d41-4bef-bc0a-b9ead2990e7a"), "KP", "North Korea" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("b07287ad-d53c-495d-a2e2-cf9053a640b7"), "VA", "Vatican City" });
+                values: new object[] { new Guid("aede2370-d8b6-4843-9c74-572a1d9db33b"), "CM", "Cameroon" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("b1c79815-62bc-4500-a6cd-19be8a969077"), "BJ", "Benin" });
+                values: new object[] { new Guid("b1a89353-2d8d-4888-8f4e-a4f27dd2eca7"), "TV", "Tuvalu" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("b24c845a-f083-46eb-8f51-91aba86bfd6f"), "CO", "Colombia" });
+                values: new object[] { new Guid("b206b614-2921-4370-b7a7-c6941ec3729f"), "RS", "Serbia" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("b2654f53-841c-4313-98c6-1f649ae0fbda"), "GB", "United Kingdom" });
+                values: new object[] { new Guid("b2482610-2660-45d9-b7c0-e60e37171906"), "AU", "Australia" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("b2d8d04b-cceb-4db1-9521-498ea0c52843"), "GE", "Georgia" });
+                values: new object[] { new Guid("b290e371-5142-4aad-8ad3-62e9d4a6c493"), "LI", "Liechtenstein" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("b4a87689-544b-401c-af53-b7b37f6e5a43"), "MX", "Mexico" });
+                values: new object[] { new Guid("b3ecd218-2982-424e-ad9e-04827b6eee8b"), "PE", "Peru" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("b5504f18-7b07-4db3-8480-241b9ef011ee"), "MU", "Mauritius" });
+                values: new object[] { new Guid("b48884aa-341d-4391-9bce-80e11a0a4261"), "NI", "Nicaragua" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("b7b20cb3-ec9a-463e-8148-4e32732cc6ac"), "JP", "Japan" });
+                values: new object[] { new Guid("b53ab50a-6dbe-45c6-af56-41f8c169d817"), "CN", "China" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("bc39a6be-d181-4b09-9f75-6097c715c5cc"), "AD", "Andorra" });
+                values: new object[] { new Guid("b708cc86-419c-4459-a00c-999c160ed80e"), "KR", "South Korea" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("bc902e3d-ea6c-4897-b10d-a464765121ef"), "KW", "Kuwait" });
+                values: new object[] { new Guid("bb3d0e6c-0b89-4b4a-802e-290bbbe6ad9f"), "CY", "Cyprus" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("bd55d064-2498-4a0c-9037-2e053e89f4a1"), "GA", "Gabon" });
+                values: new object[] { new Guid("bbe682f8-f906-4cb7-9786-ab25a3f18a80"), "BY", "Belarus" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("bf4c42c1-5923-4dce-bbc2-5032d07632c4"), "NO", "Norway" });
+                values: new object[] { new Guid("bc2ea00f-d7c7-4e9a-9b8f-7de6668f31a1"), "PL", "Poland" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("c005349f-54bf-4886-a12b-556a33e4c605"), "IE", "Ireland" });
+                values: new object[] { new Guid("bd9bfe5b-1c89-450e-82f0-75ba956abed2"), "ER", "Eritrea" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("c33c82cc-9a54-4315-82f5-fd5e47826b85"), "LT", "Lithuania" });
+                values: new object[] { new Guid("bf2804b6-4c77-4f5d-94ef-dd8ae2347cbe"), "ME", "Montenegro" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("c349e046-8999-413b-bfba-51cab755282d"), "MN", "Mongolia" });
+                values: new object[] { new Guid("bf6d09ad-d34e-4efd-a69f-84fcfe18aefe"), "MG", "Madagascar" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("c4966c13-56d4-4fde-8f3b-59f92f7735e5"), "PA", "Panama" });
+                values: new object[] { new Guid("bfb34f0d-cf01-444b-bc72-b349a1c8778f"), "UA", "Ukraine" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("c49a207d-7506-4cf1-9dd8-3f73f82a6f21"), "PW", "Palau" });
+                values: new object[] { new Guid("bfc3943f-c380-4c9d-9b8b-988bd67d9bc0"), "SZ", "Swaziland" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("c4b13d6f-dcfc-40ae-8f02-088a44b517ab"), "VE", "Venezuela" });
+                values: new object[] { new Guid("c06d7815-9ed1-408d-8450-4bf4972b9d80"), "UG", "Uganda" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("c54cb112-0e41-43f7-b3fe-d77509ee17f3"), "TV", "Tuvalu" });
+                values: new object[] { new Guid("c1783504-a546-4387-a8e1-10a50303efed"), "LC", "Saint Lucia" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("c6118364-7a23-4a25-a4a1-0be24d4e9358"), "TJ", "Tajikistan" });
+                values: new object[] { new Guid("c1c1c6cc-7d26-4021-a461-85b60820b7cb"), "IN", "India" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("c743bdf4-70f0-4dba-bfac-e0de97729f09"), "SV", "El Salvador" });
+                values: new object[] { new Guid("c244c58c-8566-4414-b5b7-6e8dd635bc90"), "MX", "Mexico" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("c7a58439-5dbc-4376-a389-d37d1ea7947d"), "PL", "Poland" });
+                values: new object[] { new Guid("c2fe3fa6-9e2f-49bb-850a-36b675f2d47a"), "IS", "Iceland" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("c840baa1-605a-4171-9bcb-0ec212ea2e09"), "NI", "Nicaragua" });
+                values: new object[] { new Guid("c382a078-e9e5-41d1-9bae-784a786b92b8"), "NA", "Namibia" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("c8ba33b6-b518-4455-9991-f3964271eccd"), "UY", "Uruguay" });
+                values: new object[] { new Guid("c4bc93b3-576a-4dc9-8159-c5bd271b5434"), "BZ", "Belize" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("c984db25-61d1-4a25-879c-3c2177c41b08"), "MM", "Myanmar" });
+                values: new object[] { new Guid("c4c115d4-84e8-412f-a0f4-74624f912fbe"), "HN", "Honduras" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("caf91bc5-3adb-4e27-80dc-2dbe39472246"), "SN", "Senegal" });
+                values: new object[] { new Guid("c82d16d0-a60a-43c5-9f77-1650035c0481"), "AD", "Andorra" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("cc6f2d37-6cdc-4e17-84ac-bac56cda3f91"), "TZ", "Tanzania" });
+                values: new object[] { new Guid("c8ce5200-c03e-4564-8ac2-33a09aa5665d"), "LB", "Lebanon" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("d2325685-79a0-4081-ac75-0d91bad9b091"), "CL", "Chile" });
+                values: new object[] { new Guid("cbfe7c46-4bba-483e-875a-df96c656b1c3"), "CI", "Ivory Coast" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("d293f09a-9635-423a-b9c5-de84623721cd"), "GQ", "Equatorial Guinea" });
+                values: new object[] { new Guid("ccd75e46-623d-42e9-bade-2e9be172628e"), "SG", "Singapore" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("d5dc78e8-36dd-46d2-b21b-eb823f90f649"), "KR", "South Korea" });
+                values: new object[] { new Guid("cf16cf70-abcb-4721-b96a-87fff648457f"), "TD", "Chad" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("d71d45e1-1ee7-4bcc-ba1f-af5ca41c90d5"), "ME", "Montenegro" });
+                values: new object[] { new Guid("d06002b1-4ae2-4c33-a0ce-0f83663405dd"), "CZ", "Czech Republic" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("d75c46c9-5737-49ad-94ad-30e50064f520"), "GD", "Grenada" });
+                values: new object[] { new Guid("d442cb0b-0061-4c84-84f3-3e08ed353b20"), "CF", "Central African Republic" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("d7dc4887-5908-42dc-b2e0-6595762a77ef"), "PE", "Peru" });
+                values: new object[] { new Guid("d558138b-06c7-49bb-94a5-a3dd30f6cd49"), "BB", "Barbados" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("d88c0cc0-690d-45ba-8581-e8fdf683d0e5"), "CN", "China" });
+                values: new object[] { new Guid("d59088c7-9863-4f72-8868-b2fb7f8165a9"), "CV", "Cabo Verde" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("d92f4370-956d-4a38-beed-066bebeb66b2"), "ET", "Ethiopia" });
+                values: new object[] { new Guid("d5c3bbc8-6482-4c98-9a2f-4fe1221c7bf5"), "RO", "Romania" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("dc4462eb-75e7-48f0-b03b-52842a8864ea"), "HU", "Hungary" });
+                values: new object[] { new Guid("d62b3695-63b3-4120-a977-c31967c1544d"), "AG", "Antigua and Barbuda" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("ddc5f1c7-d9a7-472e-a0b4-adc8f696fb9d"), "AM", "Armenia" });
+                values: new object[] { new Guid("d740ce42-6877-4979-a4fa-cd6b630b12b1"), "JO", "Jordan" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("e07c8d62-a928-440f-ba5f-9d23122d5edf"), "AU", "Australia" });
+                values: new object[] { new Guid("d74b7d27-d8fc-416f-82fa-e8f877d4346f"), "LV", "Latvia" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("e20942cd-0db8-4832-a82b-57c13812a383"), "US", "United States" });
+                values: new object[] { new Guid("d762f85f-3360-46e5-86c7-4ae7922999b1"), "MR", "Mauritania" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("e39391b6-c11b-4f62-947e-12111b125e7b"), "TL", "East Timor" });
+                values: new object[] { new Guid("d79d19d4-71f2-4cc4-b92a-20e07132e3aa"), "VN", "Vietnam" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("e9fdf640-ba60-4754-a13c-6d3569531f8c"), "BR", "Brazil" });
+                values: new object[] { new Guid("d8b9ee70-2932-4f57-95fd-353c83a672bf"), "SM", "San Marino" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("ea41e8e4-5c9b-4c06-b763-821ae723f8f2"), "JM", "Jamaica" });
+                values: new object[] { new Guid("dbe3ea26-7d90-41b3-9fec-961f7fae4e05"), "RU", "Russia" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("ec14259d-6fdc-4091-bfef-e82a4db05264"), "MR", "Mauritania" });
+                values: new object[] { new Guid("dc8a5bd6-81b1-47ee-b1c7-caba98969f0e"), "KH", "Cambodia" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("ecf6db97-c856-40a0-b7c8-93f59c0e552a"), "DE", "Germany" });
+                values: new object[] { new Guid("e2a35270-f478-4975-abae-893a34d2f144"), "PG", "Papua New Guinea" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("ecf89f50-e5d3-4ddd-84d4-4cc642ee5879"), "VN", "Vietnam" });
+                values: new object[] { new Guid("e2f85626-1e7e-462b-b1f3-bf220df7d6a6"), "OM", "Oman" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("ee0e3c41-8c81-4870-8d01-874fbc5a7a11"), "HT", "Haiti" });
+                values: new object[] { new Guid("e4eafdf5-aa15-466e-a3ab-c3a4020a1073"), "KG", "Kyrgyzstan" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("ef6a4457-e7a7-4bfd-983a-423f7633ffea"), "FR", "France" });
+                values: new object[] { new Guid("e6110b41-383d-4524-82b9-bb0d6f58a73a"), "MH", "Marshall Islands" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("f433a313-a017-4fb8-8764-9634532e0e85"), "CA", "Canada" });
+                values: new object[] { new Guid("e9412f5d-4dab-49c7-9a84-e30c2503c2f6"), "GB", "United Kingdom" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("f4673ce5-a992-46db-8b37-28d4f93f4497"), "LR", "Liberia" });
+                values: new object[] { new Guid("ea5f5391-8ad3-4056-83f0-2b5fd79fdc6b"), "BE", "Belgium" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("f4915ab8-a401-4734-87e7-721fb44e6117"), "CF", "Central African Republic" });
+                values: new object[] { new Guid("ecc76640-b267-48a6-86eb-ce614999a6ee"), "AL", "Albania" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("f4ca0b5c-cb9b-4fa5-82e9-5d416d7e3496"), "KH", "Cambodia" });
+                values: new object[] { new Guid("ee5ff0a7-8d6e-415f-bc33-1693054fee6c"), "XK", "Kosovo" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("f520866b-dd6e-4c49-9107-5d69a4f798be"), "TR", "Turkey" });
+                values: new object[] { new Guid("f04f3267-2405-4df9-bba9-53498f634140"), "EC", "Ecuador" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("f681677a-9c34-4fdc-9051-244dd8f828af"), "ZA", "South Africa" });
+                values: new object[] { new Guid("f0618d17-d37f-421e-a228-ae49c266d19f"), "LT", "Lithuania" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("f7943a4c-3059-4b27-bfc4-96859a5be6d7"), "LV", "Latvia" });
+                values: new object[] { new Guid("f236fcd9-7ccf-43a7-b4a9-8ea38cdc10a6"), "GH", "Ghana" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("f8414a69-de39-4a0c-9d7d-25ff20b2c193"), "BG", "Bulgaria" });
+                values: new object[] { new Guid("f2d31f82-da84-42d2-b4eb-1f662a1cb215"), "BO", "Bolivia" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("f8e609bb-6afe-4f89-8158-f10804717bca"), "EC", "Ecuador" });
+                values: new object[] { new Guid("f2d35091-62ae-46a9-a659-872765e3f3b3"), "SS", "South Sudan" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("f8f87961-ae2a-4bba-976e-c61a1085d666"), "KZ", "Kazakhstan" });
+                values: new object[] { new Guid("f36a86a3-f586-4ebf-a694-c541234793b5"), "TJ", "Tajikistan" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("fa9033bd-2367-4e0c-b486-c590b36e67dc"), "AO", "Angola" });
+                values: new object[] { new Guid("f544f363-78f1-47af-b3f0-7ea184bda461"), "PK", "Pakistan" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("fd460bc9-cee3-4540-ac53-901387d3b078"), "YE", "Yemen" });
+                values: new object[] { new Guid("fa518907-07fe-4f49-9196-0abca14f1b0b"), "PH", "Philippines" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("fd744a7e-9a68-4719-955e-525448ea5dd4"), "SG", "Singapore" });
+                values: new object[] { new Guid("fb5f8a20-f2dc-462e-8f84-fe56b4b02798"), "TM", "Turkmenistan" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("fdc00d6e-fb0d-4d52-bb22-51622dee121a"), "XK", "Kosovo" });
+                values: new object[] { new Guid("fc784679-cc77-493d-bdc0-054378ed39a7"), "ZW", "Zimbabwe" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("feb7529a-ce1b-4837-a491-1df556ac5c14"), "GY", "Guyana" });
+                values: new object[] { new Guid("fe19ec9c-7ea2-4bfe-8c30-6197ac9460fc"), "PT", "Portugal" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("ff112fc2-6723-4798-a0ce-75424a95b3ed"), "BF", "Burkina Faso" });
+                values: new object[] { new Guid("fecbaff2-f536-4df8-b225-fa26f7e61750"), "ID", "Indonesia" });
 
             migrationBuilder.InsertData(
                 table: "Countrys",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { new Guid("ff22037d-c835-4055-b39b-77c58ba50029"), "LS", "Lesotho" });
+                values: new object[] { new Guid("ffb82461-0d36-49dc-9b2e-a252202609a0"), "HR", "Croatia" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Friendships_User1Id",
+                name: "IX_Friendships_RecieverId",
                 table: "Friendships",
-                column: "User1Id");
+                column: "RecieverId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Friendships_User2Id",
+                name: "IX_Friendships_SenderId",
                 table: "Friendships",
-                column: "User2Id");
+                column: "SenderId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_CountryId",

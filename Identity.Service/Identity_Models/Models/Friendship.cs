@@ -8,13 +8,14 @@ namespace Identity_Models.Models
         [Key]
         public Guid FriendshipId { get; set; }
 
-        [ForeignKey("Sender")]
         public Guid SenderId { get; set; }
+        [ForeignKey("SenderId")]
         public User Sender { get; set; }
 
-        [ForeignKey("Reciever")]
         public Guid RecieverId { get; set; }
+        [ForeignKey("RecieverId")]
         public User Reciever { get; set; }
+
         public bool IsAccepted { get; set; }
 
     }

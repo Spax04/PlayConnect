@@ -54,20 +54,27 @@ namespace Identity_DAL.Repositories
 
         }
 
-        public async Task<IEnumerable<OtherUserResponse>> GetFriendsByUserIdAsync(Guid userId)
+        public async Task<FriendshipResponse> GetFriendsByUserIdAsync(Guid userId)
         {
             IEnumerable<Friendship> friendships = await _context.Friendships.Where(u => (u.SenderId == userId) || (u.RecieverId == userId)).ToListAsync();
-            IEnumerable<Friendship> friendIsReciver =  friendships.Where(f => f.SenderId == userId).ToList();
-            IEnumerable<Friendship> userIsReciver = friendships.Where(f => f.SenderId == userId).ToList();
+
+            IEnumerable<User> usersFriendshipAccepted1 = friendships.Where(u => u.SenderId == userId && u.IsAccepted == true).Select(u => u.Reciever).ToList();
+            IEnumerable<User> usersFriendshipAccepted2 = friendships.Where(u => u.RecieverId == userId && u.IsAccepted == true).Select(u => u.Sender).ToList();
+
+            IEnumerable<User> usersFriendshipPanding = friendships.Where(u => u.RecieverId == userId && u.IsAccepted == false).Select(u => u.Sender).ToList();
+
+            // Users that Main user has been sended friendship request but request still is not accepted. Not in use now,maybe later
+            // IEnumerable<User> usersFriendshipRequested = friendships.Where(u => u.SenderId == userId && u.IsAccepted == false).Select(u => u.Reciever).ToList(); 
 
             IEnumerable<Country> countries = await _countryRepository.GetAllAsync();
 
             List<User> friendsList = new List<User>();
-            friendsList.AddRange(usersOne);
-            friendsList.AddRange(usersTwo);
+            friendsList.AddRange(usersFriendshipAccepted1);
+            friendsList.AddRange(usersFriendshipAccepted2);
 
             Country country;
             List<OtherUserResponse> friends = new List<OtherUserResponse>();
+            List<OtherUserResponse> pendingFriends = new List<OtherUserResponse>();
 
             foreach (var user in friendsList)
             {
@@ -88,8 +95,29 @@ namespace Identity_DAL.Repositories
                     }
                 });
             }
+            foreach (var user in usersFriendshipPanding)
+            {
+                country = countries.Where(c => c.Id == user.CountryId).First();
+                pendingFriends.Add(new OtherUserResponse()
+                {
+                    UserId = user.UserId.ToString(),
+                    Username = user.Username,
+                    Email = user.Email,
+                    Token = _jwtUtilits.CreateToken(user),
+                    Coins = user.Coins,
+                    IsFriend = false,
+                    Country = new Country()
+                    {
+                        Id = country.Id,
+                        Code = country.Code,
+                        Name = country.Name
+                    }
+                });
+            }
 
-            return friends;
+
+
+            return new FriendshipResponse() { Friends = friends, PendingFrineds = pendingFriends };
 
         }
 

@@ -23,15 +23,15 @@ namespace Backgammon_Backend.Data
                 .HasKey(f => f.FriendshipId);
 
             modelBuilder.Entity<Friendship>()
-                .HasOne(f => f.User1)
+                .HasOne(f => f.Sender)
                 .WithMany(u => u.Friendships1)
-                .HasForeignKey(f => f.User1Id)
+                .HasForeignKey(f => f.SenderId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Friendship>()
-                .HasOne(f => f.User2)
+                .HasOne(f => f.Reciever)
                 .WithMany(u => u.Friendships2)
-                .HasForeignKey(f => f.User2Id)
+                .HasForeignKey(f => f.RecieverId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             var countries = new List<Country>{
