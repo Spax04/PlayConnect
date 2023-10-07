@@ -58,10 +58,10 @@ namespace Identity_DAL.Repositories
         {
             IEnumerable<Friendship> friendships = await _context.Friendships.Where(u => (u.SenderId == userId) || (u.RecieverId == userId)).ToListAsync();
 
-            IEnumerable<User> usersFriendshipAccepted1 = friendships.Where(u => u.SenderId == userId && u.IsAccepted == true).Select(u => u.Reciever).ToList();
-            IEnumerable<User> usersFriendshipAccepted2 = friendships.Where(u => u.RecieverId == userId && u.IsAccepted == true).Select(u => u.Sender).ToList();
+            IEnumerable<Guid> usersFriendshipAccepted1 = friendships.Where(u => u.SenderId == userId && u.IsAccepted == true).Select(u => u.RecieverId).ToList();
+            IEnumerable<Guid> usersFriendshipAccepted2 = friendships.Where(u => u.RecieverId == userId && u.IsAccepted == true).Select(u => u.SenderId).ToList();
 
-            IEnumerable<User> usersFriendshipPanding = friendships.Where(u => u.RecieverId == userId && u.IsAccepted == false).Select(u => u.Sender).ToList();
+            List<Guid> usersFriendshipPanding = friendships.Where(u => u.RecieverId == userId && u.IsAccepted == false).Select(u => u.SenderId).ToList();
 
             // Users that Main user has been sended friendship request but request still is not accepted. Not in use now,maybe later
             // IEnumerable<User> usersFriendshipRequested = friendships.Where(u => u.SenderId == userId && u.IsAccepted == false).Select(u => u.Reciever).ToList(); 
@@ -69,8 +69,22 @@ namespace Identity_DAL.Repositories
             IEnumerable<Country> countries = await _countryRepository.GetAllAsync();
 
             List<User> friendsList = new List<User>();
-            friendsList.AddRange(usersFriendshipAccepted1);
-            friendsList.AddRange(usersFriendshipAccepted2);
+
+            foreach (var id in usersFriendshipAccepted1)
+            {
+                friendsList.Add(await _context.Users!.Where(u => u.UserId == id).FirstOrDefaultAsync());
+            }
+            foreach (var id in usersFriendshipAccepted2)
+            {
+                friendsList.Add(await _context.Users!.Where(u => u.UserId == id).FirstOrDefaultAsync());
+            }
+
+            List<User> pendingList = new List<User>();
+            foreach (var id in usersFriendshipPanding)
+            {
+                pendingList.Add(await _context.Users!.Where(u => u.UserId == id).FirstOrDefaultAsync());
+            }
+
 
             Country country;
             List<OtherUserResponse> friends = new List<OtherUserResponse>();
@@ -78,47 +92,52 @@ namespace Identity_DAL.Repositories
 
             foreach (var user in friendsList)
             {
-                country = countries.Where(c => c.Id == user.CountryId).First();
-                friends.Add(new OtherUserResponse()
+                if (user != null)
                 {
-                    UserId = user.UserId.ToString(),
-                    Username = user.Username,
-                    Email = user.Email,
-                    Token = _jwtUtilits.CreateToken(user),
-                    Coins = user.Coins,
-                    IsFriend = true,
-                    Country = new Country()
+                    country = countries.Where(c => c.Id == user.CountryId).First();
+                    friends.Add(new OtherUserResponse()
                     {
-                        Id = country.Id,
-                        Code = country.Code,
-                        Name = country.Name
-                    }
-                });
+                        UserId = user.UserId.ToString(),
+                        Username = user.Username,
+                        Email = user.Email,
+                        Token = _jwtUtilits.CreateToken(user),
+                        Coins = user.Coins,
+                        IsFriend = true,
+                        Country = new Country()
+                        {
+                            Id = country.Id,
+                            Code = country.Code,
+                            Name = country.Name
+                        }
+                    });
+                }
+
             }
-            foreach (var user in usersFriendshipPanding)
+
+            foreach (var user in pendingList)
             {
-                country = countries.Where(c => c.Id == user.CountryId).First();
-                pendingFriends.Add(new OtherUserResponse()
+                if (user != null)
                 {
-                    UserId = user.UserId.ToString(),
-                    Username = user.Username,
-                    Email = user.Email,
-                    Token = _jwtUtilits.CreateToken(user),
-                    Coins = user.Coins,
-                    IsFriend = false,
-                    Country = new Country()
+                    country = countries.Where(c => c.Id == user.CountryId).First();
+                    pendingFriends.Add(new OtherUserResponse()
                     {
-                        Id = country.Id,
-                        Code = country.Code,
-                        Name = country.Name
-                    }
-                });
+                        UserId = user.UserId.ToString(),
+                        Username = user.Username,
+                        Email = user.Email,
+                        Token = _jwtUtilits.CreateToken(user),
+                        Coins = user.Coins,
+                        IsFriend = false,
+                        Country = new Country()
+                        {
+                            Id = country.Id,
+                            Code = country.Code,
+                            Name = country.Name
+                        }
+                    });
+                }
             }
 
-
-
-            return new FriendshipResponse() { Friends = friends, PendingFrineds = pendingFriends };
-
+            return new FriendshipResponse() { AcceptedFriends = friends, PendingFriends = pendingFriends };
         }
 
         public async Task<IEnumerable<OtherUserResponse>> GetUsersByUsernameAsync(Guid id, string username)
@@ -131,23 +150,27 @@ namespace Identity_DAL.Repositories
 
             foreach (var user in users)
             {
-                country = countries.Where(c => c.Id == user.CountryId).First();
-
-                usersResponse.Add(new OtherUserResponse()
+                if (user.UserId != id)
                 {
-                    UserId = user.UserId.ToString(),
-                    Username = user.Username,
-                    Email = user.Email,
-                    Token = _jwtUtilits.CreateToken(user),
-                    Coins = user.Coins,
-                    IsFriend = await AreFriendsAsync(id, user.UserId),
-                    Country = new Country()
+
+                    country = countries.Where(c => c.Id == user.CountryId).First();
+
+                    usersResponse.Add(new OtherUserResponse()
                     {
-                        Id = country.Id,
-                        Code = country.Code,
-                        Name = country.Name
-                    }
-                });
+                        UserId = user.UserId.ToString(),
+                        Username = user.Username,
+                        Email = user.Email,
+                        Token = _jwtUtilits.CreateToken(user),
+                        Coins = user.Coins,
+                        IsFriend = await AreFriendsAsync(id, user.UserId),
+                        Country = new Country()
+                        {
+                            Id = country.Id,
+                            Code = country.Code,
+                            Name = country.Name
+                        }
+                    });
+                }
             }
 
             return usersResponse;
@@ -156,23 +179,44 @@ namespace Identity_DAL.Repositories
         public async Task<bool> AreFriendsAsync(Guid user1, Guid user2)
         {
             var friendship = await _context.Friendships.Where(u => (u.SenderId == user1 && u.RecieverId == user2) || (u.SenderId == user2 && u.RecieverId == user1)).FirstOrDefaultAsync();
-            return friendship == null ? false : true;
+            if (friendship == null)
+            {
+                return false;
+            }
+            
+            return friendship.IsAccepted;
         }
 
         public async Task<bool> CreateFriendshipAsync(Guid userid1, Guid userid2)
         {
-            var areAlreadyFriends = await AreFriendsAsync(userid1, userid2);
-
-            Friendship newFrinedship = new Friendship()
+            if (!await AreFriendsAsync(userid1, userid2))
             {
-                SenderId = userid1,
-                RecieverId = userid2,
-                IsAccepted = false
-            };
 
-            await _context.Friendships!.AddAsync(newFrinedship);
+                Friendship newFrinedship = new Friendship()
+                {
+                    SenderId = userid1,
+                    RecieverId = userid2,
+                    IsAccepted = false
+                };
 
-            return await Save();
+                await _context.Friendships!.AddAsync(newFrinedship);
+
+                return await Save();
+            }
+
+            return false;
+
+        }
+
+        public async Task<bool> AcceptFriendshipAsync(Guid user1, Guid user2)
+        {
+            Friendship friendship = await _context.Friendships!.Where(f => ((f.SenderId == user1 && f.RecieverId == user2) || (f.SenderId == user2 && f.RecieverId == user1)) && f.IsAccepted == false).FirstOrDefaultAsync();
+            if (friendship != null)
+            {
+                friendship.IsAccepted = true;
+                return await Save();
+            }
+            return false;
         }
 
         public async Task<bool> Save()
@@ -180,5 +224,6 @@ namespace Identity_DAL.Repositories
             var saved = await _context.SaveChangesAsync();
             return saved > 0 ? true : false;
         }
+
     }
 }

@@ -56,18 +56,7 @@ namespace Backgammon_Backend.Controllers
                 return BadRequest("User input error");
             }
 
-
-
             return Ok(authResponse);
-        }
-
-
-
-        [HttpGet("getTest")]
-        public ActionResult<IEnumerable<User>> Get()
-        {
-
-            return Ok(_authRepository.GetAllUsers());
         }
 
     }

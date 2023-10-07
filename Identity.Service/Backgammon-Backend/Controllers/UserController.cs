@@ -65,7 +65,7 @@ namespace Backgammon_Backend.Controllers
         }
 
         [HttpPost("friends/accept/")]
-        public async Task<ActionResult<bool>> CreateFriendship(FriendshipRequest friendshipRequest)
+        public async Task<ActionResult<bool>> AcceptFriendship(FriendshipRequest friendshipRequest)
         {
             if (friendshipRequest == null)
                 return BadRequest("Request body is null");
@@ -73,7 +73,7 @@ namespace Backgammon_Backend.Controllers
             if (!Guid.TryParse(friendshipRequest.UserId1, out var userId1Db) || !Guid.TryParse(friendshipRequest.UserId2, out var userId2Db))
                 return BadRequest("Users id are not correct!");
 
-            return await _userRepository.CreateFriendshipAsync(userId1Db, userId2Db);
+            return await _userRepository.AcceptFriendshipAsync(userId1Db, userId2Db);
 
         }
     }

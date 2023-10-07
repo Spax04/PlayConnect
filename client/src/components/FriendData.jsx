@@ -4,9 +4,11 @@ import { Col, Row } from 'react-bootstrap'
 import { PiChatCircleTextBold } from 'react-icons/pi'
 import { ImDice } from 'react-icons/im'
 import { RiDeleteBin2Line } from 'react-icons/ri'
-import {AiOutlineUserAdd} from 'react-icons/ai'
+import { AiOutlineUserAdd } from 'react-icons/ai'
 import { COLORS } from '../constants'
 import ReactCountryFlag from 'react-country-flag'
+import axios from 'axios'
+import { useSelector } from 'react-redux'
 
 function FriendData ({
   userid,
@@ -14,11 +16,26 @@ function FriendData ({
   isOnline,
   countryCode,
   favoriteGame,
-  isFriend
+  isFriend,
+  isPendingList
 }) {
+  const user = useSelector(state => state.user)
+  const friends = useSelector(state => state.friends)
+  
+  const onFriendshipRequest = async () => {}
 
-  const onFriendshipRequest = async ()=>{
-
+  const onAcceptRequest = async () => {
+    await axios
+      .get(
+        `${process.env.REACT_APP_IDENTITY_SERVICE_URL}/api/user/friends/accept/`,
+        { userId1: user.userid, userId2: userid }
+      )
+      .then(({ data }) => {
+        if(data){
+          
+        }
+      })
+      .catch(err => console.log(err))
   }
   return (
     <div className='friendMainBlock'>
@@ -66,29 +83,39 @@ function FriendData ({
           </Row>
         </Col>
         <Col className='btnCol'>
-          {isFriend ? (<>
-          <button
-            className='interactBtn'
-            style={{ backgroundColor: COLORS.yellow }}
-          >
-            <PiChatCircleTextBold className='icnoStyle' />
-            Message
-          </button>
-          <button
-            className='interactBtn'
-            style={{ backgroundColor: COLORS.green }}
-          >
-            <ImDice className='icnoStyle' />
-            Invite to Game
-          </button>
+          {isFriend ? (
+            <>
+              <button
+                className='interactBtn'
+                style={{ backgroundColor: COLORS.yellow }}
+              >
+                <PiChatCircleTextBold className='icnoStyle' />
+                Message
+              </button>
+              <button
+                className='interactBtn'
+                style={{ backgroundColor: COLORS.green }}
+              >
+                <ImDice className='icnoStyle' />
+                Invite to Game
+              </button>
+              <button
+                className='interactBtn'
+                style={{ backgroundColor: COLORS.red }}
+              >
+                <RiDeleteBin2Line className='icnoStyle' />
+                Remove
+              </button>
+            </>
+          ) : isPendingList ? (
             <button
               className='interactBtn'
-              style={{ backgroundColor: COLORS.red }}
+              style={{ backgroundColor: COLORS.darkGreen }}
+              onClick={onAcceptRequest}
             >
-              <RiDeleteBin2Line className='icnoStyle' />
-              Remove
+              <AiOutlineUserAdd className='icnoStyle' />
+              Accept
             </button>
-            </>
           ) : (
             <button
               className='interactBtn'

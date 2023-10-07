@@ -8,7 +8,7 @@ namespace Identity_Models.Dto.Responses
         {
         }
 
-        public List<OtherUserResponse> Friends { get; set; }
-        public List<OtherUserResponse> PendingFrineds { get; set; }
+        public List<OtherUserResponse> AcceptedFriends { get; set; }
+        public List<OtherUserResponse> PendingFriends { get; set; }
     }
 }

@@ -4,24 +4,31 @@ export const friendsSlice = createSlice({
   name: 'friends',
   initialState: localStorage.getItem('friends')
     ? {
-        friends: [...JSON.parse(localStorage.getItem('friends')).accepted],
-        pending: [...JSON.parse(localStorage.getItem('friends')).pending]
-    }
-    : {
-        friends:[],
-        pending:[]
-    },
+        ...JSON.parse(localStorage.getItem('friends'))
+      }
+    : { acceptedFriends: [], pendingFriends: [] },
   reducers: {
     setFriends: (state, action) => {
-    //   const friends = [...action.payload]
-    //   state = friends
-    //   console.log(friends)
-    //   localStorage.setItem('friends', JSON.stringify(friends))
+      state.acceptedFriends = [...action.payload.acceptedFriends]
+      state.pendingFriends = [...action.payload.pendingFriends]
+
+      const friends = {
+        acceptedFriends: [...action.payload.acceptedFriends],
+        pendingFriends: [...action.payload.pendingFriends]
+      }
+      localStorage.setItem('friends', JSON.stringify(friends))
     },
     removeFriends: state => {
-    //   state = []
-
-    //   localStorage.removeItem('friends')
+      //   state = []
+      //   localStorage.removeItem('friends')
+    },
+    //!!!
+    setFromPendingToAccept: (state, action) => { 
+      const userId = action.payload.userid
+      let user = state.pendingFriends.find(f => f.userid === userId)
+      user.isFriend = true;
+      state.friends = [...state.friends,user]
+      state.pendingFriends = [...state.pendingFriends.filter(f=> f.userid !== userId)]
     }
   }
 })

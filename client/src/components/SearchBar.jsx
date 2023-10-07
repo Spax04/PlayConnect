@@ -26,25 +26,9 @@ function SearchBar ({ setFriendList }) {
       })
       .catch(err => console.log(err))
   }
-  const onFriendsSearch = async () => {
-    await axios
-      .get(
-        `${process.env.REACT_APP_IDENTITY_SERVICE_URL}/api/user/friends/${user.userid}`
-      )
-      .then(({ data }) => {
-        setFriendList(data)
-      })
-      .catch(err => console.log(err))
-  }
+ 
 
-  const onSearch = async () => {
-    console.log(searchValue)
-    if (selectedItem === 'My Friends') {
-      await onFriendsSearch()
-    } else if (selectedItem === 'New Friends') {
-      await onUsersSearch()
-    }
-  }
+  
   return (
     <div className='searchContainer'>
       <input
@@ -56,23 +40,10 @@ function SearchBar ({ setFriendList }) {
           setSearchValue(e.target.value)
         }}
       />
-      <button onClick={onSearch} className='searchBtn'>
+      <button onClick={onUsersSearch} className='searchBtn'>
         <GrSearch />
       </button>
-      <Dropdown onSelect={handleItemSelect}>
-        <Dropdown.Toggle variant='primary' id='dropdown-basic'>
-          {selectedItem}
-        </Dropdown.Toggle>
-
-        <Dropdown.Menu>
-          <Dropdown.Item active eventKey={"My Friends"}>
-            My Friends
-          </Dropdown.Item>
-          <Dropdown.Item eventKey={"New Friends"}>
-            New Friend
-          </Dropdown.Item>
-        </Dropdown.Menu>
-      </Dropdown>
+     
     </div>
   )
 }
