@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-anonymous-default-export
 export default {
   mainOrange: 'hsla(18, 100%, 53%, 1)',
   mainPurpure: 'hsla(268, 98%, 67%, 1)',

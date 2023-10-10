@@ -1,4 +1,5 @@
 ﻿using Chat_DAL.Repositories;
+using Chat_Models.Models;
 using Chat_Services;
 using Chat_Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -23,10 +24,15 @@ namespace Backgammon_ChatServer.Hubs
         {
             await base.OnConnectedAsync();
 
+            if (Guid.TryParse(Context.UserIdentifier, out var chaterId))
+            {
 
-            string token = Context.GetHttpContext().Request.Query["token"].ToString();
+            }else
+                return;
 
-            var tokenCheck = new JwtSecurityToken(token);
+            await Clients.All.SendAsync("ReceiveUpdate", "HELLO");
+
+            /*var tokenCheck = new JwtSecurityToken(token);
             string id = tokenCheck.Claims.First(x => x.Type == "userId").Value;
             string name = tokenCheck.Claims.First(x => x.Type == "name").Value;
             Guid chaterId = Guid.Parse(id);
@@ -46,7 +52,7 @@ namespace Backgammon_ChatServer.Hubs
                 await Clients.Others.SendAsync("ChatterConnected", chatter);
            
             // Caller gets list of users online
-            await Clients.Caller.SendAsync("SetChatters", chattersWithoutCaller);
+            await Clients.Caller.SendAsync("SetChatters", chattersWithoutCaller);*/
         }
 
 

@@ -17,7 +17,8 @@ function FriendData ({
   countryCode,
   favoriteGame,
   isFriend,
-  isPendingList
+  isPendingList,
+  getFriends
 }) {
   const user = useSelector(state => state.user)
   const friends = useSelector(state => state.friends)
@@ -25,14 +26,15 @@ function FriendData ({
   const onFriendshipRequest = async () => {}
 
   const onAcceptRequest = async () => {
+   
     await axios
-      .get(
-        `${process.env.REACT_APP_IDENTITY_SERVICE_URL}/api/user/friends/accept/`,
+      .post(
+        `${process.env.REACT_APP_IDENTITY_SERVICE_URL}/api/user/friends/accept`,
         { userId1: user.userid, userId2: userid }
       )
       .then(({ data }) => {
         if(data){
-          
+          getFriends()
         }
       })
       .catch(err => console.log(err))

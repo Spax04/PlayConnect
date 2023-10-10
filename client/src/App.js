@@ -12,24 +12,31 @@ import NavBar from './components/NavBar'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Footer from './components/Footer'
-import { setUser } from './context/slices/user'
 import FriendsPage from './pages/FriendsPage'
+import { setConnection } from './context/slices/chat'
+import useChatConnection from './hooks/useChatConnection'
+
 const emojiSupport = require('detect-emoji-support')
 
 function App () {
   const [isSIgnedIn, setIsSignedIn] = useState(false)
   const user = useSelector(state => state.user)
   const dispatch = useDispatch()
+  const chatConnection = useSelector(state => state.chat)
+  const { connection } = useChatConnection()
+
   useEffect(() => {
     if (user.token) {
       setIsSignedIn(true)
+      if (connection) {
+        dispatch(setConnection(connection))
+      }
     } else {
       setIsSignedIn(false)
     }
-
-  
     console.log(user)
-  }, [dispatch, user])
+  }, [dispatch, user, connection])
+
   return (
     <BrowserRouter>
       <div className='d-flex flex-column'>

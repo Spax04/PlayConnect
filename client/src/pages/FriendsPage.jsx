@@ -92,9 +92,10 @@ function FriendsPage () {
         {friendsList ? (
           friendsList.map(friend => (
             <FriendData
-              key={friend.userid}
-              userid={friend.userid}
+              key={friend.userId}
+              userid={friend.userId}
               username={friend.username}
+              getFriends={getFriends}
               isFriend={friend.isFriend}
               isPendingList={isPendingList}
               isOnline={true}

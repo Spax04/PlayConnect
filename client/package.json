@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@microsoft/signalr": "^7.0.11",
     "@reduxjs/toolkit": "^1.9.5",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
@@ -23,6 +24,7 @@
     "redux": "^4.2.1",
     "socket.io": "^4.7.2",
     "socket.io-client": "^4.7.2",
+    "updated-redux-signalr": "^2.5.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

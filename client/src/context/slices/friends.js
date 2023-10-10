@@ -23,13 +23,13 @@ export const friendsSlice = createSlice({
       //   localStorage.removeItem('friends')
     },
     //!!!
-    setFromPendingToAccept: (state, action) => { 
-      const userId = action.payload.userid
-      let user = state.pendingFriends.find(f => f.userid === userId)
-      user.isFriend = true;
-      state.friends = [...state.friends,user]
-      state.pendingFriends = [...state.pendingFriends.filter(f=> f.userid !== userId)]
-    }
+    // setFromPendingToAccept: (state, action) => { 
+    //   const userId = action.payload.userid
+    //   let user = state.pendingFriends.find(f => f.userid === userId)
+    //   user.isFriend = true;
+    //   state.friends = [...state.friends,user]
+    //   state.pendingFriends = [...state.pendingFriends.filter(f=> f.userid !== userId)]
+    // }
   }
 })
 

@@ -8,18 +8,23 @@ import { BsFillPersonFill } from 'react-icons/bs'
 import { COLORS, ROUTES } from '../constants'
 import { removeUser } from '../context/slices/user'
 import { useDispatch, useSelector } from 'react-redux'
+import { disconnect } from '../context/slices/chat'
 function NavBar () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  
+  const chat = useSelector(state => state.chat)
+
   const user = useSelector(state => state.user)
-  
-  const profile = (<><BsFillPersonFill size='2rem' color={COLORS.dark} /> {user.username}</>)
+
+  const profile = (
+    <>
+      <BsFillPersonFill size='2rem' color={COLORS.dark} /> {user.username}
+    </>
+  )
   const logout = () => {
     dispatch(removeUser())
+    dispatch(disconnect())
   }
-
-useEffect(()=>{console.log(user)},[])
 
   return (
     <div>
@@ -28,12 +33,11 @@ useEffect(()=>{console.log(user)},[])
         variant='pills'
         activeKey='1'
       >
-        <div className='logoDiv' onClick={()=>navigate(ROUTES.HOME_PAGE)}>
-          <img  
+        <div className='logoDiv' onClick={() => navigate(ROUTES.HOME_PAGE)}>
+          <img
             className='logo'
             alt='logo'
             src={require('../assets/logo.png')}
-           
           />
         </div>
         <div className='navLinks d-flex'>
@@ -48,7 +52,12 @@ useEffect(()=>{console.log(user)},[])
             </Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Nav.Link className='navLink' eventKey='2' title='Friends' href={ROUTES.FRIENDS_PAGE}>
+            <Nav.Link
+              className='navLink'
+              eventKey='2'
+              title='Friends'
+              href={ROUTES.FRIENDS_PAGE}
+            >
               Friends
             </Nav.Link>
           </Nav.Item>

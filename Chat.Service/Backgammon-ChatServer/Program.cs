@@ -1,15 +1,15 @@
 using Backgammon_ChatServer.Hubs;
-using Microsoft.OpenApi.Models;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using Swashbuckle.AspNetCore.Filters;
 using Chat_DAL.Data;
-using Chat_DAL.Repositories.interfaces;
 using Chat_DAL.Repositories;
-using Chat_Services.Interfaces;
+using Chat_DAL.Repositories.interfaces;
 using Chat_Services;
+using Chat_Services.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Filters;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,8 +43,8 @@ builder.Services.AddCors(options =>
         builder
         .AllowAnyMethod()
         .AllowAnyHeader()
-        .WithOrigins("http://localhost:3000")
-        .AllowCredentials();
+        .SetIsOriginAllowed(origin => true) // allow any origin
+        .AllowCredentials(); // allow credentials
     });
 });
 
@@ -62,7 +62,7 @@ builder.Services.AddSwaggerGen(swaggerGenOptions =>
         BearerFormat = "JWT",
         Type = SecuritySchemeType.ApiKey
     });
-    
+
     swaggerGenOptions.OperationFilter<SecurityRequirementsOperationFilter>();
 });
 
@@ -94,5 +94,5 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-app.MapHub<ChatHub>("/hub/chat");
+app.MapHub<ChatHub>("/hub");
 app.Run();
