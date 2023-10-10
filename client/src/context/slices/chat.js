@@ -24,6 +24,6 @@ export const chatSlice = createSlice({
   }
 })
 
-export const { setConnection ,disconnect} = chatSlice.actions
+export const { setConnection ,disconnect,setMessage} = chatSlice.actions
 
 export default chatSlice.reducer
