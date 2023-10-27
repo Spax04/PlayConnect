@@ -1,43 +1,53 @@
 import React, { useEffect, useState } from 'react'
 import SearchBar from '../components/SearchBar'
 import axios from 'axios'
-
 import './styles/friends.css'
 import FriendData from '../components/FriendData'
 import { useDispatch, useSelector } from 'react-redux'
-import { setFriends } from '../context/slices/friends'
+import { setFriends,setFriendsConnectionStatus } from '../context/slices/friends'
 import { Button } from 'react-bootstrap'
-import { COLORS } from '../constants'
+import { COLORS, ROUTES } from '../constants'
 import { LiaUserFriendsSolid } from 'react-icons/lia'
 import { BsFillPersonPlusFill } from 'react-icons/bs'
+import { toast } from 'react-toastify'
+import { useNavigate } from 'react-router-dom'
+
 
 function FriendsPage () {
   const [friendsList, setFriendsList] = useState([])
+  const navigate = useNavigate()
   const user = useSelector(state => state.user)
   const friends = useSelector(state => state.friends)
   const [isPendingList,setIsPendingList] = useState(false);
 
+
   const dispatch = useDispatch()
 
   const getFriends = async () => {
+
     await axios
       .get(
         `${process.env.REACT_APP_IDENTITY_SERVICE_URL}/api/user/friends/${user.userid}`
       )
       .then(({ data }) => {
-        console.log(data)
+       console.log(data);
         dispatch(setFriends(data))
+       
       })
       .catch(err => console.log(err))
+
   }
 
   useEffect(() => {
-    if (!localStorage.getItem('friends')) {
+    if(!user.token){
+      navigate(ROUTES.LOGIN_PAGE);
+    }
+    if (!sessionStorage.getItem('friends')) {
       getFriends()
     }
 
     setFriendsList(friends.acceptedFriends)
-  }, [friends])
+  }, [user,friends])
 
   const changeFriendsList = (list) =>{
 
@@ -98,7 +108,8 @@ function FriendsPage () {
               getFriends={getFriends}
               isFriend={friend.isFriend}
               isPendingList={isPendingList}
-              isOnline={true}
+              isConnected={friend.isConnected}
+              isRequested = {friend.isRequested}
               countryCode={friend.country.code}
               favoriteGame={'Tic-Tac-Toe'}
             />

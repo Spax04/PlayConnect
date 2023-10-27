@@ -5,7 +5,8 @@ export default {
       SEND_MESSAGE: 'send message'
     },
     SERVER: {
-      ROOM_MESSAGE: 'room message'
+      ROOM_MESSAGE: 'room message',
+      FRIENDSHIP_REQUEST_SENDED: 'FriendRequestSended'
     }
   },
   GAME: {

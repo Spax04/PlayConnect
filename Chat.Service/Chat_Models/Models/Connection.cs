@@ -14,7 +14,6 @@ namespace Chat_Models.Models
 
         [ForeignKey("ChatterId")]
         public virtual Chatter? Chatter { get; set; }
-        public virtual ICollection<Message>? Messages { get; set; }
 
     }
 }

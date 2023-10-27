@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Chat_Services.Interfaces
 {
-    public interface IChatService
+    public interface IConnectionService
     {
         Task<Chatter> GetOrAddChatterAsync(Guid chaterId, string name);
         Task<DateTime> GetLastSeenAsync(Guid chatterId);

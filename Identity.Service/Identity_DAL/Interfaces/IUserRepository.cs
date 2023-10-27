@@ -1,7 +1,7 @@
 ﻿using Identity_Models.Dto.Responses;
 using Identity_Models.Helpers;
 
-namespace Identity_DAL.Repositories.Interfaces
+namespace Identity_DAL.Interfaces
 {
     public interface IUserRepository
     {
@@ -11,6 +11,9 @@ namespace Identity_DAL.Repositories.Interfaces
         Task<bool> CreateFriendshipAsync(Guid userid1, Guid userid2);
         Task<bool> AreFriendsAsync(Guid user1, Guid user2);
         Task<bool> AcceptFriendshipAsync(Guid user1, Guid user2);
+        Task<Response> DeleteFriendshipAsync(Guid user1,Guid user2);
+        Task<bool> AreFriendshipRequestedAsync(Guid sender, Guid reciver);
+
 
     }
 }

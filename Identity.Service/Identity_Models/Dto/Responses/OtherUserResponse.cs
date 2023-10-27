@@ -22,6 +22,8 @@ namespace Identity_Models.Dto.Responses
         public string? RefreshToken { get; set; }
         public int Coins { get; set; }
         public bool IsFriend { get; set; }
+        public bool IsRequested { get; set; }
+        public bool IsConnected { get; set; }
         public Country Country { get; set; }
     }
 }

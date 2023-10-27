@@ -14,9 +14,9 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 
-builder.Services.AddTransient<IChatService, ChatService>();
+builder.Services.AddTransient<IConnectionService, ConnectionService>();
 builder.Services.AddTransient<IMessageService, MessageService>();
-builder.Services.AddTransient<IChatRepository, ConnectionRepository>();
+builder.Services.AddTransient<IConnectionRepository, ConnectionRepository>();
 builder.Services.AddTransient<IChatterRepository, ChatterRepository>();
 builder.Services.AddTransient<IMessageRepository, MessageRepository>();
 
@@ -66,17 +66,56 @@ builder.Services.AddSwaggerGen(swaggerGenOptions =>
     swaggerGenOptions.OperationFilter<SecurityRequirementsOperationFilter>();
 });
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
+builder.Services.AddAuthentication(options =>
+{
+
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+
+
+
+    // We have to hook the OnMessageReceived event in order to
+    // allow the JWT authentication handler to read the access
+    // token from the query string when a WebSocket or 
+    // Server-Sent Events request comes in.
+
+    // Sending the access token in the query string is required when using WebSockets or ServerSentEvents
+    // due to a limitation in Browser APIs. We restrict it to only calls to the
+    // SignalR hub in this code.
+    // See https://docs.microsoft.com/aspnet/core/signalr/security#access-token-logging
+    // for more information about security considerations when using
+    // the query string to transmit the access token.
+    options.TokenValidationParameters = new TokenValidationParameters
     {
-        options.TokenValidationParameters = new TokenValidationParameters
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value)),
+        ValidateIssuer = false,
+        ValidateAudience = false
+    };
+    options.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context =>
         {
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value)),
-            ValidateIssuer = false,
-            ValidateAudience = false
-        };
-    });
+            var accessToken = context.Request.Query["access_token"];
+
+            // If the request is for our hub...
+            var path = context.HttpContext.Request.Path;
+            if (!string.IsNullOrEmpty(accessToken) &&
+                (path.StartsWithSegments("/hub")))
+            {
+                // Read the token out of the query string
+                context.Token = accessToken;
+
+
+            }
+            return Task.CompletedTask;
+        }
+    };
+});
+
+
 
 var app = builder.Build();
 

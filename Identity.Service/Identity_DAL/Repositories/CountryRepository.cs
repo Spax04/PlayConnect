@@ -1,5 +1,5 @@
 ﻿using Backgammon_Backend.Data;
-using Identity_DAL.Repositories.Interfaces;
+using Identity_DAL.Interfaces;
 using Identity_Models.Models;
 using Microsoft.EntityFrameworkCore;
 

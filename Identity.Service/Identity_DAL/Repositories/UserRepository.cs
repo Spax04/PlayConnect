@@ -1,6 +1,6 @@
 ﻿using Backgammon_Backend.Data;
 using Identity_DAL.Authorization.Interfaces;
-using Identity_DAL.Repositories.Interfaces;
+using Identity_DAL.Interfaces;
 using Identity_Models.Dto.Responses;
 using Identity_Models.Helpers;
 using Identity_Models.Models;
@@ -16,14 +16,17 @@ namespace Identity_DAL.Repositories
         private readonly IConfiguration _config;
         private IJwtUtilits _jwtUtilits;
         private ICountryRepository _countryRepository;
+        private IUserService _userService;
         public UserRepository(
             DataContext context,
             IConfiguration config,
             IJwtUtilits jwtUtilits,
-            ICountryRepository countryRepository
+            ICountryRepository countryRepository,
+            IUserService userService
 
             )
         {
+            _userService = userService;
             _context = context;
             _config = config;
             _jwtUtilits = jwtUtilits;
@@ -54,17 +57,17 @@ namespace Identity_DAL.Repositories
 
         }
 
+        //! Need to improve this function
         public async Task<FriendshipResponse> GetFriendsByUserIdAsync(Guid userId)
         {
             IEnumerable<Friendship> friendships = await _context.Friendships.Where(u => (u.SenderId == userId) || (u.RecieverId == userId)).ToListAsync();
 
+            // Friends in freind list (accepted)
             IEnumerable<Guid> usersFriendshipAccepted1 = friendships.Where(u => u.SenderId == userId && u.IsAccepted == true).Select(u => u.RecieverId).ToList();
             IEnumerable<Guid> usersFriendshipAccepted2 = friendships.Where(u => u.RecieverId == userId && u.IsAccepted == true).Select(u => u.SenderId).ToList();
 
-            List<Guid> usersFriendshipPanding = friendships.Where(u => u.RecieverId == userId && u.IsAccepted == false).Select(u => u.SenderId).ToList();
-
-            // Users that Main user has been sended friendship request but request still is not accepted. Not in use now,maybe later
-            // IEnumerable<User> usersFriendshipRequested = friendships.Where(u => u.SenderId == userId && u.IsAccepted == false).Select(u => u.Reciever).ToList(); 
+            // Friends that sent request but reciver still not applied
+            IEnumerable<Guid> usersFriendshipPanding = friendships.Where(u => u.RecieverId == userId && u.IsAccepted == false).Select(u => u.SenderId).ToList();
 
             IEnumerable<Country> countries = await _countryRepository.GetAllAsync();
 
@@ -85,8 +88,8 @@ namespace Identity_DAL.Repositories
                 pendingList.Add(await _context.Users!.Where(u => u.UserId == id).FirstOrDefaultAsync());
             }
 
-
             Country country;
+            Response isOnlineResponse;
             List<OtherUserResponse> friends = new List<OtherUserResponse>();
             List<OtherUserResponse> pendingFriends = new List<OtherUserResponse>();
 
@@ -95,6 +98,7 @@ namespace Identity_DAL.Repositories
                 if (user != null)
                 {
                     country = countries.Where(c => c.Id == user.CountryId).First();
+                    isOnlineResponse = await _userService.IsUserOnline(user.UserId.ToString());
                     friends.Add(new OtherUserResponse()
                     {
                         UserId = user.UserId.ToString(),
@@ -103,6 +107,7 @@ namespace Identity_DAL.Repositories
                         Token = _jwtUtilits.CreateToken(user),
                         Coins = user.Coins,
                         IsFriend = true,
+                        IsConnected = isOnlineResponse.isSucceed,
                         Country = new Country()
                         {
                             Id = country.Id,
@@ -119,6 +124,7 @@ namespace Identity_DAL.Repositories
                 if (user != null)
                 {
                     country = countries.Where(c => c.Id == user.CountryId).First();
+                    isOnlineResponse = await _userService.IsUserOnline(user.UserId.ToString());
                     pendingFriends.Add(new OtherUserResponse()
                     {
                         UserId = user.UserId.ToString(),
@@ -127,6 +133,7 @@ namespace Identity_DAL.Repositories
                         Token = _jwtUtilits.CreateToken(user),
                         Coins = user.Coins,
                         IsFriend = false,
+                        IsConnected = isOnlineResponse.isSucceed,
                         Country = new Country()
                         {
                             Id = country.Id,
@@ -163,6 +170,8 @@ namespace Identity_DAL.Repositories
                         Token = _jwtUtilits.CreateToken(user),
                         Coins = user.Coins,
                         IsFriend = await AreFriendsAsync(id, user.UserId),
+                        IsConnected = false,
+                        IsRequested = await AreFriendshipRequestedAsync(id, user.UserId),
                         Country = new Country()
                         {
                             Id = country.Id,
@@ -183,7 +192,7 @@ namespace Identity_DAL.Repositories
             {
                 return false;
             }
-            
+
             return friendship.IsAccepted;
         }
 
@@ -225,5 +234,28 @@ namespace Identity_DAL.Repositories
             return saved > 0 ? true : false;
         }
 
+        public async Task<Response> DeleteFriendshipAsync(Guid user1, Guid user2)
+        {
+            Friendship friendship = await _context.Friendships!.Where(f => ((f.SenderId == user1 && f.RecieverId == user2) || (f.SenderId == user2 && f.RecieverId == user1)) && f.IsAccepted == true).FirstOrDefaultAsync();
+            _context.Friendships.Remove(friendship);
+            if (await Save())
+            {
+                return new Response(true);
+            }
+            return new Response(false);
+        }
+
+        public async Task<bool> AreFriendshipRequestedAsync(Guid sender, Guid reciver)
+        {
+            Friendship friendship = await _context.Friendships!.Where(f => (f.SenderId == sender && f.RecieverId == reciver) && f.IsAccepted == false).FirstOrDefaultAsync();
+
+            if (friendship == null)
+            {
+                return false;
+            }
+
+            return true;
+
+        }
     }
 }

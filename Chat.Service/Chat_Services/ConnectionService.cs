@@ -10,12 +10,12 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Chat_Services
 {
-    public class ChatService : IChatService
+    public class ConnectionService : IConnectionService
     {
         readonly IChatterRepository _chatterRepo;
-        readonly IChatRepository _chatRepo;
+        readonly IConnectionRepository _chatRepo;
 
-        public ChatService(IChatterRepository chatterRepo, IChatRepository chatRepo)
+        public ConnectionService(IChatterRepository chatterRepo, IConnectionRepository chatRepo)
         {
             _chatterRepo = chatterRepo;
             _chatRepo = chatRepo;
@@ -23,20 +23,19 @@ namespace Chat_Services
 
         public void CloseAllConnectionsAsync() => _chatRepo.CloseAllConnections();
 
-        private bool ConnectChatter(Guid chatterId, string connectionId)
+        public async Task<bool> ConnectChatterAsync(Guid chatterId, string connectionId)
         {
            // var reconect = _chatRepo.CheckReconnectConnection(chatterId);
-            var chatter = _chatterRepo.GetChatterAsync(chatterId);
+            var chatter = await _chatterRepo.GetChatterAsync(chatterId);
 
             if (chatter == null)
                 return false;
 
-            _chatRepo.CreateConnection(connectionId, chatterId,  DateTime.Now);
-            _chatterRepo.SetConnectedAsync(chatterId);
+            await _chatRepo.CreateConnectionAsync(connectionId, chatterId);
+            await _chatterRepo.SetConnectedAsync(chatterId);
 
             return true;
         }
-        public async Task<bool> ConnectChatterAsync(Guid chatterId, string connectionId) => await Task.Run(() => ConnectChatter(chatterId,  connectionId));
 
 
         public async Task<bool> DisconnectChatterAsync(Guid chatter, string connectionId)
@@ -74,7 +73,7 @@ namespace Chat_Services
 
         public async Task<Chatter> GetOrAddChatterAsync(Guid chatterId, string name)
         {
-            if(!(_chatterRepo.isChatterExistAsync(chatterId)))
+            if(!( await _chatterRepo.IsChatterExistAsync(chatterId)))
             {
                 await _chatterRepo.AddChatterAsync(chatterId, name); 
             }

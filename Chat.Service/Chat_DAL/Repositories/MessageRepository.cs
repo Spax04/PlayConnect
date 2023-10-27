@@ -49,7 +49,7 @@ namespace Chat_DAL.Repositories
 
             return new Message
             {
-                MessageeID = message.MessageeID,
+                MessageeId = message.MessageeId,
                 SenderId = message.SenderId,
                 RecipientId = message.RecipientId,
                 NewMessage = message.NewMessage,
@@ -62,7 +62,7 @@ namespace Chat_DAL.Repositories
         {
             return Task.FromResult<IEnumerable<Message>>(_context!.Messages!.Where(message => message.SenderId == senderId && message.RecipientId == recipientId).Select(m => new Message
             {
-                MessageeID = m.MessageeID,
+                MessageeId = m.MessageeId,
                 SenderId = m.SenderId,
                 RecipientId = m.RecipientId,
                 NewMessage = m.NewMessage,

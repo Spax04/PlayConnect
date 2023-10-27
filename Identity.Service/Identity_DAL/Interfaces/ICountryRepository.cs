@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Identity_DAL.Repositories.Interfaces
+namespace Identity_DAL.Interfaces
 {
     public interface ICountryRepository
     {

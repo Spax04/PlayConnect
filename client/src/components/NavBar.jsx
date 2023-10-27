@@ -7,13 +7,12 @@ import './styles/navbar.css'
 import { BsFillPersonFill } from 'react-icons/bs'
 import { COLORS, ROUTES } from '../constants'
 import { removeUser } from '../context/slices/user'
+import { removeFriends } from '../context/slices/friends'
 import { useDispatch, useSelector } from 'react-redux'
-import { disconnect } from '../context/slices/chat'
 function NavBar () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const chat = useSelector(state => state.chat)
-
   const user = useSelector(state => state.user)
 
   const profile = (
@@ -23,7 +22,7 @@ function NavBar () {
   )
   const logout = () => {
     dispatch(removeUser())
-    dispatch(disconnect())
+    dispatch(removeFriends())
   }
 
   return (
@@ -56,8 +55,7 @@ function NavBar () {
               className='navLink'
               eventKey='2'
               title='Friends'
-              href={ROUTES.FRIENDS_PAGE}
-            >
+              onClick={() => navigate(ROUTES.FRIENDS_PAGE)}            >
               Friends
             </Nav.Link>
           </Nav.Item>

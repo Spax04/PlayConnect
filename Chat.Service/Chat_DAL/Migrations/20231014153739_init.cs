@@ -48,19 +48,17 @@ namespace Chat_DAL.Migrations
                 name: "Messages",
                 columns: table => new
                 {
-                    MessageeID = table.Column<Guid>(type: "TEXT", nullable: false),
-                    ConnectionID = table.Column<string>(type: "TEXT", nullable: false),
+                    MessageeId = table.Column<Guid>(type: "TEXT", nullable: false),
                     SenderId = table.Column<Guid>(type: "TEXT", nullable: false),
                     RecipientId = table.Column<Guid>(type: "TEXT", nullable: false),
                     NewMessage = table.Column<string>(type: "TEXT", nullable: true),
                     IsReceived = table.Column<bool>(type: "INTEGER", nullable: false),
                     SentAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    ReceivedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    ChatID = table.Column<string>(type: "TEXT", nullable: true)
+                    ReceivedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Messages", x => x.MessageeID);
+                    table.PrimaryKey("PK_Messages", x => x.MessageeId);
                     table.ForeignKey(
                         name: "FK_Messages_Chatters_RecipientId",
                         column: x => x.RecipientId,
@@ -73,22 +71,12 @@ namespace Chat_DAL.Migrations
                         principalTable: "Chatters",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Messages_Connections_ChatID",
-                        column: x => x.ChatID,
-                        principalTable: "Connections",
-                        principalColumn: "ConnectionId");
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Connections_ChatterId",
                 table: "Connections",
                 column: "ChatterId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Messages_ChatID",
-                table: "Messages",
-                column: "ChatID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Messages_RecipientId",
@@ -104,10 +92,10 @@ namespace Chat_DAL.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Messages");
+                name: "Connections");
 
             migrationBuilder.DropTable(
-                name: "Connections");
+                name: "Messages");
 
             migrationBuilder.DropTable(
                 name: "Chatters");

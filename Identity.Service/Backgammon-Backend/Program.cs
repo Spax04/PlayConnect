@@ -1,12 +1,12 @@
 using Backgammon_Backend.Data;
 using Backgammon_Backend.Services;
-using Backgammon_Backend.Services.Service_Interfaces;
 using Identity_DAL.Authorization;
 using Identity_DAL.Authorization.Interfaces;
 using Identity_DAL.AuthorizationUtilits;
 using Identity_DAL.AuthorizationUtilits.Interfaces;
+using Identity_DAL.Interfaces;
 using Identity_DAL.Repositories;
-using Identity_DAL.Repositories.Interfaces;
+using Identity_DAL.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -23,6 +23,7 @@ builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<ICountryRepository, CountryRepository>();
 builder.Services.AddScoped<IJwtUtilits, JwtUtilits>();
 builder.Services.AddScoped<IHashUtilits, HashUtilits>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 // Connecting DataBase
 if (builder.Environment.IsProduction())

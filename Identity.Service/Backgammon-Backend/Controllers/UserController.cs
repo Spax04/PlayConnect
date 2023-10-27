@@ -1,6 +1,7 @@
-﻿using Identity_DAL.Repositories.Interfaces;
+﻿using Identity_DAL.Interfaces;
 using Identity_Models.Dto.Requests;
 using Identity_Models.Dto.Responses;
+using Identity_Models.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -74,6 +75,16 @@ namespace Backgammon_Backend.Controllers
                 return BadRequest("Users id are not correct!");
 
             return await _userRepository.AcceptFriendshipAsync(userId1Db, userId2Db);
+
+        }
+
+        [HttpDelete("friends/{userid1}/{userid2}")]
+        public async Task<ActionResult<Response>> DeleteFriendship(string userid1,string userid2)
+        {
+            if (!Guid.TryParse(userid1, out var userId1Db) || !Guid.TryParse(userid2, out var userId2Db))
+                return BadRequest("Users id are not correct!");
+
+            return await _userRepository.DeleteFriendshipAsync(userId1Db, userId2Db);
 
         }
     }

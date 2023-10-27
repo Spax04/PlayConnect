@@ -1,4 +1,4 @@
-﻿using Identity_DAL.Repositories.Interfaces;
+﻿using Identity_DAL.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

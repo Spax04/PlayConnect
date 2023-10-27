@@ -9,33 +9,24 @@ import SigninPage from './pages/AuthPages/SigninPage'
 import { ROUTES } from './constants'
 import './styles/Home.css'
 import NavBar from './components/NavBar'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Footer from './components/Footer'
 import FriendsPage from './pages/FriendsPage'
+import {
+  addMiddleware,
+  removeMiddleware,
+  resetMiddlewares
+} from 'redux-dynamic-middlewares'
+import { HubConnectionState } from 'updated-redux-signalr'
+import { createChatConnection } from './context/signalr/chatConnection'
 import { setConnection } from './context/slices/chat'
 import useChatConnection from './hooks/useChatConnection'
 
-const emojiSupport = require('detect-emoji-support')
-
 function App () {
-  const [isSIgnedIn, setIsSignedIn] = useState(false)
-  const user = useSelector(state => state.user)
-  const dispatch = useDispatch()
-  const chatConnection = useSelector(state => state.chat)
-  const { connection } = useChatConnection()
+  const { isOnline } = useChatConnection()
 
-  useEffect(() => {
-    if (user.token) {
-      setIsSignedIn(true)
-      if (connection) {
-        dispatch(setConnection(connection))
-      }
-    } else {
-      setIsSignedIn(false)
-    }
-    console.log(user)
-  }, [dispatch, user, connection])
+  useEffect(() => {}, [isOnline])
 
   return (
     <BrowserRouter>
@@ -43,7 +34,7 @@ function App () {
         <ToastContainer position='bottom-center' limit={1} />
 
         <Container className='main-content App'>
-          {isSIgnedIn ? <NavBar /> : <></>}
+          {isOnline ? <NavBar /> : <></>}
           <main>
             <Routes>
               <Route path={ROUTES.HOME_PAGE} element={<HomePage />} />

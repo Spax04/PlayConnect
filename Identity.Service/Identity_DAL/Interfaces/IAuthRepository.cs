@@ -4,7 +4,7 @@ using Identity_Models.Helpers;
 using Identity_Models.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Backgammon_Backend.Services.Service_Interfaces
+namespace Identity_DAL.Interfaces
 {
     public interface IAuthRepository
     {

@@ -3,6 +3,7 @@ using Chat_DAL.Repositories.interfaces;
 using Chat_Models.Helpers;
 using Chat_Models.Helpers.ModelResponses;
 using Chat_Models.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,7 @@ namespace Chat_DAL.Repositories
             _context = chatterContext;
         }
         // FINISHED
-        private Chatter AddChatter(Guid chatterId, string name)
+        public async Task<Chatter> AddChatterAsync(Guid chatterId, string name)
         {
             var newChatter = new Chatter()
             {
@@ -32,21 +33,27 @@ namespace Chat_DAL.Repositories
 
             return newChatter;
         }
-        public async Task<Chatter> AddChatterAsync(Guid chatterId, string name) => await Task.Run(() => AddChatter(chatterId, name));
         
         // FINISHED
         //
 
-        public bool isChatterExistAsync(Guid chatterId)
+        public async Task<bool> IsChatterExistAsync(Guid chatterId)
         {
-            var chatter = _context.Chatters!.Find(chatterId);
-            if (chatter == null)
-                return false;
-            else
-                return true;
+            Chatter chatter = await _context.Chatters!.Where(c => c.Id == chatterId).FirstOrDefaultAsync();
+            return chatter == null? false : true;
         }
 
-        private async Task<Chatter> GetChatter(Guid chatterId)
+        public async Task<Response> IsChatterConnectedAsync(Guid chatterId)
+        {
+            var chatter = await _context.Chatters!.Where(c => c.Id == chatterId).FirstOrDefaultAsync();
+            if(chatter == null)
+            {
+                return new Response(false);
+            }
+            return chatter.IsConnected? new Response(true) : new Response(false);
+        }
+
+        public async Task<Chatter> GetChatterAsync(Guid chatterId)
         {
             var chatter = _context.Chatters!.Find(chatterId);
             if (chatter == null)
@@ -60,20 +67,18 @@ namespace Chat_DAL.Repositories
             }; 
 
         }
-        public async Task<Chatter> GetChatterAsync(Guid chatterId) => await Task.Run(() => GetChatter(chatterId));
 
         // Return all chatter who's connected exept self user
-        private IEnumerable<Chatter> GetChattersAreOnline(Guid chatterId)
+        public async Task<IEnumerable<Chatter>> GetChattersAreOnlineAsync(Guid chatterId)
         {
             return _context!.Chatters!.Where(x => x.IsConnected == true && x.Id != chatterId).ToList();
         }
-        public async Task<IEnumerable<Chatter>> GetChattersAreOnlineAsync(Guid chatterId) => await Task.Run(() => GetChattersAreOnline(chatterId));
 
         // FINISHED
 
         public async Task SetConnectedAsync(Guid chatterId)
         {
-            var chatter = await _context!.Chatters!.FindAsync(chatterId);
+            var chatter = await _context!.Chatters!.Where(c => c.Id == chatterId).FirstOrDefaultAsync();
             if (chatter == null)
                 throw new ArgumentException("Not Found");
 

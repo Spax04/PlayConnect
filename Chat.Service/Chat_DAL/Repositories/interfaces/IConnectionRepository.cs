@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace Chat_DAL.Repositories.interfaces
 {
-    public interface IChatRepository
+    public interface IConnectionRepository
     {
-        Connection CreateConnection(string chatId, Guid chatterId, DateTime startedAt);
-        Task<Connection> CreateChatConnectionAsync(string chatId, Guid chatterId, DateTime startedAt);
+        Task<Connection> CreateConnectionAsync(string chatId, Guid chatterId);
         Task<IEnumerable<Connection>> GetAllConnectionsByUserIdAsync(Guid chatterId);
-        Task<Connection> GetChatByIdAsync(string chatId);       
+        Task<Connection> GetChatByIdAsync(string connectionId);       
+        Task<Connection> GetConnectionByUserIdAsync(Guid userId);       
         void CloseConnectionAsync(string ChatId, DateTime endedAt);
         void CloseAllConnections();
         bool CheckReconnectConnection(Guid chatterId);

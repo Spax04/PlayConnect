@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './styles/friendData.css'
 import { Col, Row } from 'react-bootstrap'
 import { PiChatCircleTextBold } from 'react-icons/pi'
@@ -13,32 +13,64 @@ import { useSelector } from 'react-redux'
 function FriendData ({
   userid,
   username,
-  isOnline,
+  isConnected,
   countryCode,
   favoriteGame,
   isFriend,
   isPendingList,
-  getFriends
+  getFriends,
+  isRequested
 }) {
   const user = useSelector(state => state.user)
-  const friends = useSelector(state => state.friends)
-  
-  const onFriendshipRequest = async () => {}
+  const [requestState, setRequestState] = useState(isRequested)
+  const { connection } = useSelector(state => state.chat)
+
+  const onFriendshipRequest = async () => {
+    await axios
+      .post(
+        `${process.env.REACT_APP_IDENTITY_SERVICE_URL}/api/user/friends/add`,
+        { userId1: user.userid, userId2: userid }
+      )
+      .then(({ data }) => {
+        if (data.isSucceed) {
+          getFriends()
+          console.log('Friend request sended')
+        }
+      })
+      .catch(err => console.log(err))
+    connection.invoke('GetFriends', userid)
+    setRequestState(true)
+  }
+  const onFriendshipDelete = async () => {
+    await axios
+      .delete(
+        `${process.env.REACT_APP_IDENTITY_SERVICE_URL}/api/user/friends/${user.userid}/${userid}`
+      )
+      .then(({ data }) => {
+        if (data.isSucceed) {
+          getFriends()
+        }
+      })
+      .catch(err => console.log(err))
+      connection.invoke('GetFriends', userid)
+
+  }
 
   const onAcceptRequest = async () => {
-   
     await axios
       .post(
         `${process.env.REACT_APP_IDENTITY_SERVICE_URL}/api/user/friends/accept`,
         { userId1: user.userid, userId2: userid }
       )
       .then(({ data }) => {
-        if(data){
+        if (data) {
           getFriends()
         }
       })
       .catch(err => console.log(err))
+      connection.invoke('GetFriends', userid)
   }
+
   return (
     <div className='friendMainBlock'>
       <Row className='p-3'>
@@ -62,14 +94,20 @@ function FriendData ({
             />
             <h3 className='nameText'>{username}</h3>
           </div>
-          <h5
-            className='nameText'
-            style={
-              isOnline ? { color: COLORS.darkGreen } : { color: COLORS.red }
-            }
-          >
-            {isOnline ? 'Online' : 'Offline'}
-          </h5>
+          {isFriend ? (
+            <h5
+              className='nameText'
+              style={
+                isConnected
+                  ? { color: COLORS.darkGreen }
+                  : { color: COLORS.red }
+              }
+            >
+              {isConnected ? 'Online' : 'Offline'}
+            </h5>
+          ) : (
+            <></>
+          )}
         </Col>
         <Col>
           <Row>
@@ -104,6 +142,7 @@ function FriendData ({
               <button
                 className='interactBtn'
                 style={{ backgroundColor: COLORS.red }}
+                onClick={onFriendshipDelete}
               >
                 <RiDeleteBin2Line className='icnoStyle' />
                 Remove
@@ -117,6 +156,15 @@ function FriendData ({
             >
               <AiOutlineUserAdd className='icnoStyle' />
               Accept
+            </button>
+          ) : requestState ? (
+            <button
+              className='interactBtn'
+              style={{ backgroundColor: COLORS.dark, color: COLORS.white }}
+              disabled={true}
+            >
+              <AiOutlineUserAdd className='icnoStyle' />
+              Requested
             </button>
           ) : (
             <button

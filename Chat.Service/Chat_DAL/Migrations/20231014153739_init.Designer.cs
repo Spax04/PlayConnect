@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Chat_DAL.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230225065540_init")]
+    [Migration("20231014153739_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -66,15 +66,8 @@ namespace Chat_DAL.Migrations
 
             modelBuilder.Entity("Chat_Models.Models.Message", b =>
                 {
-                    b.Property<Guid>("MessageeID")
+                    b.Property<Guid>("MessageeId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ChatID")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ConnectionID")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("IsReceived")
@@ -95,9 +88,7 @@ namespace Chat_DAL.Migrations
                     b.Property<DateTime>("SentAt")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("MessageeID");
-
-                    b.HasIndex("ChatID");
+                    b.HasKey("MessageeId");
 
                     b.HasIndex("RecipientId");
 
@@ -119,10 +110,6 @@ namespace Chat_DAL.Migrations
 
             modelBuilder.Entity("Chat_Models.Models.Message", b =>
                 {
-                    b.HasOne("Chat_Models.Models.Connection", "Connection")
-                        .WithMany("Messages")
-                        .HasForeignKey("ChatID");
-
                     b.HasOne("Chat_Models.Models.Chatter", "Recipient")
                         .WithMany()
                         .HasForeignKey("RecipientId")
@@ -135,8 +122,6 @@ namespace Chat_DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Connection");
-
                     b.Navigation("Recipient");
 
                     b.Navigation("Sender");
@@ -145,11 +130,6 @@ namespace Chat_DAL.Migrations
             modelBuilder.Entity("Chat_Models.Models.Chatter", b =>
                 {
                     b.Navigation("Connections");
-                });
-
-            modelBuilder.Entity("Chat_Models.Models.Connection", b =>
-                {
-                    b.Navigation("Messages");
                 });
 #pragma warning restore 612, 618
         }

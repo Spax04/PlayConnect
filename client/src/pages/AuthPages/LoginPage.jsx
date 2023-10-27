@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState,useCallback } from 'react'
 import Container from 'react-bootstrap/esm/Container'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setUser } from '../../context/slices/user'
 import { ROUTES } from '../../constants'
 import { toast } from 'react-toastify'
-
+import { HubConnectionState ,HubConnectionBuilder,LogLevel,HttpTransportType} from 'updated-redux-signalr'
 
 function LoginPage () {
   const navigate = useNavigate()
@@ -17,6 +17,8 @@ function LoginPage () {
   const [password, setPassword] = useState('')
   const user = useSelector(state => state.user.user)
   const dispatch = useDispatch()
+
+  
 
   const onLogin = async e => {
     e.preventDefault()
@@ -38,24 +40,28 @@ function LoginPage () {
             country: { ...data.country }
           }
           dispatch(setUser(user))
+
+          
+
+          toast.update(toastId, {
+            render: 'Welcome',
+            type: toast.TYPE.SUCCESS,
+            autoClose: 3000,
+            closeButton: true,
+            isLoading: false
+          })
         }
+        navigate(ROUTES.HOME_PAGE)
+      })
+      .catch(err =>
         toast.update(toastId, {
-          render: 'All is good',
-          type: toast.TYPE.SUCCESS,
+          render: `Some error: ${err}`,
+          type: toast.TYPE.ERROR,
           autoClose: 3000,
           closeButton: true,
           isLoading: false
         })
-
-        navigate(ROUTES.HOME_PAGE)
-      })
-      .catch(err => toast.update(toastId, {
-        render: 'Some error',
-        type: toast.TYPE.ERROR,
-        autoClose: 3000,
-        closeButton: true,
-        isLoading: false
-      }))
+      )
 
     navigate(ROUTES.HOME_PAGE)
   }
@@ -82,7 +88,10 @@ function LoginPage () {
 
           <Form.Group className='mb-3' controlId='password'>
             <Form.Label>Password</Form.Label>
-            <Form.Control type='password' onChange={e => setPassword(e.target.value)} />
+            <Form.Control
+              type='password'
+              onChange={e => setPassword(e.target.value)}
+            />
           </Form.Group>
 
           <Button type='submit' variant='primary'>

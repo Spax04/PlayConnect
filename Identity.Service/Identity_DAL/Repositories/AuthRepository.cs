@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
 using Backgammon_Backend.Data;
-using Backgammon_Backend.Services.Service_Interfaces;
 using Identity_DAL.Authorization.Interfaces;
 using Identity_DAL.AuthorizationUtilits.Interfaces;
-using Identity_DAL.Repositories.Interfaces;
+using Identity_DAL.Interfaces;
 using Identity_Models.Authentication;
 using Identity_Models.DTO.Registration;
 using Identity_Models.Helpers;

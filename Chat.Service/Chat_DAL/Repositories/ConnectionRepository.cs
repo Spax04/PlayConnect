@@ -3,6 +3,7 @@ using Chat_DAL.Repositories.interfaces;
 using Chat_Models.Helpers;
 using Chat_Models.Helpers.ModelResponses;
 using Chat_Models.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Chat_DAL.Repositories
 {
-    public class ConnectionRepository : IChatRepository
+    public class ConnectionRepository : IConnectionRepository
     {
         private DataContext _context;
         public ConnectionRepository(DataContext context)
@@ -21,13 +22,13 @@ namespace Chat_DAL.Repositories
         }
 
         // FINISHED
-        public Connection CreateConnection(string connectionId, Guid chatterId, DateTime startedAt)
+        public async Task<Connection> CreateConnectionAsync(string connectionId, Guid chatterId)
         {
             Connection newConnection = new Connection
             {
                 ConnectionId = connectionId,
                 ChatterId = chatterId,
-                StartedAt = startedAt,
+                StartedAt = DateTime.Now,
                 IsClosed = false
             };
             _context!.Connections!.Add(newConnection);
@@ -35,7 +36,6 @@ namespace Chat_DAL.Repositories
 
             return newConnection;
         }
-        public async Task<Connection> CreateChatConnectionAsync(string chatId, Guid chatterId, DateTime startedAt) => await Task.Run(() => CreateConnection(chatId,  chatterId,   startedAt));
 
         // FINISHED
 
@@ -53,9 +53,9 @@ namespace Chat_DAL.Repositories
         }
 
         // FINISHED
-        private Connection GetConnectionById(string chatId)
+        public async Task<Connection> GetConnectionByIdAsync(string chatId)
         {
-            var chat = _context!.Connections!.FirstOrDefault(c => c.ConnectionId == chatId);
+            var chat = await _context!.Connections!.FirstOrDefaultAsync(c => c.ConnectionId == chatId);
             if(chat == null)
                 throw new ArgumentException("Not Found");
 
@@ -68,7 +68,6 @@ namespace Chat_DAL.Repositories
                 EndedAt = chat.EndedAt
             };
         }
-        public async Task<Connection> GetConnectionByIdAsync(string chatId) => await Task.Run(() => GetConnectionById(chatId));
 
         // FINISHED
         private IEnumerable<Connection> GetAllChatsByUserId(Guid chatterId)
@@ -108,6 +107,13 @@ namespace Chat_DAL.Repositories
         public Task<Connection> GetChatByIdAsync(string chatId)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<Connection> GetConnectionByUserIdAsync(Guid userId)
+        {
+            Connection connection = await _context.Connections!.Where(c => c.ChatterId == userId && c.IsClosed == false).FirstOrDefaultAsync();
+
+            return connection;
         }
     }
 }

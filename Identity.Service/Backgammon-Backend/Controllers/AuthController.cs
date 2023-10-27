@@ -1,4 +1,4 @@
-﻿using Backgammon_Backend.Services.Service_Interfaces;
+﻿using Identity_DAL.Interfaces;
 using Identity_Models.Authentication;
 using Identity_Models.Dto.Registration;
 using Identity_Models.DTO.Registration;

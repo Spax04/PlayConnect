@@ -24,6 +24,7 @@ namespace Identity_DAL.Authorization
         }
         public string CreateToken(User user)
         {
+
             List<Claim> claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
