@@ -22,6 +22,7 @@ import { HubConnectionState } from 'updated-redux-signalr'
 import { createChatConnection } from './context/signalr/chatConnection'
 import { setConnection } from './context/slices/chat'
 import useChatConnection from './hooks/useChatConnection'
+import ChatPage from './pages/ChatPage'
 
 function App () {
   const { isOnline } = useChatConnection()
@@ -41,6 +42,7 @@ function App () {
               <Route path={ROUTES.LOGIN_PAGE} element={<LoginPage />} />
               <Route path={ROUTES.SIGNIN_PAGE} element={<SigninPage />} />
               <Route path={ROUTES.FRIENDS_PAGE} element={<FriendsPage />} />
+              <Route path={ROUTES.CHAT_PAGE} element={<ChatPage />} />
             </Routes>
           </main>
         </Container>

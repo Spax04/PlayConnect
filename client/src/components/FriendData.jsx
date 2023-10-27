@@ -5,10 +5,11 @@ import { PiChatCircleTextBold } from 'react-icons/pi'
 import { ImDice } from 'react-icons/im'
 import { RiDeleteBin2Line } from 'react-icons/ri'
 import { AiOutlineUserAdd } from 'react-icons/ai'
-import { COLORS } from '../constants'
+import { COLORS, ROUTES } from '../constants'
 import ReactCountryFlag from 'react-country-flag'
 import axios from 'axios'
 import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 function FriendData ({
   userid,
@@ -21,6 +22,7 @@ function FriendData ({
   getFriends,
   isRequested
 }) {
+  const navigate = useNavigate()
   const user = useSelector(state => state.user)
   const [requestState, setRequestState] = useState(isRequested)
   const { connection } = useSelector(state => state.chat)
@@ -52,8 +54,7 @@ function FriendData ({
         }
       })
       .catch(err => console.log(err))
-      connection.invoke('GetFriends', userid)
-
+    connection.invoke('GetFriends', userid)
   }
 
   const onAcceptRequest = async () => {
@@ -68,7 +69,7 @@ function FriendData ({
         }
       })
       .catch(err => console.log(err))
-      connection.invoke('GetFriends', userid)
+    connection.invoke('GetFriends', userid)
   }
 
   return (
@@ -128,6 +129,9 @@ function FriendData ({
               <button
                 className='interactBtn'
                 style={{ backgroundColor: COLORS.yellow }}
+                onClick={() =>
+                  navigate(ROUTES.CHAT_PAGE, { chatterId: userid })
+                }
               >
                 <PiChatCircleTextBold className='icnoStyle' />
                 Message
