@@ -10,9 +10,8 @@ namespace Chat_DAL.Repositories.interfaces
 {
     public interface IMessageRepository
     {
-        Task<Message> CreateMessageAsync(Guid senderId, Guid RecipientId, string newMessage, DateTime SentAt);
-        Task<IEnumerable<Message>> GetMessagesAsync(Guid senderId, Guid recipientId);
-        Task SetMessageReceivedAsync(Guid messageId, DateTime recivedAt);
-        Task<Message> GetMessageAsync(Guid messageId);
+        Task<Message> CreateMessageAsync(Guid senderId, Guid RecipientId, string newMessage);
+        Task SetMessageReceivedAsync(Guid messageId);
+        Task<IEnumerable<Message>> UserMessagesBetween(Guid user1,Guid user2);
     }
 }

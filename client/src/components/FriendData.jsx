@@ -130,7 +130,7 @@ function FriendData ({
                 className='interactBtn'
                 style={{ backgroundColor: COLORS.yellow }}
                 onClick={() =>
-                  navigate(ROUTES.CHAT_PAGE, { chatterId: userid })
+                  navigate(ROUTES.CHAT_PAGE+`/${userid}`)
                 }
               >
                 <PiChatCircleTextBold className='icnoStyle' />

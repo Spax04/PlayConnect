@@ -13,18 +13,45 @@ export const chatSlice = createSlice({
   name: 'chat',
   initialState: {
     connection: null,
-    messages: []
+    chats: []
   },
   reducers: {
-    setConnection: (state,action) => {
-     state.connection = action.payload
+    setConnection: (state, action) => {
+      state.connection = action.payload
     },
-   
+    addMessage: (state, action) => {
+      console.log(state.chats)
+      console.log(action.payload)
+
+      let isExist = false
+
+      state.chats.forEach(c => {
+        if (action.payload.chatWith === c.chatWith) {
+          c.message = [...c.message, action.payload.message]
+          isExist = true
+        }
+      })
+
+      if (!isExist) {
+        state.chats = [...state, action.payload]
+      }
+    },
+    addChat: (state, action) => {
+      console.log(action.payload)
+
+      state.chats = [...state.chats, action.payload]
+      console.log(state.chats)
+    },
+    setReceivedStatus: (state, action) => {
+      state.chats.forEach(m => {
+        if (m.messageId === action.payload.messageId) {
+          m.isReceived = action.payload.status
+        }
+      })
+    }
   }
 })
 
-export const {
-  setConnection,
-} = chatSlice.actions
+export const { setConnection, addMessage, addChat } = chatSlice.actions
 
 export default chatSlice.reducer

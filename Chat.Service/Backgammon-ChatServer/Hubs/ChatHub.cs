@@ -1,4 +1,6 @@
 ﻿using Chat_DAL.Repositories.interfaces;
+using Chat_Models.Helpers.ModelRequests;
+using Chat_Models.Helpers.ModelResponses;
 using Chat_Models.Models;
 using Chat_Services.Interfaces;
 using Microsoft.AspNetCore.SignalR;
@@ -10,12 +12,12 @@ namespace Backgammon_ChatServer.Hubs
     public class ChatHub : Hub
     {
         private IConnectionService _chatService;
-        private IMessageService _messageService;
+        private IMessageRepository _messageRepository;
         private IConnectionRepository _connectionRepository;
-        public ChatHub(IConnectionService chatService, IMessageService messageService, IConnectionRepository connectionRepository)
+        public ChatHub(IConnectionService chatService, IMessageRepository messageRepository, IConnectionRepository connectionRepository)
         {
             _chatService = chatService;
-            _messageService = messageService;
+            _messageRepository = messageRepository;
             _connectionRepository = connectionRepository;
         }
 
@@ -25,10 +27,6 @@ namespace Backgammon_ChatServer.Hubs
             await base.OnConnectedAsync();
 
             var token = Context.GetHttpContext().Request.Query["access_token"];
-
-
-
-            await Clients.All.SendAsync("ReceiveMessage", "HELLO");
 
             var tokenCheck = new JwtSecurityToken(token);
             string id = tokenCheck.Claims.First(x => x.Type == "userId").Value;
@@ -70,9 +68,47 @@ namespace Backgammon_ChatServer.Hubs
 
         }
 
-        public async Task SendMessage(string user, string message)
+        public async Task SendMessage(MessageRequest request)
         {
-            await Clients.All.SendAsync("ReceiveMessage", user, message);
+            if (!Guid.TryParse(request.SenderId, out var senderId)) return;
+            if (!Guid.TryParse(request.RecipientId, out var recipientId)) return;
+
+            Connection connection = await _connectionRepository.GetConnectionByUserIdAsync(recipientId);
+            Message message;
+            if (connection == null) return;
+            try
+            {
+                message = await _messageRepository.CreateMessageAsync(senderId, recipientId, request.NewMessage);
+            }
+            catch
+            {
+                return;
+            }
+
+            await Clients.Caller.SendAsync("ReceiveMessage", message);
+            await Clients.Client(connection.ConnectionId).SendAsync("ReceiveMessage", message);
+        }
+
+        public async Task MessageReceived(MessageReceivedRequest request)
+        {
+            if (!Guid.TryParse(request.MessageId, out var messageIdGuid)) return;
+            if (!Guid.TryParse(request.ReceiverId, out var receiverIdGuid)) return;
+
+            try
+            {
+                await _messageRepository.SetMessageReceivedAsync(messageIdGuid);
+            }
+            catch
+            {
+                await Clients.Caller.SendAsync("OnMessageReceived",
+                    new MessageReceivedResponse() { MessageId = request.MessageId, Status = false }
+                    );
+                return;
+            }
+
+            await Clients.Caller.SendAsync("OnMessageReceived",
+                new MessageReceivedResponse() { MessageId = request.MessageId, Status = true }
+                );
         }
 
         public async Task GetFriends(string userid)
@@ -81,7 +117,7 @@ namespace Backgammon_ChatServer.Hubs
 
             Connection connection = await _connectionRepository.GetConnectionByUserIdAsync(chatterId);
 
-            if(connection == null) return;
+            if (connection == null) return;
 
             await Clients.Client(connection.ConnectionId).SendAsync("onGetFriends");
         }

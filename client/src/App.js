@@ -2,7 +2,7 @@ import './App.css'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import Container from 'react-bootstrap/Container'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Route, Routes, useNavigate } from 'react-router-dom'
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/AuthPages/LoginPage'
 import SigninPage from './pages/AuthPages/SigninPage'
@@ -26,6 +26,7 @@ import ChatPage from './pages/ChatPage'
 
 function App () {
   const { isOnline } = useChatConnection()
+  
 
   useEffect(() => {}, [isOnline])
 
@@ -42,7 +43,7 @@ function App () {
               <Route path={ROUTES.LOGIN_PAGE} element={<LoginPage />} />
               <Route path={ROUTES.SIGNIN_PAGE} element={<SigninPage />} />
               <Route path={ROUTES.FRIENDS_PAGE} element={<FriendsPage />} />
-              <Route path={ROUTES.CHAT_PAGE} element={<ChatPage />} />
+              <Route path={`${ROUTES.CHAT_PAGE}/:userid`} element={<ChatPage />} />
             </Routes>
           </main>
         </Container>

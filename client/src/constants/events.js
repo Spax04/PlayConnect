@@ -2,10 +2,16 @@
 export default {
   CHAT: {
     CLIENT: {
-      SEND_MESSAGE: 'send message'
+      SEND_MESSAGE: 'SendMessage',
+      CHATTER_CONNECTED: 'ChatterConnected',
+      CHATTER_DISCONNECTED: 'ChatterDisconnect',
+      ON_GET_FRIENDS: 'onGetFrinds',
+      RECEIVE_MESSAGE: 'ReceiveMessage',
+      ON_MESSAGE_RECEIVED: 'OnMessageReceived',
+      MESSAGE_SENT: 'MessageSent'
     },
     SERVER: {
-      ROOM_MESSAGE: 'room message',
+      SEND_MESSAGE: 'SendMessage',
       FRIENDSHIP_REQUEST_SENDED: 'FriendRequestSended'
     }
   },

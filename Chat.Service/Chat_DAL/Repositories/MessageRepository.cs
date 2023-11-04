@@ -1,13 +1,7 @@
 ﻿using Chat_DAL.Data;
 using Chat_DAL.Repositories.interfaces;
-using Chat_Models.Helpers;
-using Chat_Models.Helpers.ModelResponses;
 using Chat_Models.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Chat_DAL.Repositories
 {
@@ -16,13 +10,11 @@ namespace Chat_DAL.Repositories
         readonly DataContext _context;
         public MessageRepository(DataContext context)
         {
-            _context= context;
+            _context = context;
         }
 
-        // FINISHED
-        private Message CreateMessage(Guid senderId, Guid recipientId, string newMessage, DateTime sentAt)
+        public async Task<Message> CreateMessageAsync(Guid senderId, Guid recipientId, string newMessage)
         {
-
             if (newMessage == null)
                 throw new ArgumentException("Not Found");
 
@@ -31,57 +23,45 @@ namespace Chat_DAL.Repositories
                 SenderId = senderId,
                 RecipientId = recipientId,
                 NewMessage = newMessage,
-                SentAt = sentAt
+                SentAt = DateTime.Now
             };
-            _context!.Messages!.Add(Message);
-            _context.SaveChanges();
+            await _context!.Messages!.AddAsync(Message);
 
+            if(!( await Save()))
+            {
+                throw new ArgumentException("On Data Base save error");
+            }
             return Message;
         }
-        public async Task<Message> CreateMessageAsync( Guid senderId, Guid RecipientId, string newMessage, DateTime SentAt) => await Task.Run(() => CreateMessage(senderId, RecipientId, newMessage, SentAt));
 
-        // FINISHED
-        private Message GetMessage(Guid messageId)
-        {
-            var message = _context!.Messages!.Find(messageId);
-            if (message == null)
-                throw new ArgumentException("Not Found");
+       
+        
 
-            return new Message
-            {
-                MessageeId = message.MessageeId,
-                SenderId = message.SenderId,
-                RecipientId = message.RecipientId,
-                NewMessage = message.NewMessage,
-                SentAt = message.SentAt
-            };
-        }
-        public async Task<Message> GetMessageAsync(Guid messageId) => await Task.Run(() => GetMessage(messageId));
-        // FINISHED
-        public Task<IEnumerable<Message>> GetMessagesAsync(Guid senderId, Guid recipientId)
+        public async Task<IEnumerable<Message>> UserMessagesBetween(Guid user1, Guid user2)
         {
-            return Task.FromResult<IEnumerable<Message>>(_context!.Messages!.Where(message => message.SenderId == senderId && message.RecipientId == recipientId).Select(m => new Message
-            {
-                MessageeId = m.MessageeId,
-                SenderId = m.SenderId,
-                RecipientId = m.RecipientId,
-                NewMessage = m.NewMessage,
-                IsReceived = m.IsReceived,
-                SentAt = m.SentAt,
-                ReceivedAt = m.ReceivedAt
-            }).ToList());
+            IEnumerable<Message> messages = await _context.Messages!
+                .Where(m => (m.RecipientId == user1 && m.SenderId == user2) || (m.RecipientId == user2 && m.SenderId == user1))
+                .ToListAsync();
+
+            return messages;
+
         }
 
-        // FINISHED
-        public async Task SetMessageReceivedAsync(Guid messageId, DateTime recivedAt) 
+        public async Task SetMessageReceivedAsync(Guid messageId)
         {
             var message = await _context!.Messages!.FindAsync(messageId);
             if (message == null)
                 throw new ArgumentException("Not Found");
 
             message.IsReceived = true;
-            message.ReceivedAt = recivedAt;
+            message.ReceivedAt = DateTime.Now;
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<bool> Save()
+        {
+            var saved = await _context.SaveChangesAsync();
+            return saved > 0 ? true : false;
         }
     }
 }
