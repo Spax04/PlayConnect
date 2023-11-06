@@ -1,24 +1,17 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
-import { useEffect, useState } from 'react'
-import SearchBar from '../components/SearchBar'
+import { useEffect, useState, useRef } from 'react'
 import axios from 'axios'
 import './styles/friends.css'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  setFriends,
-  setFriendsConnectionStatus
-} from '../context/slices/friends'
 import { Button } from 'react-bootstrap'
 import { COLORS, EVENTS, ROUTES } from '../constants'
-import { LiaUserFriendsSolid } from 'react-icons/lia'
-import { BsFillPersonPlusFill } from 'react-icons/bs'
-import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
-import { Col, Container, Row, Form, InputGroup } from 'react-bootstrap'
+import { Col, Row, Form } from 'react-bootstrap'
 import './styles/chat.css'
 import Message from '../components/Message'
 import { addChat } from '../context/slices/chat'
+import { Scrollbar } from 'react-scrollbars-custom'
 
 function ChatPage () {
   const navigate = useNavigate()
@@ -32,6 +25,27 @@ function ChatPage () {
   const [currentFriend, setCurrentFriend] = useState({})
   const [tabIsActive, setTabIsActive] = useState(true)
 
+
+  useEffect(() => {
+    const handleFocus = () => {
+      setTabIsActive(true)
+      console.log("tab active");
+    }
+
+    const handleBlur = () => {
+      setTabIsActive(false)
+            console.log("tab is not active");
+
+    }
+
+    window.addEventListener('focus', handleFocus)
+    window.addEventListener('blur', handleBlur)
+
+    return () => {
+      window.removeEventListener('focus', handleFocus)
+      window.removeEventListener('blur', handleBlur)
+    }
+  }, [])
   const getFriendById = () => {
     friends.acceptedFriends.forEach(f => {
       if (f.userId === userid) {
@@ -39,6 +53,7 @@ function ChatPage () {
       }
     })
   }
+
   //! Check it
   const getChatHistory = async () => {
     let isExist = false
@@ -74,7 +89,6 @@ function ChatPage () {
     messages.forEach(m => {
       if (m.isReceived === false && m.recipientId === user.userid) {
         messagesList = [...messagesList, m.messageeId]
-        //  m.isReceived = true
       }
     })
     if (messagesList.length !== 0) {
@@ -86,29 +100,8 @@ function ChatPage () {
           messageId: m
         })
       })
-      //}
     }
   }
-
-  useEffect(() => {
-    const handleFocus = () => {
-      setTabIsActive(true)
-      console.log('Tab is active')
-    }
-
-    const handleBlur = () => {
-      setTabIsActive(false)
-      console.log('Tab is not active')
-    }
-
-    window.addEventListener('focus', handleFocus)
-    window.addEventListener('blur', handleBlur)
-
-    return () => {
-      window.removeEventListener('focus', handleFocus)
-      window.removeEventListener('blur', handleBlur)
-    }
-  }, [])
 
   useEffect(() => {
     if (user.token === '') {
@@ -117,13 +110,12 @@ function ChatPage () {
 
     getChatHistory()
     getFriendById()
-  }, [chat.chats, messages, tabIsActive])
-
-  useEffect(() => {
+    console.log("Now the tab is " + tabIsActive);
     if (tabIsActive) {
       checkMessageReceived()
     }
-  }, [tabIsActive])
+    scrollToBottom()
+  }, [chat.chats, messages, tabIsActive])
 
   const sendMessage = () => {
     chat.connection.invoke(EVENTS.CHAT.SERVER.SEND_MESSAGE, {
@@ -133,10 +125,26 @@ function ChatPage () {
     })
     setNewMessage('')
   }
+
+  const handleKeyDown = e => {
+    if (e.key === 'Enter') {
+      e.preventDefault() // Prevent the default behavior (e.g., line break in the input field)
+      sendMessage()
+    }
+  }
+
+  const messagesContainerRef = useRef()
+
+  const scrollToBottom = () => {
+    const scrollHeight = messagesContainerRef.current.scrollHeight;
+
+    // Set the scrollTop to the maximum possible value to scroll to the end
+    messagesContainerRef.current.scrollTop = scrollHeight;
+  }
   return (
     <div className='chatMainBlock'>
       <Col md={9}>
-        <div
+        <Scrollbar
           style={{
             border: '1px solid #ccc',
             borderRadius: '25px',
@@ -145,26 +153,28 @@ function ChatPage () {
             padding: '10px',
             backgroundColor: COLORS.white
           }}
+          ref={messagesContainerRef}
         >
-          {messages ? (
-            messages.map((message, index) => (
-              <Message
-                key={index}
-                sender={
-                  message.senderId === user.userid
-                    ? 'You'
-                    : currentFriend.username
-                }
-                text={message.newMessage}
-                timestamp={message.sentAt}
-                isRead={message.isReceived}
-              />
-            ))
-          ) : (
-            <></>
-          )}
-        </div>
-
+          <div >
+            {messages ? (
+              messages.map((message, index) => (
+                <Message
+                  key={index}
+                  sender={
+                    message.senderId === user.userid
+                      ? 'You'
+                      : currentFriend.username
+                  }
+                  text={message.newMessage}
+                  timestamp={message.sentAt}
+                  isRead={message.isReceived}
+                />
+              ))
+            ) : (
+              <></>
+            )}
+          </div>
+        </Scrollbar>
         <Form style={{ marginTop: '10px' }}>
           <Row>
             <Col md={10}>
@@ -173,6 +183,7 @@ function ChatPage () {
                 placeholder='Type your message...'
                 value={newMessage}
                 onChange={e => setNewMessage(e.target.value)}
+                onKeyDown={handleKeyDown}
               />
             </Col>
             <Col md={2}>

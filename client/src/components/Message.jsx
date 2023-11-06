@@ -9,9 +9,10 @@ const Message = ({ text, sender, timestamp, isRead }) => {
       style={{
         width: 'fit-content',
         maxWidth: '400px',
-        marginTop: '10px',
-        marginLeft: isMyMessage ? 'auto' : '0',
-        marginRight: isMyMessage ? '0' : 'auto',
+        marginTop: '13px',
+        marginBottom:'13px',
+        marginLeft: isMyMessage ? 'auto' : '13px',
+        marginRight: isMyMessage ? '13px' : 'auto',
         backgroundColor: isMyMessage ? '#a5ffd6' : '#ffa69e'
       }}
     >

@@ -28,9 +28,10 @@ import ChatPage from './pages/ChatPage'
 
 function App () {
   const { isOnline } = useChatConnection()
-  const [isActive, setIsActive] = useState(true)
   
-  useEffect(() => {}, [isOnline, isActive])
+  useEffect(() => {}, [isOnline])
+  
+  
 
   return (
       <BrowserRouter>

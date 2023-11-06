@@ -1,0 +1,27 @@
+.message-card {
+    position: relative;
+    max-width: 400px;
+    margin: 13px;
+    padding: 10px;
+    border-radius: 10px;
+  }
+  
+  .my-message::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -15px;
+    border-width: 15px;
+    border-style: solid;
+    border-color: transparent transparent transparent #a5ffd6;
+  }
+  
+  .other-message::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: -15px;
+    border-width: 15px;
+    border-style: solid;
+    border-color: transparent #ffa69e transparent transparent;
+  }
