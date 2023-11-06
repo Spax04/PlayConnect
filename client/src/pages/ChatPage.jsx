@@ -26,9 +26,19 @@ function ChatPage () {
   const dispatch = useDispatch()
   const chat = useSelector(state => state.chat)
   const user = useSelector(state => state.user)
+  const friends = useSelector(state => state.friends)
   const [messages, setMessages] = useState([])
   const [newMessage, setNewMessage] = useState('')
+  const [currentFriend, setCurrentFriend] = useState({})
+  const [tabIsActive, setTabIsActive] = useState(true)
 
+  const getFriendById = () => {
+    friends.acceptedFriends.forEach(f => {
+      if (f.userId === userid) {
+        setCurrentFriend(f)
+      }
+    })
+  }
   //! Check it
   const getChatHistory = async () => {
     let isExist = false
@@ -46,7 +56,10 @@ function ChatPage () {
         )
         .then(({ data }) => {
           console.log(data)
-          dispatch(addChat({ message: data, chatWith: userid }))
+          const chatMessages = data.sort(
+            (a, b) => new Date(a.sentAt) - new Date(b.sentAt)
+          )
+          dispatch(addChat({ message: chatMessages, chatWith: userid }))
           setMessages(data)
         })
         .catch(err => {
@@ -54,12 +67,63 @@ function ChatPage () {
         })
     }
   }
+
+  const checkMessageReceived = async () => {
+    let messagesList = []
+
+    messages.forEach(m => {
+      if (m.isReceived === false && m.recipientId === user.userid) {
+        messagesList = [...messagesList, m.messageeId]
+        //  m.isReceived = true
+      }
+    })
+    if (messagesList.length !== 0) {
+      document.title = 'PlayConnect'
+      messagesList.forEach(m => {
+        chat.connection.invoke(EVENTS.CHAT.SERVER.MESSAGE_RECEIVED, {
+          senderId: userid,
+          receiverId: user.userid,
+          messageId: m
+        })
+      })
+      //}
+    }
+  }
+
   useEffect(() => {
-    getChatHistory()
+    const handleFocus = () => {
+      setTabIsActive(true)
+      console.log('Tab is active')
+    }
+
+    const handleBlur = () => {
+      setTabIsActive(false)
+      console.log('Tab is not active')
+    }
+
+    window.addEventListener('focus', handleFocus)
+    window.addEventListener('blur', handleBlur)
+
+    return () => {
+      window.removeEventListener('focus', handleFocus)
+      window.removeEventListener('blur', handleBlur)
+    }
+  }, [])
+
+  useEffect(() => {
     if (user.token === '') {
       navigate(ROUTES.LOGIN_PAGE)
     }
-  }, [chat.chats])
+
+    getChatHistory()
+    getFriendById()
+  }, [chat.chats, messages, tabIsActive])
+
+  useEffect(() => {
+    if (tabIsActive) {
+      checkMessageReceived()
+    }
+  }, [tabIsActive])
 
   const sendMessage = () => {
     chat.connection.invoke(EVENTS.CHAT.SERVER.SEND_MESSAGE, {
@@ -86,10 +150,14 @@ function ChatPage () {
             messages.map((message, index) => (
               <Message
                 key={index}
-                sender={message.senderId === user.userid ? 'You' : 'Friend'}
+                sender={
+                  message.senderId === user.userid
+                    ? 'You'
+                    : currentFriend.username
+                }
                 text={message.newMessage}
                 timestamp={message.sentAt}
-                isRead={true}
+                isRead={message.isReceived}
               />
             ))
           ) : (

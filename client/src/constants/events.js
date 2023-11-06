@@ -12,7 +12,8 @@ export default {
     },
     SERVER: {
       SEND_MESSAGE: 'SendMessage',
-      FRIENDSHIP_REQUEST_SENDED: 'FriendRequestSended'
+      FRIENDSHIP_REQUEST_SENDED: 'FriendRequestSended',
+      MESSAGE_RECEIVED : 'MessageReceived'
     }
   },
   GAME: {

@@ -75,7 +75,6 @@ namespace Backgammon_ChatServer.Hubs
 
             Connection connection = await _connectionRepository.GetConnectionByUserIdAsync(recipientId);
             Message message;
-            if (connection == null) return;
             try
             {
                 message = await _messageRepository.CreateMessageAsync(senderId, recipientId, request.NewMessage);
@@ -86,13 +85,16 @@ namespace Backgammon_ChatServer.Hubs
             }
 
             await Clients.Caller.SendAsync("ReceiveMessage", message);
+            if (connection == null) return;
             await Clients.Client(connection.ConnectionId).SendAsync("ReceiveMessage", message);
         }
 
         public async Task MessageReceived(MessageReceivedRequest request)
         {
             if (!Guid.TryParse(request.MessageId, out var messageIdGuid)) return;
-            if (!Guid.TryParse(request.ReceiverId, out var receiverIdGuid)) return;
+            if (!Guid.TryParse(request.SenderId, out var senderIdGuid)) return;
+
+            Connection connection = await _connectionRepository.GetConnectionByUserIdAsync(senderIdGuid);
 
             try
             {
@@ -100,15 +102,33 @@ namespace Backgammon_ChatServer.Hubs
             }
             catch
             {
-                await Clients.Caller.SendAsync("OnMessageReceived",
-                    new MessageReceivedResponse() { MessageId = request.MessageId, Status = false }
+                if (connection != null)
+                {
+
+                    await Clients.Client(connection.ConnectionId).SendAsync("OnMessageReceived",
+                        new MessageReceivedResponse() 
+                        { 
+                            ReceiverId = request.ReceiverId,
+                            MessageId = request.MessageId,
+                            Status = false
+                        }
                     );
+                }
                 return;
             }
 
-            await Clients.Caller.SendAsync("OnMessageReceived",
-                new MessageReceivedResponse() { MessageId = request.MessageId, Status = true }
+            if (connection != null)
+            {
+
+                await Clients.Client(connection.ConnectionId).SendAsync("OnMessageReceived",
+                    new MessageReceivedResponse() 
+                    {
+                        ReceiverId = request.ReceiverId,
+                        MessageId = request.MessageId,
+                        Status = true 
+                    }
                 );
+            }
         }
 
         public async Task GetFriends(string userid)

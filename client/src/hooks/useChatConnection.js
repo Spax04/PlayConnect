@@ -14,7 +14,7 @@ function useChatConnection () {
   const user = useSelector(state => state.user)
   const [chatConnection, setChatConnection] = useState()
   const dispatch = useDispatch()
-  
+
 
   const onUserOnline = () => {
     setIsOnline(true)
@@ -40,6 +40,7 @@ function useChatConnection () {
     } else {
       onUserOffline()
     }
+    
     console.log(user)
   }, [user])
 

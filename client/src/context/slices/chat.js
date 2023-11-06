@@ -1,13 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit'
-import * as signalR from '@microsoft/signalr'
-import { connect, useSelector } from 'react-redux'
-import {
-  addMiddleware,
-  removeMiddleware,
-  resetMiddlewares
-} from 'redux-dynamic-middlewares'
-import { HubConnectionState } from 'updated-redux-signalr'
-import { createChatConnection } from '../signalr/chatConnection'
 
 export const chatSlice = createSlice({
   name: 'chat',
@@ -20,9 +11,6 @@ export const chatSlice = createSlice({
       state.connection = action.payload
     },
     addMessage: (state, action) => {
-      console.log(state.chats)
-      console.log(action.payload)
-
       let isExist = false
 
       state.chats.forEach(c => {
@@ -37,21 +25,27 @@ export const chatSlice = createSlice({
       }
     },
     addChat: (state, action) => {
-      console.log(action.payload)
-
       state.chats = [...state.chats, action.payload]
-      console.log(state.chats)
     },
     setReceivedStatus: (state, action) => {
-      state.chats.forEach(m => {
-        if (m.messageId === action.payload.messageId) {
-          m.isReceived = action.payload.status
-        }
-      })
+      //! O(n^2), need to find a better way
+
+      if (action.payload.status === true) {
+        state.chats.forEach(c => {
+          if (c.chatWith === action.payload.receiverId) {
+            c.message.forEach(m => {
+              if (m.messageId === action.payload.messageeId) {
+                m.isReceived = action.payload.status
+              }
+            })
+          }
+        })
+      }
     }
   }
 })
 
-export const { setConnection, addMessage, addChat } = chatSlice.actions
+export const { setConnection, addMessage, addChat, setReceivedStatus } =
+  chatSlice.actions
 
 export default chatSlice.reducer

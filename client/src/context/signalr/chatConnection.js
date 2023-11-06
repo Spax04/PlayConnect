@@ -5,9 +5,9 @@ import {
   withCallbacks,
   signalMiddleware
 } from 'updated-redux-signalr'
-import { addMessage } from '../slices/chat'
+import { addMessage, setReceivedStatus } from '../slices/chat'
 import { setFriends } from '../slices/friends'
-import { setFriendConnected, setFriendDisconnected } from '../slices/friends'
+import { setFriendConnected, setFriendDisconnected} from '../slices/friends'
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
 import { EVENTS } from '../../constants'
@@ -47,7 +47,9 @@ export function createChatConnection () {
     })
     .add(EVENTS.CHAT.CLIENT.RECEIVE_MESSAGE, message => dispatch => {
       console.log('Message received:' + message)
-
+      if (!document.hasFocus()) {
+        document.title = '✉ New Message'
+      }
       let chatWith
 
       if (message.senderId === userid) {
@@ -56,9 +58,11 @@ export function createChatConnection () {
         chatWith = message.senderId
       }
 
-      dispatch(addMessage({message:message, chatWith:chatWith}))
+      dispatch(addMessage({ message: message, chatWith: chatWith }))
     })
-    .add(EVENTS.CHAT.CLIENT.ON_MESSAGE_RECEIVED, message => dispatch => {})
+    .add(EVENTS.CHAT.CLIENT.ON_MESSAGE_RECEIVED, message => dispatch => {
+      dispatch(setReceivedStatus(message))
+    })
 
   const signal = signalMiddleware({
     callbacks,
