@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32929.385
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Auth.API", "Auth.API\Auth.API.csproj", "{AEF0B2F9-CEDA-4245-B425-ED64515357E2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Auth.DAL", "Auth.DAL\Auth.DAL.csproj", "{4569E839-780B-41A8-A2AE-E5A4AED7B585}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Auth.Models", "Auth.Models\Auth.Models.csproj", "{9CF95DDD-6251-4810-BAA8-8CD4911BA2F8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AEF0B2F9-CEDA-4245-B425-ED64515357E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AEF0B2F9-CEDA-4245-B425-ED64515357E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AEF0B2F9-CEDA-4245-B425-ED64515357E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AEF0B2F9-CEDA-4245-B425-ED64515357E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4569E839-780B-41A8-A2AE-E5A4AED7B585}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4569E839-780B-41A8-A2AE-E5A4AED7B585}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4569E839-780B-41A8-A2AE-E5A4AED7B585}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4569E839-780B-41A8-A2AE-E5A4AED7B585}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CF95DDD-6251-4810-BAA8-8CD4911BA2F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CF95DDD-6251-4810-BAA8-8CD4911BA2F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CF95DDD-6251-4810-BAA8-8CD4911BA2F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CF95DDD-6251-4810-BAA8-8CD4911BA2F8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5D70D34D-59DD-4703-A546-8999768447D0}
+	EndGlobalSection
+EndGlobal

@@ -5,7 +5,7 @@ export default {
       SEND_MESSAGE: 'SendMessage',
       CHATTER_CONNECTED: 'ChatterConnected',
       CHATTER_DISCONNECTED: 'ChatterDisconnect',
-      ON_GET_FRIENDS: 'onGetFrinds',
+      ON_GET_FRIENDS: 'onGetFriends',
       RECEIVE_MESSAGE: 'ReceiveMessage',
       ON_MESSAGE_RECEIVED: 'OnMessageReceived',
       MESSAGE_SENT: 'MessageSent'

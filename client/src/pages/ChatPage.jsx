@@ -84,13 +84,17 @@ function ChatPage () {
   }
 
   const checkMessageReceived = async () => {
-    let messagesList = []
 
+    
+console.log("Tying to check for unreaded messages");
+    let messagesList = []
+   
     messages.forEach(m => {
       if (m.isReceived === false && m.recipientId === user.userid) {
         messagesList = [...messagesList, m.messageeId]
       }
     })
+    console.log(messagesList);
     if (messagesList.length !== 0) {
       document.title = 'PlayConnect'
       messagesList.forEach(m => {
@@ -110,8 +114,9 @@ function ChatPage () {
 
     getChatHistory()
     getFriendById()
-    console.log("Now the tab is " + tabIsActive);
+    console.log("Now the tab is  activ in useEffect" );
     if (tabIsActive) {
+      
       checkMessageReceived()
     }
     scrollToBottom()
@@ -125,6 +130,8 @@ function ChatPage () {
     })
     setNewMessage('')
   }
+
+  
 
   const handleKeyDown = e => {
     if (e.key === 'Enter') {

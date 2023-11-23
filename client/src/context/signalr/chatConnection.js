@@ -40,6 +40,7 @@ export function createChatConnection () {
           `${process.env.REACT_APP_IDENTITY_SERVICE_URL}/api/user/friends/${userid}`
         )
         .then(({ data }) => {
+          console.log("On Get Friend event");
           console.log(data)
           dispatch(setFriends(data))
         })

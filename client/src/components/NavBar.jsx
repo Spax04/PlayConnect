@@ -9,6 +9,8 @@ import { COLORS, ROUTES } from '../constants'
 import { removeUser } from '../context/slices/user'
 import { removeFriends } from '../context/slices/friends'
 import { useDispatch, useSelector } from 'react-redux'
+import { IoNotifications } from "react-icons/io5";
+
 function NavBar () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -41,7 +43,12 @@ function NavBar () {
         </div>
         <div className='navLinks d-flex'>
           <Nav.Item>
-            <Nav.Link className='navLink' eventKey='2' title='Games'>
+            <Nav.Link
+              className='navLink'
+              eventKey='2'
+              title='Games'
+              onClick={() => navigate(ROUTES.GAMES_PAGE)}
+            >
               Games
             </Nav.Link>
           </Nav.Item>
@@ -55,7 +62,8 @@ function NavBar () {
               className='navLink'
               eventKey='2'
               title='Friends'
-              onClick={() => navigate(ROUTES.FRIENDS_PAGE)}            >
+              onClick={() => navigate(ROUTES.FRIENDS_PAGE)}
+            >
               Friends
             </Nav.Link>
           </Nav.Item>

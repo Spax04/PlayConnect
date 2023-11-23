@@ -29,10 +29,10 @@ export const chatSlice = createSlice({
     },
     setReceivedStatus: (state, action) => {
       //! O(n^2), need to find a better way
-
+console.log("Set received status: " + action.payload.status);
       if (action.payload.status === true) {
         state.chats.forEach(c => {
-          if (c.chatWith === action.payload.receiverId) {
+          if (c.chatWith === action.payload.chatterId) {
             c.message.forEach(m => {
               if (m.messageId === action.payload.messageeId) {
                 m.isReceived = action.payload.status

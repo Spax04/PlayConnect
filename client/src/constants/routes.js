@@ -4,5 +4,6 @@ export default {
     LOGIN_PAGE: '/login',
     SIGNIN_PAGE: '/signin',
     FRIENDS_PAGE: '/friends',
-    CHAT_PAGE:'/chat'
+    CHAT_PAGE:'/chat',
+    GAMES_PAGE:'/gamePage'
   }
