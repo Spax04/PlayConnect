@@ -19,6 +19,6 @@ namespace Game.Models.Models
 
         [ForeignKey("PlayerId")]
         public virtual Player? Player { get; set; }
-        public ICollection<GameRes>
+        public ICollection<GameResult>? Results { get; set; }
     }
 }

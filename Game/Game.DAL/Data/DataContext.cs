@@ -1,5 +1,4 @@
-﻿using Game.Models.Models.Db;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Game.DAL.Data
 {

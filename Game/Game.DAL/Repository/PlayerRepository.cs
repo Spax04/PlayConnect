@@ -14,5 +14,5 @@ namespace Game.DAL.Repository
         {
             _context = context;
         }
-       
+    }
 }
