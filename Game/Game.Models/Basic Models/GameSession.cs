@@ -14,11 +14,13 @@ namespace Game.Models.Models
         public Player? Player1 { get; set; }
 
         [ForeignKey("Player2Id")]
-        public Player? Player2 { get; set; }
+        public virtual Player? Player2 { get; set; }
 
         public bool IsFinished { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
+
+        public ICollection<Move> Moves { get; set; }
 
     }
 }

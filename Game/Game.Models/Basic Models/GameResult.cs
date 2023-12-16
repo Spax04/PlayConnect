@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Game.Models.Models
 {
@@ -12,11 +7,14 @@ namespace Game.Models.Models
         public Guid Id { get; set; }
         public Guid GameSessionId { get; set; }
         public Guid GamePlayerStatsId { get; set; }
+        public bool IsWinner { get; set; }
+        public int Score { get; set; }
 
         [ForeignKey("GameSessionId")]
-        public GameSession GameSession { get; set; }
+        public virtual GameSession GameSession { get; set; }
 
         [ForeignKey("GamePlayerStatsId")]
-        public GamePlayerStats GamePlayerStats { get; set; }
+        public virtual GamePlayerStat GamePlayerStats { get; set; }
+
     }
 }

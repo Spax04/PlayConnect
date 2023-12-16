@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Game.Models.Models
 {
-    public class GamePlayerStats
+    public class GamePlayerStat
     {
         public Guid Id { get; set; }
         public Guid GameTypeId { get; set; }
@@ -21,5 +21,8 @@ namespace Game.Models.Models
         public Player? Player { get; set; }
         public int Level { get; set; }
         public int Points { get; set; }
+
+        public ICollection<GameResult> Results { get; set; }
+
     }
 }
