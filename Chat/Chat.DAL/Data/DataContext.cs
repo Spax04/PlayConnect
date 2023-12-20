@@ -1,6 +1,5 @@
 ﻿using Chat.Models.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection.Emit;
 
 namespace Chat.DAL.Data
 {
@@ -10,7 +9,7 @@ namespace Chat.DAL.Data
         {
 
         }
-        
+
         public DbSet<Connection>? Connections { get; set; }
         public DbSet<Message>? Messages { get; set; }
         public DbSet<Chatter>? Chatters { get; set; }
@@ -23,11 +22,11 @@ namespace Chat.DAL.Data
        .HasMany(ch => ch.Connections)
        .WithOne(c => c.Chatter)
        .HasForeignKey(c => c.ChatterId);
-/*
-            builder.Entity<Chatter>()
-                .HasMany(ch => ch.Chats)
-                .WithOne(c => c.ChatterTwo)
-                .HasForeignKey(c => c.ChatterTwoId);*/
+            /*
+                        builder.Entity<Chatter>()
+                            .HasMany(ch => ch.Chats)
+                            .WithOne(c => c.ChatterTwo)
+                            .HasForeignKey(c => c.ChatterTwoId);*/
 
             /*            builder.Entity<Chatter>()
                     .HasMany(ch => ch.Chats)

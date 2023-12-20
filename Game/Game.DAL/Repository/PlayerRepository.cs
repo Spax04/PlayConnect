@@ -6,10 +6,12 @@ namespace Game.DAL.Repository
 {
     public class PlayerRepository : IPlayerRepository
     {
-        DataContext _context;
-        public PlayerRepository(DataContext context)
+       private readonly DataContext _context;
+        private IPlayerService _playerService;
+        public PlayerRepository(DataContext context, IPlayerService playerService)
         {
             _context = context;
+            _playerService = playerService;
         }
 
         public async Task<Player?> CreatePlayerAsync(Guid playerId)
@@ -25,9 +27,9 @@ namespace Game.DAL.Repository
             return null;
         }
 
-        public async Task<Player> GetOrAddPlayerAsync(Guid playerId)
+        public async Task<Player> GetOrCreatePlayerAsync(Guid playerId)
         {
-            if (!(await IsPlayerExistAsync(playerId)))
+            if (!(await _playerService.IsPlayerExistAsync(playerId)))
             {
                 await CreatePlayerAsync(playerId);
             }
@@ -36,12 +38,7 @@ namespace Game.DAL.Repository
 
         public async Task<Player> GetPlayerAsync(Guid playerId) => await _context.Players!.FindAsync(playerId);
 
-        public async Task<bool> IsPlayerExistAsync(Guid playerId)
-        {
-            Player player = await _context.Players!.FindAsync(playerId);
-
-            return player != null ? true : false;
-        }
+       
 
         public async Task<bool> Save()
         {

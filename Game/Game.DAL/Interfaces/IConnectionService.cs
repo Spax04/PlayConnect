@@ -9,6 +9,9 @@ namespace Game.DAL.Interfaces
 {
     public interface IConnectionService
     {
-        Task<Connection> CreateConnectionAsync(string connection, Guid playerId);
+        Task<bool> ConnectPlayerAsync(Guid playerId, string connectionId);
+        Task CloseConnectionAsync(string ChatId, DateTime endedAt);
+        Task SetPlayerConnectedAsync(Guid playerId);
+        Task<bool> DisconnectPlayerAsync(Guid playerId, string connectionId);
     }
 }

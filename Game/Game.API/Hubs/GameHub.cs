@@ -7,9 +7,11 @@ namespace Game.API.Hubs
     public class GameHub : Hub
     {
         private IPlayerRepository _playerRepository;
-        public GameHub(IPlayerRepository playerRepository)
+        private IConnectionService _connectionService;
+        public GameHub(IPlayerRepository playerRepository, IConnectionService connectionService)
         {
             _playerRepository = playerRepository;
+            _connectionService = connectionService;
         }
 
         public override async Task OnConnectedAsync()
@@ -22,12 +24,12 @@ namespace Game.API.Hubs
             string id = tokenCheck.Claims.First(x => x.Type == "userId").Value;
             Guid playerId = Guid.Parse(id);
 
-            var player = await _playerRepository.GetOrAddPlayerAsync(playerId);
+            var player = await _playerRepository.GetOrCreatePlayerAsync(playerId);
 
 
-            var isFirstConnect = await _chatService.ConnectChatterAsync((Guid)player.Id, Context.ConnectionId);
+            var isFirstConnect = await _connectionService.ConnectPlayerAsync((Guid)player.Id, Context.ConnectionId);
 
-            await Clients.Others.SendAsync("ChatterConnected", player.Id.ToString());
+            await Clients.Others.SendAsync("PlayerConnected", player.Id.ToString());
 
 
         }
@@ -41,18 +43,18 @@ namespace Game.API.Hubs
 
             var tokenCheck = new JwtSecurityToken(token);
             string id = tokenCheck.Claims.First(x => x.Type == "userId").Value;
-            Guid chatterId = Guid.Parse(id);
+            Guid playerId = Guid.Parse(id);
 
-            var chatter = await _chatService.GetChatterAsync(chatterId);
+            var player = await _playerRepository.GetPlayerAsync(playerId);
 
-            if (chatter == null)
+            if (player == null)
                 return;
 
-            if (await _chatService.DisconnectChatterAsync(chatter.Id, Context.ConnectionId))
+            if (await _chatService.DisconnectChatterAsync(player.Id, Context.ConnectionId))
             {
-                var lastSeen = await _chatService.GetLastSeenAsync(chatterId);
-                chatter.LastSeen = lastSeen;
-                await Clients.Others.SendAsync("ChatterDisconnect", chatter.Id.ToString());
+                var lastSeen = await _chatService.GetLastSeenAsync(playerId);
+                player.LastSeen = lastSeen;
+                await Clients.Others.SendAsync("ChatterDisconnect", player.Id.ToString());
             }
 
         }

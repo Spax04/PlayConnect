@@ -9,8 +9,7 @@ namespace Game.DAL.Interfaces
 {
     public interface IPlayerRepository
     {
-        Task<Player> GetOrAddPlayerAsync(Guid playerId);
-        Task<bool> IsPlayerExistAsync(Guid playerId);
+        Task<Player> GetOrCreatePlayerAsync(Guid playerId);
         Task<Player> CreatePlayerAsync(Guid playerId);
         Task<Player> GetPlayerAsync(Guid playerId);
     }
