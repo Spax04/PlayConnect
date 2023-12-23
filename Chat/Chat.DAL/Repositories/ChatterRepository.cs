@@ -1,26 +1,20 @@
 ﻿using Chat.DAL.Data;
-using Chat.DAL.Repositories.Interfaces;
-using Chat.Models.Helpers;
-using Chat.Models.Helpers.ModelResponses;
+using Chat.DAL.Interfaces;
 using Chat.Models.Models;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Chat.DAL.Repositories
 {
     public class ChatterRepository : IChatterRepository
     {
         private readonly DataContext _context;
-        public ChatterRepository(DataContext chatterContext)
+        private IChatterService _chatterService;
+        public ChatterRepository(DataContext chatterContext, IChatterService chatterService)
         {
             _context = chatterContext;
+            _chatterService = chatterService;
         }
         // FINISHED
-        public async Task<Chatter> AddChatterAsync(Guid chatterId, string name)
+        public async Task<Chatter> CreateChatterAsync(Guid chatterId, string name)
         {
             var newChatter = new Chatter()
             {
@@ -33,24 +27,15 @@ namespace Chat.DAL.Repositories
 
             return newChatter;
         }
-        
-        // FINISHED
-        //
 
-        public async Task<bool> IsChatterExistAsync(Guid chatterId)
+        public async Task<Chatter> GetOrCreateChatterAsync(Guid chatterId, string name)
         {
-            Chatter chatter = await _context.Chatters!.Where(c => c.Id == chatterId).FirstOrDefaultAsync();
-            return chatter == null? false : true;
-        }
-
-        public async Task<Response> IsChatterConnectedAsync(Guid chatterId)
-        {
-            var chatter = await _context.Chatters!.Where(c => c.Id == chatterId).FirstOrDefaultAsync();
-            if(chatter == null)
+            if (!(await _chatterService.IsChatterExistAsync(chatterId)))
             {
-                return new Response(false);
+                await CreateChatterAsync(chatterId, name);
             }
-            return chatter.IsConnected? new Response(true) : new Response(false);
+
+            return await GetChatterAsync(chatterId);
         }
 
         public async Task<Chatter> GetChatterAsync(Guid chatterId)
@@ -64,7 +49,7 @@ namespace Chat.DAL.Repositories
                 Id = (Guid)chatter!.Id!,
                 Name = chatter.Name,
                 IsConnected = true
-            }; 
+            };
 
         }
 
@@ -73,31 +58,5 @@ namespace Chat.DAL.Repositories
         {
             return _context!.Chatters!.Where(x => x.IsConnected == true && x.Id != chatterId).ToList();
         }
-
-        // FINISHED
-
-        public async Task SetConnectedAsync(Guid chatterId)
-        {
-            var chatter = await _context!.Chatters!.Where(c => c.Id == chatterId).FirstOrDefaultAsync();
-            if (chatter == null)
-                throw new ArgumentException("Not Found");
-
-            chatter.IsConnected = true;
-            await _context.SaveChangesAsync();
-        }
-
-        // FINISHED
-
-        public async Task SetDisconnectedAsync(Guid chatterId)
-        {
-            var chatter = await _context!.Chatters!.FindAsync(chatterId);
-            if (chatter == null)
-                throw new ArgumentException("Not Found");
-
-            chatter.IsConnected = false;
-            await _context.SaveChangesAsync();
-        }
-
-
     }
 }

@@ -7,14 +7,14 @@ namespace Game.Models.Models
     {
         [Key]
         public Guid Id { get; set; }
-        public Guid Player1Id { get; set; }
-        public Guid Player2Id { get; set; }
+        public Guid HostId { get; set; }
+        public Guid GuestId { get; set; }
 
-        [ForeignKey("Player1Id")]
-        public Player? Player1 { get; set; }
+        [ForeignKey("HostId")]
+        public Player? Host { get; set; }
 
-        [ForeignKey("Player2Id")]
-        public virtual Player? Player2 { get; set; }
+        [ForeignKey("GuestId")]
+        public virtual Player? Guest { get; set; }
 
         public bool IsFinished { get; set; }
         public DateTime StartTime { get; set; }

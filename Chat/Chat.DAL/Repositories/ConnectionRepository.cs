@@ -1,14 +1,7 @@
 ﻿using Chat.DAL.Data;
-using Chat.DAL.Repositories.Interfaces;
-using Chat.Models.Helpers;
-using Chat.Models.Helpers.ModelResponses;
+using Chat.DAL.Interfaces;
 using Chat.Models.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 
 namespace Chat.DAL.Repositories
@@ -37,71 +30,28 @@ namespace Chat.DAL.Repositories
             return newConnection;
         }
 
-        // FINISHED
-
-        public bool CheckReconnectConnection( Guid chatterId)
-        {
-            var connection = _context.Connections.FirstOrDefault(c => c.ChatterId == chatterId);
-
-            if(connection == null)
-            {
-                return false;
-            }
-            _context.Connections.Remove(connection);
-            _context.SaveChanges();
-            return true;
-        }
-
-        // FINISHED
         public async Task<Connection> GetConnectionByIdAsync(string chatId)
         {
             var chat = await _context!.Connections!.FirstOrDefaultAsync(c => c.ConnectionId == chatId);
-            if(chat == null)
+            if (chat == null)
                 throw new ArgumentException("Not Found");
 
             return new Connection
             {
                 ConnectionId = chat.ConnectionId,
                 ChatterId = chat.ChatterId!,
-                IsClosed= chat.IsClosed,
+                IsClosed = chat.IsClosed,
                 StartedAt = chat.StartedAt,
                 EndedAt = chat.EndedAt
             };
         }
 
-        // FINISHED
-        private IEnumerable<Connection> GetAllChatsByUserId(Guid chatterId)
+        public async Task<IEnumerable<Connection>> GetAllConnectionsByUserIdAsync(Guid chatterId)
         {
 
-            var allConnections = _context!.Connections!.Where(c => c.ChatterId == chatterId).ToList();
+            var allConnections = await _context!.Connections!.Where(c => c.ChatterId == chatterId).ToListAsync();
 
-            return allConnections;               
-        }
-        public async Task<IEnumerable<Connection>> GetAllConnectionsByUserIdAsync(Guid chatterId) => await Task.Run(() => GetAllChatsByUserId(chatterId));
-
-
-        public void CloseConnectionAsync(string connectionId, DateTime endedAt)
-        {
-            var connection = _context?.Connections?.Find(connectionId);
-            if (connection == null)
-               throw new ArgumentException("Not Found");
-
-            connection.IsClosed = true;
-            connection.EndedAt = endedAt;
-            _context!.SaveChanges();
-        }
-
-        public void CloseAllConnections()
-        {
-            foreach(var chat in _context!.Connections!)
-            {
-                if (!chat.IsClosed)
-                {
-                    chat.IsClosed = true;
-                    chat.EndedAt = DateTime.Now;
-                }
-            }
-            _context.SaveChanges();
+            return allConnections;
         }
 
         public Task<Connection> GetChatByIdAsync(string chatId)

@@ -2,6 +2,7 @@ using Game.API.Hubs;
 using Game.DAL.Data;
 using Game.DAL.Interfaces;
 using Game.DAL.Repository;
+using Game.DAL.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -12,6 +13,9 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddTransient<IPlayerRepository, PlayerRepository>();
 builder.Services.AddTransient<IGameRepository, GameRepository>();
+builder.Services.AddTransient<IConnectionRepository, ConnectionRepository>();
+builder.Services.AddTransient<IConnectionService, ConnectionService>();
+builder.Services.AddTransient<IPlayerService, PlayerService>();
 
 // Connecting DataBase
 if (builder.Environment.IsProduction())

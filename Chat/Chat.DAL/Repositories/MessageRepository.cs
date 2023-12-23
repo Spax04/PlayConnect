@@ -1,5 +1,5 @@
 ﻿using Chat.DAL.Data;
-using Chat.DAL.Repositories.Interfaces;
+using Chat.DAL.Interfaces;
 using Chat.Models.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -27,17 +27,16 @@ namespace Chat.DAL.Repositories
             };
             await _context!.Messages!.AddAsync(Message);
 
-            if(!( await Save()))
+            if (!(await Save()))
             {
                 throw new ArgumentException("On Data Base save error");
             }
             return Message;
         }
 
-       
-        
 
-        public async Task<IEnumerable<Message>> UserMessagesBetween(Guid user1, Guid user2)
+
+        public async Task<IEnumerable<Message>> GetUserMessagesBetween(Guid user1, Guid user2)
         {
             IEnumerable<Message> messages = await _context.Messages!
                 .Where(m => (m.RecipientId == user1 && m.SenderId == user2) || (m.RecipientId == user2 && m.SenderId == user1))
@@ -47,16 +46,6 @@ namespace Chat.DAL.Repositories
 
         }
 
-        public async Task SetMessageReceivedAsync(Guid messageId)
-        {
-            var message = await _context!.Messages!.FindAsync(messageId);
-            if (message == null)
-                throw new ArgumentException("Not Found");
-
-            message.IsReceived = true;
-            message.ReceivedAt = DateTime.Now;
-            await _context.SaveChangesAsync();
-        }
 
         public async Task<bool> Save()
         {

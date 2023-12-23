@@ -2,11 +2,6 @@
 using Game.DAL.Interfaces;
 using Game.Models.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Game.DAL.Repository
 {
@@ -30,6 +25,13 @@ namespace Game.DAL.Repository
             await Save();
 
             return newConnection;
+        }
+
+        public async Task<IEnumerable<Connection>> GetAllConnectionsByPlayerId(Guid playerId)
+        {
+            var allConnections = await _context!.Connections!.Where(c => c.PlayerId == playerId).ToListAsync();
+
+            return allConnections;
         }
 
         public async Task<bool> Save()

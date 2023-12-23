@@ -1,13 +1,6 @@
 ﻿using Game.DAL.Data;
 using Game.DAL.Interfaces;
-using Game.Models.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Game.DAL.Services
 {
@@ -16,7 +9,7 @@ namespace Game.DAL.Services
         private readonly DataContext _context;
         private IPlayerRepository _playerRepository;
         private IConnectionRepository _connectionRepository;
-        public ConnectionService(DataContext context, IPlayerRepository playerRepository,IConnectionRepository connectionRepository)
+        public ConnectionService(DataContext context, IPlayerRepository playerRepository, IConnectionRepository connectionRepository)
         {
             _context = context;
             _playerRepository = playerRepository;
@@ -53,27 +46,36 @@ namespace Game.DAL.Services
             return saved > 0 ? true : false;
         }
 
-        public Task<bool> DisconnectPlayerAsync(Guid playerId, string connectionId)
+        public async Task<bool> DisconnectPlayerAsync(Guid playerId, string connectionId)
         {
-            _chatRepo.CloseConnectionAsync(connectionId, DateTime.Now);
-            var connections = await _chatRepo.GetAllConnectionsByUserIdAsync(chatter);
+            bool isClosed = await CloseConnectionAsync(connectionId, DateTime.Now);
+            var connections = await _connectionRepository.GetAllConnectionsByPlayerId(playerId);
             if (!connections.Any(c => !c.IsClosed))
             {
-                await _chatterRepo.SetDisconnectedAsync(chatter);
-                return true;
+                return await SetPlayerDisconnectedAsync(playerId);
             }
             return false;
         }
 
-        public Task CloseConnectionAsync(string ChatId, DateTime endedAt)
+        public async Task<bool> CloseConnectionAsync(string connectionId, DateTime endedAt)
         {
-            var connection = _context?.Connections?.Find(connectionId);
+            var connection = await _context.Connections.FindAsync(connectionId);
             if (connection == null)
                 throw new ArgumentException("Not Found");
 
             connection.IsClosed = true;
             connection.EndedAt = endedAt;
-            _context!.SaveChanges();
+            return await Save();
+        }
+
+        public async Task<bool> SetPlayerDisconnectedAsync(Guid playerId)
+        {
+            var chatter = await _context!.Players!.FindAsync(playerId);
+            if (chatter == null)
+                throw new ArgumentException("Not Found");
+
+            chatter.InGame = false;
+            return await Save();
         }
     }
 }

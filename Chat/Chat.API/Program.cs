@@ -1,9 +1,8 @@
 using Chat.API.Hubs;
 using Chat.DAL.Data;
+using Chat.DAL.Interfaces;
 using Chat.DAL.Repositories;
-using Chat.DAL.Repositories.Interfaces;
-using Chat.Services;
-using Chat.Services.Interfaces;
+using Chat.DAL.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -15,6 +14,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddTransient<IConnectionService, ConnectionService>();
+builder.Services.AddTransient<IChatterService, ChatterService>();
+builder.Services.AddTransient<IMessageService, MessageService>();
 builder.Services.AddTransient<IConnectionRepository, ConnectionRepository>();
 builder.Services.AddTransient<IChatterRepository, ChatterRepository>();
 builder.Services.AddTransient<IMessageRepository, MessageRepository>();

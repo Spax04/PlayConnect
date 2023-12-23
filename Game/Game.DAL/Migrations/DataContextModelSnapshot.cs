@@ -104,23 +104,23 @@ namespace Game.DAL.Migrations
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("TEXT");
 
+                    b.Property<Guid>("GuestId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("HostId")
+                        .HasColumnType("TEXT");
+
                     b.Property<bool>("IsFinished")
                         .HasColumnType("INTEGER");
-
-                    b.Property<Guid>("Player1Id")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("Player2Id")
-                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Player1Id");
+                    b.HasIndex("GuestId");
 
-                    b.HasIndex("Player2Id");
+                    b.HasIndex("HostId");
 
                     b.ToTable("GameSessions");
                 });
@@ -240,21 +240,21 @@ namespace Game.DAL.Migrations
 
             modelBuilder.Entity("Game.Models.Models.GameSession", b =>
                 {
-                    b.HasOne("Game.Models.Models.Player", "Player1")
+                    b.HasOne("Game.Models.Models.Player", "Guest")
                         .WithMany()
-                        .HasForeignKey("Player1Id")
+                        .HasForeignKey("GuestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Game.Models.Models.Player", "Player2")
+                    b.HasOne("Game.Models.Models.Player", "Host")
                         .WithMany()
-                        .HasForeignKey("Player2Id")
+                        .HasForeignKey("HostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Player1");
+                    b.Navigation("Guest");
 
-                    b.Navigation("Player2");
+                    b.Navigation("Host");
                 });
 
             modelBuilder.Entity("Game.Models.Models.Move", b =>

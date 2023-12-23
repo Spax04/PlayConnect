@@ -25,11 +25,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <ProjectReference Include="..\Game.DAL\Game.DAL.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Game.DAL\Game.DAL.csproj" />
+    <Folder Include="Controllers\" />
   </ItemGroup>
 
 </Project>

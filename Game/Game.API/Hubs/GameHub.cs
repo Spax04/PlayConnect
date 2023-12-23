@@ -19,6 +19,8 @@ namespace Game.API.Hubs
             await base.OnConnectedAsync();
 
             var token = Context.GetHttpContext()?.Request.Query["access_token"];
+            var opponentId = Context.GetHttpContext()?.Request.Query["opponentId"];
+            var isHost = Context.GetHttpContext()?.Request.Query["isHost"];
 
             var tokenCheck = new JwtSecurityToken(token);
             string id = tokenCheck.Claims.First(x => x.Type == "userId").Value;
@@ -26,14 +28,10 @@ namespace Game.API.Hubs
 
             var player = await _playerRepository.GetOrCreatePlayerAsync(playerId);
 
-
             var isFirstConnect = await _connectionService.ConnectPlayerAsync((Guid)player.Id, Context.ConnectionId);
 
             await Clients.Others.SendAsync("PlayerConnected", player.Id.ToString());
-
-
         }
-
 
         public override async Task OnDisconnectedAsync(Exception? exception)
         {
@@ -50,11 +48,9 @@ namespace Game.API.Hubs
             if (player == null)
                 return;
 
-            if (await _chatService.DisconnectChatterAsync(player.Id, Context.ConnectionId))
+            if (await _connectionService.DisconnectPlayerAsync(player.Id, Context.ConnectionId))
             {
-                var lastSeen = await _chatService.GetLastSeenAsync(playerId);
-                player.LastSeen = lastSeen;
-                await Clients.Others.SendAsync("ChatterDisconnect", player.Id.ToString());
+                await Clients.Others.SendAsync("PlayerDisconnected", player.Id.ToString());
             }
 
         }

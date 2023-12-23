@@ -1,8 +1,7 @@
-﻿using Chat.DAL.Repositories.Interfaces;
+﻿using Chat.DAL.Interfaces;
 using Chat.Models.Helpers.ModelRequests;
 using Chat.Models.Helpers.ModelResponses;
 using Chat.Models.Models;
-using Chat.Services.Interfaces;
 using Microsoft.AspNetCore.SignalR;
 using System.IdentityModel.Tokens.Jwt;
 
@@ -11,14 +10,18 @@ namespace Chat.API.Hubs
     //[Authorize]
     public class ChatHub : Hub
     {
-        private IConnectionService _chatService;
+        private IConnectionService _connectionService;
         private IMessageRepository _messageRepository;
         private IConnectionRepository _connectionRepository;
-        public ChatHub(IConnectionService chatService, IMessageRepository messageRepository, IConnectionRepository connectionRepository)
+        private IMessageService _messageService;
+        private IChatterRepository _chatterRepository;
+        public ChatHub(IConnectionService connectionService, IMessageRepository messageRepository, IConnectionRepository connectionRepository, IMessageService messageService, IChatterRepository chatterRepository)
         {
-            _chatService = chatService;
+            _connectionService = connectionService;
             _messageRepository = messageRepository;
             _connectionRepository = connectionRepository;
+            _messageService = messageService;
+            _chatterRepository = chatterRepository;
         }
 
 
@@ -33,10 +36,10 @@ namespace Chat.API.Hubs
             string name = tokenCheck.Claims.First(x => x.Type == "name").Value;
             Guid chaterId = Guid.Parse(id);
 
-            var chatter = await _chatService.GetOrAddChatterAsync(chaterId, name);
+            var chatter = await _chatterRepository.GetOrCreateChatterAsync(chaterId, name);
 
 
-            var isFirstConnect = await _chatService.ConnectChatterAsync((Guid)chatter.Id, Context.ConnectionId);
+            var isFirstConnect = await _connectionService.ConnectChatterAsync((Guid)chatter.Id, Context.ConnectionId);
 
             await Clients.Others.SendAsync("ChatterConnected", chatter.Id.ToString());
 
@@ -54,15 +57,13 @@ namespace Chat.API.Hubs
             string id = tokenCheck.Claims.First(x => x.Type == "userId").Value;
             Guid chatterId = Guid.Parse(id);
 
-            var chatter = await _chatService.GetChatterAsync(chatterId);
+            var chatter = await _chatterRepository.GetChatterAsync(chatterId);
 
             if (chatter == null)
                 return;
 
-            if (await _chatService.DisconnectChatterAsync(chatter.Id, Context.ConnectionId))
+            if (await _connectionService.DisconnectChatterAsync(chatter.Id, Context.ConnectionId))
             {
-                var lastSeen = await _chatService.GetLastSeenAsync(chatterId);
-                chatter.LastSeen = lastSeen;
                 await Clients.Others.SendAsync("ChatterDisconnect", chatter.Id.ToString());
             }
 
@@ -98,7 +99,7 @@ namespace Chat.API.Hubs
 
             try
             {
-                await _messageRepository.SetMessageReceivedAsync(messageIdGuid);
+                await _messageService.SetMessageReceivedAsync(messageIdGuid);
             }
             catch
             {
@@ -106,8 +107,8 @@ namespace Chat.API.Hubs
                 {
 
                     await Clients.Client(connection.ConnectionId).SendAsync("OnMessageReceived",
-                        new MessageReceivedResponse() 
-                        { 
+                        new MessageReceivedResponse()
+                        {
                             ChatterId = request.ReceiverId,
                             MessageId = request.MessageId,
                             Status = false
@@ -129,21 +130,21 @@ namespace Chat.API.Hubs
             {
 
                 await Clients.Client(connection.ConnectionId).SendAsync("OnMessageReceived",
-                    new MessageReceivedResponse() 
+                    new MessageReceivedResponse()
                     {
                         ChatterId = request.ReceiverId,
                         MessageId = request.MessageId,
-                        Status = true 
+                        Status = true
                     }
                 );
-                 await Clients.Caller.SendAsync("OnMessageReceived",
-                       new MessageReceivedResponse()
-                       {
-                           ChatterId = request.SenderId,
-                           MessageId = request.MessageId,
-                           Status = true
-                       }
-                   );
+                await Clients.Caller.SendAsync("OnMessageReceived",
+                      new MessageReceivedResponse()
+                      {
+                          ChatterId = request.SenderId,
+                          MessageId = request.MessageId,
+                          Status = true
+                      }
+                  );
             }
         }
 

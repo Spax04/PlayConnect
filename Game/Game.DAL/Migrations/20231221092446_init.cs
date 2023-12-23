@@ -86,8 +86,8 @@ namespace Game.DAL.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Player1Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Player2Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    HostId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    GuestId = table.Column<Guid>(type: "TEXT", nullable: false),
                     IsFinished = table.Column<bool>(type: "INTEGER", nullable: false),
                     StartTime = table.Column<DateTime>(type: "TEXT", nullable: false),
                     EndTime = table.Column<DateTime>(type: "TEXT", nullable: false)
@@ -96,14 +96,14 @@ namespace Game.DAL.Migrations
                 {
                     table.PrimaryKey("PK_GameSessions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_GameSessions_Players_Player1Id",
-                        column: x => x.Player1Id,
+                        name: "FK_GameSessions_Players_GuestId",
+                        column: x => x.GuestId,
                         principalTable: "Players",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_GameSessions_Players_Player2Id",
-                        column: x => x.Player2Id,
+                        name: "FK_GameSessions_Players_HostId",
+                        column: x => x.HostId,
                         principalTable: "Players",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -157,7 +157,7 @@ namespace Game.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TicTacToeMove",
+                name: "TicTacToeMoves",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
@@ -166,9 +166,9 @@ namespace Game.DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TicTacToeMove", x => x.Id);
+                    table.PrimaryKey("PK_TicTacToeMoves", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TicTacToeMove_Moves_Id",
+                        name: "FK_TicTacToeMoves_Moves_Id",
                         column: x => x.Id,
                         principalTable: "Moves",
                         principalColumn: "Id",
@@ -201,14 +201,14 @@ namespace Game.DAL.Migrations
                 column: "GameSessionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GameSessions_Player1Id",
+                name: "IX_GameSessions_GuestId",
                 table: "GameSessions",
-                column: "Player1Id");
+                column: "GuestId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GameSessions_Player2Id",
+                name: "IX_GameSessions_HostId",
                 table: "GameSessions",
-                column: "Player2Id");
+                column: "HostId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Moves_GameSessionId",
@@ -225,7 +225,7 @@ namespace Game.DAL.Migrations
                 name: "GameResults");
 
             migrationBuilder.DropTable(
-                name: "TicTacToeMove");
+                name: "TicTacToeMoves");
 
             migrationBuilder.DropTable(
                 name: "GamePlayerStats");

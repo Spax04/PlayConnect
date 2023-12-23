@@ -1,4 +1,4 @@
-﻿using Chat.DAL.Repositories.Interfaces;
+﻿using Chat.DAL.Interfaces;
 using Chat.Models.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -10,9 +10,11 @@ namespace Chat.API.Controllers
     public class MessageController : ControllerBase
     {
         private readonly IMessageRepository _messageRepository;
-        public MessageController(IMessageRepository messageRepository)
+        private readonly IMessageService _messageService;
+        public MessageController(IMessageRepository messageRepository, IMessageService messageService)
         {
             _messageRepository = messageRepository;
+            _messageService = messageService;
         }
 
         [HttpGet]
@@ -30,7 +32,7 @@ namespace Chat.API.Controllers
                 return BadRequest("Chatter id is not correct");
             }
 
-            IEnumerable<Message> messagesHistory = await _messageRepository.UserMessagesBetween(chatterId1Guid, chatterId2Guid);
+            IEnumerable<Message> messagesHistory = await _messageRepository.GetUserMessagesBetween(chatterId1Guid, chatterId2Guid);
 
             return Ok(messagesHistory);
         }

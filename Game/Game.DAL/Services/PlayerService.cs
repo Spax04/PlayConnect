@@ -1,15 +1,10 @@
 ﻿using Game.DAL.Data;
+using Game.DAL.Interfaces;
 using Game.Models.Models;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Game.DAL.Services
 {
-    public class PlayerService
+    public class PlayerService : IPlayerService
     {
         private readonly DataContext _context;
         public PlayerService(DataContext context)

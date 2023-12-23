@@ -1,14 +1,10 @@
 ﻿using Game.Models.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Game.DAL.Interfaces
 {
     public interface IConnectionRepository
     {
         Task<Connection> CreateConnectionAsync(string connection, Guid playerId);
+        Task<IEnumerable<Connection>> GetAllConnectionsByPlayerId(Guid playerId);
     }
 }
