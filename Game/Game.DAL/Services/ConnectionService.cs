@@ -40,11 +40,7 @@ namespace Game.DAL.Services
             await Save();
         }
 
-        public async Task<bool> Save()
-        {
-            var saved = await _context.SaveChangesAsync();
-            return saved > 0 ? true : false;
-        }
+       
 
         public async Task<bool> DisconnectPlayerAsync(Guid playerId, string connectionId)
         {
@@ -76,6 +72,12 @@ namespace Game.DAL.Services
 
             chatter.InGame = false;
             return await Save();
+        }
+
+        public async Task<bool> Save()
+        {
+            var saved = await _context.SaveChangesAsync();
+            return saved > 0 ? true : false;
         }
     }
 }

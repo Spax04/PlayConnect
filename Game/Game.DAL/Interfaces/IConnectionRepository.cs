@@ -6,5 +6,6 @@ namespace Game.DAL.Interfaces
     {
         Task<Connection> CreateConnectionAsync(string connection, Guid playerId);
         Task<IEnumerable<Connection>> GetAllConnectionsByPlayerId(Guid playerId);
+        Task<Connection> GetConnectionByUserIdAsync(Guid userId);
     }
 }

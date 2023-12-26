@@ -34,6 +34,13 @@ namespace Game.DAL.Repository
             return allConnections;
         }
 
+        public async Task<Connection> GetConnectionByUserIdAsync(Guid userId)
+        {
+            Connection connection = await _context.Connections!.Where(c => c.PlayerId == userId && c.IsClosed == false).FirstOrDefaultAsync();
+
+            return connection;
+        }
+
         public async Task<bool> Save()
         {
             var saved = await _context.SaveChangesAsync();
