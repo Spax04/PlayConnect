@@ -13,11 +13,21 @@ export default {
     SERVER: {
       SEND_MESSAGE: 'SendMessage',
       FRIENDSHIP_REQUEST_SENDED: 'FriendRequestSended',
-      MESSAGE_RECEIVED : 'MessageReceived'
+      MESSAGE_RECEIVED: 'MessageReceived'
     }
   },
   GAME: {
-    CLIENT: {},
-    SERVER: {}
+    CLIENT: {
+      PLAYER_CONNECTED: 'PlayerConnected',
+      PLAYER_DISCONNECTED : 'PlayerDisconnected',
+      GET_INVITE_TO_GAME : 'GetInviteToGame',
+      GET_INVITE_RESPONSE : 'GetInviteResponse',
+      JOINED_TO_GAME:'JoinedToGame',
+      GAME_IS_READY:'GameIsReady'
+    },
+    SERVER: {INVITE_FRIEND_TO_GAME: 'InviteFriendToGame',
+    INVITE_RESPONSE_BY_GUEST: 'InviteResponseByGuest',
+    CREAETE_GAME_SESSION: 'CreateGameSession',
+    JOINT_TO_GAME_SESSION : 'JoinToGameSession'}
   }
 }

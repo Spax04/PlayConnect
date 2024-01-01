@@ -38,12 +38,9 @@ namespace Chat.API.Hubs
 
             var chatter = await _chatterRepository.GetOrCreateChatterAsync(chaterId, name);
 
-
             var isFirstConnect = await _connectionService.ConnectChatterAsync((Guid)chatter.Id, Context.ConnectionId);
 
             await Clients.Others.SendAsync("ChatterConnected", chatter.Id.ToString());
-
-
         }
 
 
@@ -138,13 +135,13 @@ namespace Chat.API.Hubs
                     }
                 );
                 await Clients.Caller.SendAsync("OnMessageReceived",
-                      new MessageReceivedResponse()
-                      {
-                          ChatterId = request.SenderId,
-                          MessageId = request.MessageId,
-                          Status = true
-                      }
-                  );
+                    new MessageReceivedResponse()
+                    {
+                        ChatterId = request.SenderId,
+                        MessageId = request.MessageId,
+                        Status = true
+                    }
+                );
             }
         }
 
