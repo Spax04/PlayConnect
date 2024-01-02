@@ -9,6 +9,24 @@ export const friendsSlice = createSlice({
     : {
         acceptedFriends: [],
         pendingFriends: []
+        //? Friend object example:
+        //?  {
+        //?     "userId": "0b256643-ab18-4c29-a586-68e9d74d16c0",
+        //?     "username": "Alex",
+        //?     "email": "alex@example.com",
+        //?     "token": "eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI2MmI0YzE1Ny0yODI4LTQ3NDAtYTExZC1mODAyMTgwMjE1N2EiLCJ1c2VySWQiOiIwYjI1NjY0My1hYjE4LTRjMjktYTU4Ni02OGU5ZDc0ZDE2YzAiLCJuYW1lIjoiQWxleCIsImVtYWlsIjoiYWxleEBleGFtcGxlLmNvbSIsImV4cCI6MTczNTc0ODgyNH0.6ezYG2RIaj0PZqt5ILJeb0ngmOJ5YcFzxa5GiPO6JsFgMIAWqb2503Dywq_iFUFOWZKKjB-PITnaEjLSrNXkJA",
+        //?     "refreshToken": null,
+        //?     "coins": 0,
+        //?     "isFriend": true,
+        //?     "isRequested": false,
+        //?     "isConnected": true,
+        //?     "country": {
+        //?         "id": "0eda96bc-4f00-445a-a1b9-1eb61086bbfe",
+        //?         "code": "AM",
+        //?         "name": "Armenia"
+        //?     },
+        //?     "isSucceed": true
+        //? }
       },
   reducers: {
     setFriends: (state, action) => {

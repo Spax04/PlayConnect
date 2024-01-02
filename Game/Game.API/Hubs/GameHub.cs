@@ -91,7 +91,7 @@ namespace Game.API.Hubs
             GameSession newGameSession = await _gameRepository.CreateGameSessionAsync(hostId, guestId);
 
             await Groups.AddToGroupAsync(Context.ConnectionId, newGameSession.Id.ToString());
-            await Clients.Group(newGameSession.Id.ToString()).SendAsync("UserConnected", new JoinToGameResponse { GameSessionId = newGameSession.Id.ToString(), PlayerId = newGameRequest.HostId });
+            await Clients.Group(newGameSession.Id.ToString()).SendAsync("JoinedToGame", new JoinToGameResponse { GameSessionId = newGameSession.Id.ToString(), PlayerId = newGameRequest.HostId });
 
             if (connection == null) return;
             await Clients.Client(connection.ConnectionId).SendAsync("GameIsReady", new JoinToGameRequest { GameSessionId = newGameSession.Id.ToString() });
@@ -102,7 +102,7 @@ namespace Game.API.Hubs
             if (!Guid.TryParse(joinToGameResponse.PlayerId, out var playerId)) return;
 
             await Groups.AddToGroupAsync(Context.ConnectionId, joinToGameResponse.GameSessionId);
-            await Clients.Group(joinToGameResponse.GameSessionId).SendAsync("UserConnected", new JoinToGameResponse { GameSessionId = joinToGameResponse.GameSessionId, PlayerId = playerId.ToString() });
+            await Clients.Group(joinToGameResponse.GameSessionId).SendAsync("JoinedToGame", new JoinToGameResponse { GameSessionId = joinToGameResponse.GameSessionId, PlayerId = playerId.ToString() });
         }
     }
 }
