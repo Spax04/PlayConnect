@@ -1,45 +1,75 @@
-import React,{useState} from 'react'
-import { Card } from 'react-bootstrap'
+import React, { useEffect, useState } from 'react'
+import { Card, Button } from 'react-bootstrap'
 import CardGroup from 'react-bootstrap/CardGroup'
 import GameCard from '../../components/GameCard'
-import FriendListModal from '../../components/FriendListModal'
 import '../styles/games.css'
+import axios from 'axios'
+import { useDispatch, useSelector } from 'react-redux'
+import { setGameTypes } from '../../context/slices/game'
+import { toast } from 'react-toastify'
+import { useNavigate } from 'react-router-dom'
+import FriendListModal from '../../components/FriendListModal'
 
 function GameMenuPage () {
+  const dispatch = useDispatch()
+  const game = useSelector(state => state.game)
+  const [show, setShow] = useState(false)
+  const [gameTypeList, setGameTypeList] = useState([])
 
-  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false)
+  const handleShow = () => setShow(true)
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const getGamesList = async () => {
+    console.log(game.gameTypes)
+
+    let toastId = toast.loading('Loading games, wait...')
+
+    await axios
+      .get(`${process.env.REACT_APP_GAME_SERVICE_URL}/api/game/game-type`)
+      .then(({ data }) => {
+        console.log(data)
+        dispatch(setGameTypes(data))
+        setGameTypeList(data)
+        toast.update(toastId, {
+          render: 'Game list uploaded',
+          type: toast.TYPE.SUCCESS,
+          autoClose: 3000,
+          closeButton: true,
+          isLoading: false
+        })
+      })
+      .catch(err =>
+        toast.update(toastId, {
+          render: `Some error: ${err}`,
+          type: toast.TYPE.ERROR,
+          autoClose: 3000,
+          closeButton: true,
+          isLoading: false
+        })
+      )
+  }
+  useEffect(() => {
+    game.gameTypes.length === 0
+      ? getGamesList()
+      : setGameTypeList(game.gameTypes)
+  }, [])
 
   return (
     <div className='gamePageMainBlock'>
-      <FriendListModal show={show} handleClose={handleClose}/>
-      <GameCard
-        title={'Tic Tac Toe'}
-        description={
-          'Tic-tac-toe is a two-player game played on a 3x3 grid. Each player takes turns placing an X or O on the grid. The first player to get three of their marks in a row wins the game.'
-        }
-        imgBg={require('../../assets/tic-tac-toeLogo.jpg')}
-        handleShow={handleShow}
-      />
+      <FriendListModal show={show} handleClose={handleClose} />
 
-      <GameCard
-        title={'Battle Ship'}
-        imgBg={require('../../assets/battleshipLogo.png')}
-        description={
-          "Battleship is a two-player game where players secretly arrange their ships and take turns firing to sink their opponent's fleet."
-        }
-        handleShow={handleShow}
-      />
-      <GameCard
-        title={'Checkers'}
-        imgBg={require('../../assets/checkersLogo.png')}
-        description={
-          "Checkers is a two-player strategy board game where players strategically move their pieces across an 8x8 checkered board, aiming to capture all of their opponent's pieces or block them from making any further moves."
-        }
-        handleShow={handleShow}
-      />
+      {gameTypeList.map(game => {
+        return (
+          <GameCard
+            key={game.id}
+            gameId={game.id}
+            title={game.name}
+            imgBg={game.image}
+            handleShow={handleShow}
+          />
+        )
+      })}
+      
     </div>
   )
 }

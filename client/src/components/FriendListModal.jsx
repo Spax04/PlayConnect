@@ -19,7 +19,7 @@ function FriendListModal ({ show, handleClose }) {
       </Modal.Header>
       <Modal.Body>
         {friendList.map(f => (
-          <div className='userBlock'>
+          <div key={f.userId} className='userBlock'>
             <div>
               <h5>{f.username}</h5>
               <p>{f.isConnected ? 'Online' : 'Offline'}</p>

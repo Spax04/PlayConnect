@@ -6,7 +6,7 @@ import FriendData from '../components/FriendData'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   setFriends,
-  setFriendsConnectionStatus
+  
 } from '../context/slices/friends'
 import { Button } from 'react-bootstrap'
 import { COLORS, ROUTES } from '../constants'

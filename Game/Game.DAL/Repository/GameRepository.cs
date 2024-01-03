@@ -1,5 +1,6 @@
 ﻿using Game.DAL.Data;
 using Game.DAL.Interfaces;
+using Game.Models.Dto.Requests;
 using Game.Models.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,6 +27,18 @@ namespace Game.DAL.Repository
             return await Save() ? newGameSession : null;
         }
 
+        public async Task CreateGameTypeAsync(GameTypeCreateRequest gameType)
+        {
+            var newGameType = new GameType()
+            {
+                Id = Guid.NewGuid(),
+                Name = gameType.Name,
+                Image = gameType.Image
+            };
+
+            await _context.GameTypes.AddAsync(newGameType);
+            await Save();
+        }
 
         public async Task<bool> UpdateSessionTimeAsync(Guid gameSessionId, bool isStarted)
         {
@@ -45,6 +58,11 @@ namespace Game.DAL.Repository
         {
             var saved = await _context.SaveChangesAsync();
             return saved > 0 ? true : false;
+        }
+
+        public async Task<IEnumerable<GameType>> GetGameTypesAsync()
+        {
+            return await _context.GameTypes.ToListAsync();
         }
     }
 }

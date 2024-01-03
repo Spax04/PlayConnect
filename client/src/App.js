@@ -12,12 +12,12 @@ import NavBar from './components/NavBar'
 import { useEffect } from 'react'
 import Footer from './components/Footer'
 import FriendsPage from './pages/FriendsPage'
-import useChatConnection from './hooks/useChatConnection'
+import useSocketConnection from './hooks/useSocketConnection'
 import ChatPage from './pages/ChatPage'
 import GameMenuPage from './pages/GamePages/GameMenuPage'
 
 function App () {
-  const { isOnline } = useChatConnection()
+  const { isOnline } = useSocketConnection()
 
   useEffect(() => {}, [isOnline])
 

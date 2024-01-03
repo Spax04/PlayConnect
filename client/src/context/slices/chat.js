@@ -45,7 +45,7 @@ console.log("Set received status: " + action.payload.status);
   }
 })
 
-export const { setConnection, addMessage, addChat, setReceivedStatus } =
+export const { setConnection : setChatServiceConnection, addMessage, addChat, setReceivedStatus } =
   chatSlice.actions
 
 export default chatSlice.reducer

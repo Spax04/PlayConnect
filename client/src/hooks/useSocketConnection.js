@@ -6,23 +6,29 @@ import {
   removeMiddleware,
   resetMiddlewares
 } from 'redux-dynamic-middlewares'
-import { setConnection } from '../context/slices/chat'
+import { setChatServiceConnection } from '../context/slices/chat'
 import { setGameServiceConnection } from '../context/slices/game'
 import { useDispatch } from 'react-redux'
 import { createGameConnection } from '../context/signalr/gameConnection'
+import axios from 'axios'
+import {
+  setFriends,
+} from '../context/slices/friends'
 
-function useChatConnection () {
+function useSocketConnection () {
   const [isOnline, setIsOnline] = useState(false)
   const user = useSelector(state => state.user)
   const [chatConnection, setChatConnection] = useState()
   const [gameConnection, setGameConnection] = useState()
   const dispatch = useDispatch()
 
-  const onUserOnline = () => {
+  const onUserOnline = async () => {
     setIsOnline(true)
 
-    const { signal: chatSignal, connection: chatConnect } = createChatConnection()
-    const { signal: gameSignal, connection: gameConnect } = createGameConnection()
+    const { signal: chatSignal, connection: chatConnect } =
+      createChatConnection()
+    const { signal: gameSignal, connection: gameConnect } =
+      createGameConnection()
 
     addMiddleware(chatSignal)
     addMiddleware(gameSignal)
@@ -31,7 +37,19 @@ function useChatConnection () {
     setGameConnection(gameConnect)
 
     dispatch(setGameServiceConnection(gameConnect))
-    dispatch(setConnection(chatConnect))
+    dispatch(setChatServiceConnection(chatConnect))
+
+    await axios
+      .get(
+        `${process.env.REACT_APP_IDENTITY_SERVICE_URL}/api/user/friends/${user.userid}`
+      )
+      .then(({ data }) => {
+        console.log(data)
+        dispatch(setFriends(data))
+      })
+      .catch(err => {
+        console.log(err)
+      })
   }
 
   const onUserOffline = () => {
@@ -63,4 +81,4 @@ function useChatConnection () {
   return { isOnline }
 }
 
-export default useChatConnection
+export default useSocketConnection

@@ -5,14 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Game.Models.Models
+namespace Game.Models.Dto.Requests
 {
-    public class GameType
+    public class GameTypeCreateRequest
     {
-        [Key]
-        public Guid Id { get; set; }
         public string? Name { get; set; }
         public byte[] Image { get; set; }
-
     }
 }
