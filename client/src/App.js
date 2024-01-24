@@ -16,15 +16,13 @@ import useSocketConnection from './hooks/useSocketConnection'
 import ChatPage from './pages/ChatPage'
 import GameMenuPage from './pages/GamePages/GameMenuPage'
 import TicTacToeGamePage from './pages/GamePages/TicTacToeGamePage'
-
 function App () {
   const navigate = useNavigate()
   const { isOnline } = useSocketConnection(navigate)
 
   useEffect(() => {}, [isOnline])
 
-  return (
-    <BrowserRouter>
+  return (<>
       <div className='d-flex flex-column'>
         <ToastContainer position='bottom-center' limit={1} />
 
@@ -50,7 +48,7 @@ function App () {
         </Container>
       </div>
       <Footer />
-    </BrowserRouter>
+  </>
   )
 }
 

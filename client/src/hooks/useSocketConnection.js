@@ -15,6 +15,7 @@ import {
   setFriends,
 } from '../context/slices/friends'
 import { useNavigate } from 'react-router-dom'
+import { setGameTypes } from '../context/slices/game'
 
 function useSocketConnection (navigate) {
   const [isOnline, setIsOnline] = useState(false)
@@ -23,9 +24,7 @@ function useSocketConnection (navigate) {
   const [gameConnection, setGameConnection] = useState()
   const dispatch = useDispatch()
 
-  const navigateToGamePage = (route)=>{
-    navigate(route);
-  }
+ 
 
   const onUserOnline = async () => {
     setIsOnline(true)
@@ -33,7 +32,7 @@ function useSocketConnection (navigate) {
     const { signal: chatSignal, connection: chatConnect } =
       createChatConnection()
     const { signal: gameSignal, connection: gameConnect } =
-      createGameConnection(navigateToGamePage)
+      createGameConnection(navigate)
 
     addMiddleware(chatSignal)
     addMiddleware(gameSignal)
@@ -55,6 +54,15 @@ function useSocketConnection (navigate) {
       .catch(err => {
         console.log(err)
       })
+      await axios
+      .get(`${process.env.REACT_APP_GAME_SERVICE_URL}/api/game/game-type`)
+      .then(({ data }) => {
+        console.log(data)
+        dispatch(setGameTypes(data))
+      })
+      .catch(err =>
+       console.log(err)
+      )
   }
 
   const onUserOffline = () => {

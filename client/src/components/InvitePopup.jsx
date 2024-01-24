@@ -30,6 +30,7 @@ function InvitePopup ({ guestId, gameTypeId, hostId }) {
 
   let gameInvite = game.gameTypes.find(g => g.id === gameTypeId)
   let host = friends.acceptedFriends.find(f => f.userId === hostId)
+  console.log(gameTypeId)
 
   console.log(gameInvite)
   console.log(guestId)

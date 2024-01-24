@@ -3,11 +3,11 @@ import { useEffect, useState } from 'react';
 import { useNavigate,useLocation } from 'react-router-dom';
 
 function useNavigationToGamePage(route) {
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
   
-    useEffect(() => {
-        navigate(route)
-      }, []);
+    // useEffect(() => {
+    //     navigate(route)
+    //   }, []);
   
     return ;
 }

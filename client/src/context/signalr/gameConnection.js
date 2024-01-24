@@ -10,16 +10,16 @@ import { useDispatch, useSelector } from 'react-redux'
 import { EVENTS, ROUTES } from '../../constants'
 import { toast } from 'react-toastify'
 import { Button } from 'react-bootstrap'
-import { useNavigate } from 'react-router-dom'
-import {switchInGame} from '../slices/game'
+import { gameStart } from '../slices/game'
 import InvitePopup from '../../components/InvitePopup'
 import { useEffect } from 'react'
 import useNavigationToGamePage from '../../hooks/useNavigationToGamePage'
+import GameInviteResponsePopup from '../../components/GameInviteResponsePopup.jsx'
 
-export function createGameConnection (navigateToGamePage) {
+export function createGameConnection (navigate) {
   const token = JSON.parse(localStorage.getItem('user')).token
   const userid = JSON.parse(localStorage.getItem('user')).userid
-  
+
   const connection = new HubConnectionBuilder()
     .configureLogging(LogLevel.Debug)
     .withUrl(`${process.env.REACT_APP_GAME_SERVICE_URL}/hub?`, {
@@ -65,14 +65,28 @@ export function createGameConnection (navigateToGamePage) {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: 'light',
+        theme: 'light'
       })
     })
-    .add(EVENTS.GAME.CLIENT.JOINED_TO_GAME, (joinedToGameResponse) => dispatch => {
-      dispatch(switchInGame);
-      const navigate = useNavigationToGamePage(`${ROUTES.TIC_TAC_TOE_GAME_PAGE}/${joinedToGameResponse.gameSessionId}`)
-      navigate()
-    })
+    .add(
+      EVENTS.GAME.CLIENT.JOINED_TO_GAME,
+      joinedToGameResponse => dispatch => {
+        console.log(joinedToGameResponse)
+        dispatch(gameStart(joinedToGameResponse.gameSessionId))
+       // window.location.replace()
+       navigate(`${ROUTES.TIC_TAC_TOE_GAME_PAGE}/${joinedToGameResponse.gameSessionId}`)
+        toast('Invite was accepted', {
+          position: 'top-left',
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'light'
+        })
+      }
+    )
     .add(EVENTS.GAME.CLIENT.GAME_IS_READY, () => dispatch => {})
 
   const signal = signalMiddleware({
@@ -82,5 +96,3 @@ export function createGameConnection (navigateToGamePage) {
 
   return { signal, connection }
 }
-
-
