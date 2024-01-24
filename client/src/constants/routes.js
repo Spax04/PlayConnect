@@ -5,5 +5,6 @@ export default {
     SIGNIN_PAGE: '/signin',
     FRIENDS_PAGE: '/friends',
     CHAT_PAGE:'/chat',
-    GAMES_PAGE:'/gamePage'
+    GAMES_PAGE:'/gamePage',
+    TIC_TAC_TOE_GAME_PAGE:'/tictactoe'
   }

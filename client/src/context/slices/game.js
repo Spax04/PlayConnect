@@ -4,7 +4,8 @@ export const gameSlice = createSlice({
   name: 'game',
   initialState: {
     connection: null,
-    gameTypes:[]
+    gameTypes:[],
+    inGame:false
   },
   reducers: {
     setConnection: (state, action) => {
@@ -12,10 +13,13 @@ export const gameSlice = createSlice({
     },
     setGameTypes : (state,action) =>{
       state.gameTypes = [state,...action.payload]
-    }
+    },
+    switchInGame :(state) =>{
+      state.inGame = state.inGame? false : true
+    },
   }
 })
 
-export const { setConnection : setGameServiceConnection ,setGameTypes} = gameSlice.actions
+export const { setConnection : setGameServiceConnection ,setGameTypes,switchInGame} = gameSlice.actions
 
 export default gameSlice.reducer

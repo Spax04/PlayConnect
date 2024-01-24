@@ -2,7 +2,7 @@ import './App.css'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import Container from 'react-bootstrap/Container'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Route, Routes, useNavigate } from 'react-router-dom'
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/AuthPages/LoginPage'
 import SigninPage from './pages/AuthPages/SigninPage'
@@ -15,9 +15,11 @@ import FriendsPage from './pages/FriendsPage'
 import useSocketConnection from './hooks/useSocketConnection'
 import ChatPage from './pages/ChatPage'
 import GameMenuPage from './pages/GamePages/GameMenuPage'
+import TicTacToeGamePage from './pages/GamePages/TicTacToeGamePage'
 
 function App () {
-  const { isOnline } = useSocketConnection()
+  const navigate = useNavigate()
+  const { isOnline } = useSocketConnection(navigate)
 
   useEffect(() => {}, [isOnline])
 
@@ -38,6 +40,10 @@ function App () {
               <Route
                 path={`${ROUTES.CHAT_PAGE}/:userid`}
                 element={<ChatPage />}
+              />
+              <Route
+                path={`${ROUTES.TIC_TAC_TOE_GAME_PAGE}/:sessionId`}
+                element={<TicTacToeGamePage />}
               />
             </Routes>
           </main>

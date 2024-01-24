@@ -14,13 +14,18 @@ import axios from 'axios'
 import {
   setFriends,
 } from '../context/slices/friends'
+import { useNavigate } from 'react-router-dom'
 
-function useSocketConnection () {
+function useSocketConnection (navigate) {
   const [isOnline, setIsOnline] = useState(false)
   const user = useSelector(state => state.user)
   const [chatConnection, setChatConnection] = useState()
   const [gameConnection, setGameConnection] = useState()
   const dispatch = useDispatch()
+
+  const navigateToGamePage = (route)=>{
+    navigate(route);
+  }
 
   const onUserOnline = async () => {
     setIsOnline(true)
@@ -28,7 +33,7 @@ function useSocketConnection () {
     const { signal: chatSignal, connection: chatConnect } =
       createChatConnection()
     const { signal: gameSignal, connection: gameConnect } =
-      createGameConnection()
+      createGameConnection(navigateToGamePage)
 
     addMiddleware(chatSignal)
     addMiddleware(gameSignal)

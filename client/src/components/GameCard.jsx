@@ -5,7 +5,7 @@ import Button from 'react-bootstrap/Button';
 import './styles/gameCard.css'
 
 
-function GameCard({imgBg,title,handleShow,gameId}) {
+function GameCard({imgBg,title,handleShow,gameTypeId,setCurrentGameTypeId}) {
 
   const [gameImage,setGameImage] = useState(null);
 
@@ -25,9 +25,15 @@ function GameCard({imgBg,title,handleShow,gameId}) {
   const imageUrl = URL.createObjectURL(byteArray);
   setGameImage(imageUrl)
   }
+  
+  const openFriendsList = ()=>{
+    handleShow()
+    setCurrentGameTypeId(gameTypeId)
+  }
+
   useEffect(()=>{
     createImage();
-  })
+  },[])
 
   return (
     <Card style={{ width: '18rem',margin: '1rem' }}>
@@ -37,7 +43,7 @@ function GameCard({imgBg,title,handleShow,gameId}) {
       <Card.Title>{title}</Card.Title>
       <Card.Subtitle className="mb-2 text-muted"></Card.Subtitle>
       <Button className='m-1' variant="primary">Play random</Button>
-      <Button className='m-1' variant="success" onClick={handleShow}>Invite friend</Button>
+      <Button className='m-1' variant="success"  onClick={openFriendsList}>Invite friend</Button>
     </Card.Body>
   </Card>
   )

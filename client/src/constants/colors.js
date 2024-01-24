@@ -5,7 +5,8 @@ export default {
   white: '#FFFFF0',
   dark: '#4a4a4a',
   red: '#DB3A34',
+  darkRed: '#A52D27',
   yellow:'#FFBC0A',
   green:'#9acd32',
-  darkGreen:'#14b61f',
+  darkGreen:'#7D9930',
 }

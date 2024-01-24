@@ -15,7 +15,7 @@ function GameMenuPage () {
   const game = useSelector(state => state.game)
   const [show, setShow] = useState(false)
   const [gameTypeList, setGameTypeList] = useState([])
-
+  const [currentGameTypeId,setCurrentGameTypeId] = useState();
   const handleClose = () => setShow(false)
   const handleShow = () => setShow(true)
 
@@ -49,23 +49,26 @@ function GameMenuPage () {
       )
   }
   useEffect(() => {
+    console.log(currentGameTypeId);
     game.gameTypes.length === 0
       ? getGamesList()
       : setGameTypeList(game.gameTypes)
+
   }, [])
 
   return (
     <div className='gamePageMainBlock'>
-      <FriendListModal show={show} handleClose={handleClose} />
+    <FriendListModal show={show} currentGameTypeId={currentGameTypeId} handleClose={handleClose} />
 
       {gameTypeList.map(game => {
         return (
           <GameCard
             key={game.id}
-            gameId={game.id}
+            gameTypeId={game.id}
             title={game.name}
             imgBg={game.image}
             handleShow={handleShow}
+            setCurrentGameTypeId={setCurrentGameTypeId}
           />
         )
       })}

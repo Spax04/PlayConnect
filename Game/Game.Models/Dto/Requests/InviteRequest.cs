@@ -9,7 +9,8 @@ namespace Game.Models.Dto.Requests
 {
     public class InviteRequest
     {
-        public string? FriendId { get; set; }
-        public GameType GameType { get; set; }
+        public string HostId { get; set; }
+        public string? GuestId { get; set; }
+        public string GameTypeId { get; set; }
     }
 }
