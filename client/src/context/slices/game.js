@@ -13,15 +13,14 @@ export const gameSlice = createSlice({
       state.connection = action.payload
     },
     setGameTypes : (state,action) =>{
-      state.gameTypes = [state,...action.payload]
+      state.gameTypes = [...action.payload]
+      sessionStorage.setItem('gameTypes', JSON.stringify(action.payload))
     },
     
     gameStart:(state,action)=>{
       console.log(action);
       state.inGame = state.inGame? false : true;
       state.currentSessionId = action.payload
-
-      console.log(action.gameSessionId);
     }
   }
 })

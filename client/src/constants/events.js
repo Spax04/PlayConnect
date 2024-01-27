@@ -21,7 +21,7 @@ export default {
       PLAYER_CONNECTED: 'PlayerConnected',
       PLAYER_DISCONNECTED: 'PlayerDisconnected',
       GET_INVITE_TO_GAME: 'GetInviteToGame',
-      GET_INVITE_RESPONSE: 'GetInviteResponse',
+      GET_REFUSAL_RESPONSE: 'GetRefusalResponse',
       JOINED_TO_GAME: 'JoinedToGame',
       GAME_IS_READY: 'GameIsReady'
     },

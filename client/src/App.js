@@ -40,7 +40,7 @@ function App () {
                 element={<ChatPage />}
               />
               <Route
-                path={`${ROUTES.TIC_TAC_TOE_GAME_PAGE}/:sessionId`}
+                path={`${ROUTES.GAMES.TIC_TAC_TOE_GAME_PAGE}/:sessionId`}
                 element={<TicTacToeGamePage />}
               />
             </Routes>

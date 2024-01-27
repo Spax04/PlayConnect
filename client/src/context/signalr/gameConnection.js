@@ -19,6 +19,7 @@ import GameInviteResponsePopup from '../../components/GameInviteResponsePopup.js
 export function createGameConnection (navigate) {
   const token = JSON.parse(localStorage.getItem('user')).token
   const userid = JSON.parse(localStorage.getItem('user')).userid
+  const gameTypes = JSON.parse(sessionStorage.getItem('gameTypes'))
 
   const connection = new HubConnectionBuilder()
     .configureLogging(LogLevel.Debug)
@@ -46,7 +47,6 @@ export function createGameConnection (navigate) {
         />,
         {
           position: 'top-left',
-          autoClose: 5000,
           hideProgressBar: true,
           closeOnClick: true,
           pauseOnHover: true,
@@ -56,7 +56,7 @@ export function createGameConnection (navigate) {
         }
       )
     })
-    .add(EVENTS.GAME.CLIENT.GET_INVITE_RESPONSE, inviteResponse => dispatch => {
+    .add(EVENTS.GAME.CLIENT.GET_REFUSAL_RESPONSE, () => dispatch => {
       toast.error('Invite was refused', {
         position: 'bottom-center',
         autoClose: 5000,
@@ -72,12 +72,35 @@ export function createGameConnection (navigate) {
       EVENTS.GAME.CLIENT.JOINED_TO_GAME,
       joinedToGameResponse => dispatch => {
         console.log(joinedToGameResponse)
+        console.log(gameTypes);
         dispatch(gameStart(joinedToGameResponse.gameSessionId))
-       // window.location.replace()
-       navigate(`${ROUTES.TIC_TAC_TOE_GAME_PAGE}/${joinedToGameResponse.gameSessionId}`)
+        let gameName
+        let gameRoute
+        gameTypes.forEach(game => {
+          if (joinedToGameResponse.gameTypeId === game.id) {
+            gameName = game.name.replace(/ /g, '').toLowerCase()
+            switch (gameName) {
+              case 'tictactoe':
+                gameRoute = ROUTES.GAMES.TIC_TAC_TOE_GAME_PAGE
+                return
+              case 'battleship':
+                gameRoute = ROUTES.GAMES.BATTLESHIP_GAME_PAGE
+                return
+              case 'checkers':
+                gameRoute = ROUTES.GAMES.CHECKERS_GAME_PAGE
+                return
+              default:
+                break
+            }
+          }
+        })
+        console.log(gameName)
+       
+        console.log(gameRoute)
+        navigate(`${gameRoute}/${joinedToGameResponse.gameSessionId}`)
         toast('Invite was accepted', {
           position: 'top-left',
-          autoClose: 5000,
+          autoClose: 3000,
           hideProgressBar: true,
           closeOnClick: true,
           pauseOnHover: true,

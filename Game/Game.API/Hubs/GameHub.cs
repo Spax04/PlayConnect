@@ -61,7 +61,7 @@ namespace Game.API.Hubs
         }
 
         public async Task InviteFriendToGame(InviteRequest request)
-         {
+        {
             if (!Guid.TryParse(request.GuestId, out var friendId)) return;
 
             Connection connection = await _connectionRepository.GetConnectionByUserIdAsync(friendId);
@@ -86,14 +86,14 @@ namespace Game.API.Hubs
                 GameSession newGameSession = await _gameRepository.CreateGameSessionAsync(hostId, guestId);
                 await Groups.AddToGroupAsync(Context.ConnectionId, newGameSession.Id.ToString());
                 await Groups.AddToGroupAsync(hostConnection.ConnectionId, newGameSession.Id.ToString());
-                
-                await Clients.Group(newGameSession.Id.ToString()).SendAsync("JoinedToGame", new JoinToGameResponse { GameSessionId = newGameSession.Id.ToString(), PlayerId = response.HostId });
-                await Clients.Group(newGameSession.Id.ToString()).SendAsync("JoinedToGame", new JoinToGameResponse { GameSessionId = newGameSession.Id.ToString(), PlayerId = response.GuestId });
+
+                await Clients.Group(newGameSession.Id.ToString()).SendAsync("JoinedToGame", new JoinToGameResponse { GameSessionId = newGameSession.Id.ToString(), PlayerId = response.HostId, GameTypeId = response.GameTypeId });
+                await Clients.Group(newGameSession.Id.ToString()).SendAsync("JoinedToGame", new JoinToGameResponse { GameSessionId = newGameSession.Id.ToString(), PlayerId = response.GuestId, GameTypeId = response.GameTypeId });
             }
             else
             {
 
-                await Clients.Client(hostConnection.ConnectionId).SendAsync("GetInviteResponse", response);
+                await Clients.Client(hostConnection.ConnectionId).SendAsync("GetRefusalResponse");
             }
 
         }

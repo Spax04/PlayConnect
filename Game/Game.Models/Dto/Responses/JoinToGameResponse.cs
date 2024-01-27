@@ -3,7 +3,7 @@
     public class JoinToGameResponse
     {
         public string GameSessionId { get; set; }
-
+        public string GameTypeId { get; set; }
         public string PlayerId { get; set; }
     }
 }
