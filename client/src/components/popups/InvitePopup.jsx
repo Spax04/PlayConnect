@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { BiSolidMessageSquareCheck } from 'react-icons/bi'
 import { BiSolidMessageSquareX } from 'react-icons/bi'
-import { COLORS, EVENTS } from '../constants'
+import { COLORS, EVENTS } from '../../constants'
 
 function InvitePopup ({ guestId, gameTypeId, hostId }) {
   const game = useSelector(state => state.game)

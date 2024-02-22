@@ -10,16 +10,15 @@ import { useDispatch, useSelector } from 'react-redux'
 import { EVENTS, ROUTES } from '../../constants'
 import { toast } from 'react-toastify'
 import { Button } from 'react-bootstrap'
-import { gameStart } from '../slices/game'
-import InvitePopup from '../../components/InvitePopup'
+import { addParticipant, gameStart, setNewMove } from '../slices/game'
+import InvitePopup from '../../components/popups/InvitePopup.jsx'
 import { useEffect } from 'react'
 import useNavigationToGamePage from '../../hooks/useNavigationToGamePage'
-import GameInviteResponsePopup from '../../components/GameInviteResponsePopup.jsx'
+import GameInviteResponsePopup from '../../components/popups/GameInviteResponsePopup.jsx'
 
 export function createGameConnection (navigate) {
   const token = JSON.parse(localStorage.getItem('user')).token
-  const userid = JSON.parse(localStorage.getItem('user')).userid
-  const gameTypes = JSON.parse(sessionStorage.getItem('gameTypes'))
+  const user = JSON.parse(localStorage.getItem('user'))
 
   const connection = new HubConnectionBuilder()
     .configureLogging(LogLevel.Debug)
@@ -71,34 +70,50 @@ export function createGameConnection (navigate) {
     .add(
       EVENTS.GAME.CLIENT.JOINED_TO_GAME,
       joinedToGameResponse => dispatch => {
-        console.log(joinedToGameResponse)
-        console.log(gameTypes);
-        dispatch(gameStart(joinedToGameResponse.gameSessionId))
-        let gameName
-        let gameRoute
-        gameTypes.forEach(game => {
-          if (joinedToGameResponse.gameTypeId === game.id) {
-            gameName = game.name.replace(/ /g, '').toLowerCase()
-            switch (gameName) {
-              case 'tictactoe':
-                gameRoute = ROUTES.GAMES.TIC_TAC_TOE_GAME_PAGE
-                return
-              case 'battleship':
-                gameRoute = ROUTES.GAMES.BATTLESHIP_GAME_PAGE
-                return
-              case 'checkers':
-                gameRoute = ROUTES.GAMES.CHECKERS_GAME_PAGE
-                return
-              default:
-                break
+        const user = JSON.parse(localStorage.getItem('user'))
+
+        if (joinedToGameResponse.playerId === user.userid) {
+          const gameTypes = JSON.parse(sessionStorage.getItem('gameTypes'))
+          dispatch(gameStart(joinedToGameResponse))
+          let gameName
+          let gameRoute
+          gameTypes.forEach(game => {
+            if (joinedToGameResponse.gameTypeId === game.id) {
+              gameName = game.name.replace(/ /g, '').toLowerCase()
+              switch (gameName) {
+                case 'tictactoe':
+                  gameRoute = ROUTES.GAMES.TIC_TAC_TOE_GAME_PAGE
+                  return
+                case 'battleship':
+                  gameRoute = ROUTES.GAMES.BATTLESHIP_GAME_PAGE
+                  return
+                case 'checkers':
+                  gameRoute = ROUTES.GAMES.CHECKERS_GAME_PAGE
+                  return
+                default:
+                  break
+              }
             }
-          }
-        })
-        console.log(gameName)
-       
-        console.log(gameRoute)
-        navigate(`${gameRoute}/${joinedToGameResponse.gameSessionId}`)
-        toast('Invite was accepted', {
+          })
+          console.log(gameName)
+
+          console.log(gameRoute)
+          navigate(`${gameRoute}/${joinedToGameResponse.gameSessionId}`)
+        }
+      }
+    )
+    .add(EVENTS.GAME.CLIENT.READY_TO_GAME, response => dispatch => {
+      const user = JSON.parse(localStorage.getItem('user'))
+
+      if (response.playerId !== user.userid) {
+        dispatch(
+          addParticipant({
+            participantId: response.playerId,
+            participantName: response.playerName,
+            isPlayer: response.isPlayer
+          })
+        )
+        toast(response.message, {
           position: 'top-left',
           autoClose: 3000,
           hideProgressBar: true,
@@ -106,11 +121,24 @@ export function createGameConnection (navigate) {
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: 'light'
+          theme: 'colored'
         })
       }
-    )
-    .add(EVENTS.GAME.CLIENT.GAME_IS_READY, () => dispatch => {})
+    })
+    .add(EVENTS.GAME.CLIENT.NEW_GAME_MOVE, response => dispatch => {
+      console.log(response)
+      const user = JSON.parse(localStorage.getItem('user'))
+
+      const gameMove = JSON.parse(response.gameMove)
+      const moveHistory = JSON.parse(gameMove.moveHistoryJson)
+
+      console.log('Game move: ', gameMove)
+      console.log('Move history: ', moveHistory)
+
+      dispatch(setNewMove({ moveHistory, moveNumber: gameMove.moveNumber }))
+
+      // TODO: Need to recive an object from API and put it to history,need update to 2 users
+    })
 
   const signal = signalMiddleware({
     callbacks,

@@ -8,19 +8,18 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setGameTypes } from '../../context/slices/game'
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
-import FriendListModal from '../../components/FriendListModal'
+import FriendListModal from '../../components/modals/FriendListModal'
 
 function GameMenuPage () {
   const dispatch = useDispatch()
   const game = useSelector(state => state.game)
-  const [show, setShow] = useState(false)
   const [gameTypeList, setGameTypeList] = useState([])
   const [currentGameTypeId,setCurrentGameTypeId] = useState();
+  const [show, setShow] = useState(false)
   const handleClose = () => setShow(false)
   const handleShow = () => setShow(true)
 
   const getGamesList = async () => {
-    console.log(game.gameTypes)
 
     let toastId = toast.loading('Loading games, wait...')
 
@@ -49,7 +48,6 @@ function GameMenuPage () {
       )
   }
   useEffect(() => {
-    console.log(currentGameTypeId);
     game.gameTypes.length === 0
       ? getGamesList()
       : setGameTypeList(game.gameTypes)

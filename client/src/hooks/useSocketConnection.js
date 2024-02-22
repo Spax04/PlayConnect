@@ -57,7 +57,7 @@ function useSocketConnection (navigate) {
       await axios
       .get(`${process.env.REACT_APP_GAME_SERVICE_URL}/api/game/game-type`)
       .then(({ data }) => {
-        console.log(data)
+        console.log("Game types requested:" + data)
         dispatch(setGameTypes(data))
       })
       .catch(err =>

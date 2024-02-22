@@ -1,15 +1,13 @@
 ﻿using Game.Models.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Game.Models.Tic_Tac_Toe
 {
     public class TicTacToeMove : Move
     {
-        public int Row { get; set; }
-        public int Column { get; set; }
+        [Column(TypeName = "json")]
+        public string MoveHistoryJson { get; set; }
+
+
     }
 }

@@ -2,6 +2,7 @@
 using Game.DAL.Interfaces;
 using Game.Models.Dto.Requests;
 using Game.Models.Models;
+using Game.Models.Tic_Tac_Toe;
 using Microsoft.EntityFrameworkCore;
 
 namespace Game.DAL.Repository
@@ -54,15 +55,34 @@ namespace Game.DAL.Repository
 
             return await Save();
         }
+
+        public async Task<IEnumerable<GameType>> GetGameTypesAsync()
+        {
+            return await _context.GameTypes.ToListAsync();
+        }
+
+        public async Task<GameType> GetGameTypeByIdAsync(Guid gameTypeId)
+        {
+            return await _context.GameTypes.FirstOrDefaultAsync(x => x.Id == gameTypeId);
+        }
+
+        public async Task<bool> SaveTicTacToeMove(TicTacToeMove ticTacToeMove)
+        {
+            await _context.TicTacToeMoves.AddAsync(ticTacToeMove);
+
+            return await Save();
+        }
+
+        public async Task<GamePlayerStat> GetGamePlayerStatByPlayerAndGameIdAsync(Guid playerId, Guid gameTypeId)
+        {
+            return await _context.GamePlayerStats.FirstOrDefaultAsync(gp => gp.GameTypeId == gameTypeId && gp.PlayerId == playerId);
+        }
         public async Task<bool> Save()
         {
             var saved = await _context.SaveChangesAsync();
             return saved > 0 ? true : false;
         }
 
-        public async Task<IEnumerable<GameType>> GetGameTypesAsync()
-        {
-            return await _context.GameTypes.ToListAsync();
-        }
+
     }
 }

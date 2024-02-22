@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 
-import { COLORS, EVENTS } from '../constants'
+import { COLORS, EVENTS } from '../../constants'
 import { MdVideogameAsset } from 'react-icons/md'
 import { MdVideogameAssetOff } from 'react-icons/md'
 
 function GameInviteResponsePopup ({ route }) {
-// const navigate = useNavigate()
+  // const navigate = useNavigate()
   const styles = {
     changeColor: {
       color: 'black'

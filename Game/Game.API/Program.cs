@@ -16,6 +16,7 @@ builder.Services.AddTransient<IGameRepository, GameRepository>();
 builder.Services.AddTransient<IConnectionRepository, ConnectionRepository>();
 builder.Services.AddTransient<IConnectionService, ConnectionService>();
 builder.Services.AddTransient<IPlayerService, PlayerService>();
+builder.Services.AddTransient<IGameService, GameService>();
 
 // Connecting DataBase
 if (builder.Environment.IsProduction())

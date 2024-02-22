@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react'
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 import { useDispatch, useSelector } from 'react-redux'
-import './styles/friendListModal.css'
-import { EVENTS } from '../constants'
+import '../styles/friendListModal.css'
+import { EVENTS } from '../../constants'
 
 function FriendListModal ({ show, handleClose, currentGameTypeId }) {
   const [friendList, setFriendList] = useState([])

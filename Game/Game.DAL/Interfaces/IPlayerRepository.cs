@@ -1,9 +1,4 @@
 ﻿using Game.Models.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Game.DAL.Interfaces
 {
@@ -12,5 +7,6 @@ namespace Game.DAL.Interfaces
         Task<Player> GetOrCreatePlayerAsync(Guid playerId);
         Task<Player> CreatePlayerAsync(Guid playerId);
         Task<Player> GetPlayerAsync(Guid playerId);
+        Task<bool> Save();
     }
 }
