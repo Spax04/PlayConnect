@@ -8,6 +8,7 @@ namespace Game.Models.Models
         public Guid GameSessionId { get; set; }
         public int MoveNumber { get; set; }
         public Guid GameTypeId { get; set; }
+        public string MoveHistoryJson { get; set; }
 
         [ForeignKey("GameTypeId")]
         public GameType GameType { get; set; }

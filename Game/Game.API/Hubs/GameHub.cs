@@ -106,6 +106,8 @@ namespace Game.API.Hubs
                         GamePoints = hostStats.Points,
                     });
                 else
+                {
+                    await _gameRepository.CreateGamePlayerStats(hostId, gameTypeId);
                     await Clients.Group(newGameSession.Id.ToString()).SendAsync("JoinedToGame", new JoinToGameResponse
                     {
                         GameSessionId = newGameSession.Id.ToString(),
@@ -116,6 +118,7 @@ namespace Game.API.Hubs
                         GameLevel = 1,
                         GamePoints = 0,
                     });
+                }
 
 
                 if (guestStats != null)
@@ -130,6 +133,10 @@ namespace Game.API.Hubs
                         GamePoints = guestStats.Points,
                     });
                 else
+                {
+
+                    await _gameRepository.CreateGamePlayerStats(guestId, gameTypeId);
+
                     await Clients.Group(newGameSession.Id.ToString()).SendAsync("JoinedToGame", new JoinToGameResponse
                     {
                         GameSessionId = newGameSession.Id.ToString(),
@@ -140,6 +147,7 @@ namespace Game.API.Hubs
                         GameLevel = 1,
                         GamePoints = 0,
                     });
+                }
             }
             else
             {
@@ -171,27 +179,35 @@ namespace Game.API.Hubs
             if (!Guid.TryParse(moveRequest.GameTypeId, out var gameTypeId))
                 return;
 
-            if (!await _gameService.RecognizeAndSaveGameMoveAsync(gameTypeId, moveRequest.GameMove))
+            Move move = await _gameService.ConvertJsonToGameMoveAsync(gameTypeId, moveRequest.GameMove);
+
+            if (!await _gameRepository.SaveGameMoveAsync(move))
             {
-                throw new InvalidOperationException();
+                throw new Exception();
             }
 
             await Clients.Group(moveRequest.GameSessionId).SendAsync("NewGameMove", moveRequest);
 
         }
 
-        public async Task GameOver(GameMoveRequest moveRequest)
+        public async Task GameOver(GameOverRequest gameOverRequest)
         {
-            if (!Guid.TryParse(moveRequest.GameTypeId, out var gameTypeId))
+            if (!Guid.TryParse(gameOverRequest.GameSessionId, out var gameSessionId))
                 return;
+            if (!Guid.TryParse(gameOverRequest.GameTypeId, out var gameTypeId))
+                return;
+            if (!Guid.TryParse(gameOverRequest.PlayerId, out var playerId))
+                return;
+            if (!Guid.TryParse(gameOverRequest.OpponentId, out var opponentId))
+                return;
+            GamePlayerStat gamePlayerStats;
 
-            if (!await _gameService.RecognizeAndSaveGameMoveAsync(gameTypeId, moveRequest.GameMove))
-            {
-                throw new InvalidOperationException();
-            }
+            await _gameRepository.UpdateGamePlayerStatsAsync(playerId, gameTypeId, gameOverRequest.NewLevel, gameOverRequest.NewPoints);
+            gamePlayerStats = await _gameRepository.GetGamePlayerStatByPlayerAndGameIdAsync(playerId, gameTypeId);
+            await _gameRepository.CreateGameResultAsync(gameSessionId, gamePlayerStats.Id, gameTypeId, playerId, opponentId, gameOverRequest.IsWinner);
 
-            await Clients.Group(moveRequest.GameSessionId).SendAsync("NewGameMove", moveRequest);
 
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, gameOverRequest.GameSessionId);
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using Game.DAL.Interfaces;
 using Game.Models.Models;
-using Game.Models.Tic_Tac_Toe;
 using Newtonsoft.Json;
 
 namespace Game.DAL.Services
@@ -23,37 +22,21 @@ namespace Game.DAL.Services
             return r == 0 ? false : true;
         }
 
-        public async Task<bool> RecognizeAndSaveGameMoveAsync(Guid gameTypeId, string gameMove)
+        public async Task<Move> ConvertJsonToGameMoveAsync(Guid gameTypeId, string gameMove)
         {
             GameType gameType = await _gameRepository.GetGameTypeByIdAsync(gameTypeId);
+            Move move = JsonConvert.DeserializeObject<Move>(gameMove);
 
-            switch (gameType.Name)
+            if(move == null)
             {
-                case "Tic Tac Toe":
 
-                    try
-                    {
-
-                        TicTacToeMove ticTacToeMove = JsonConvert.DeserializeObject<TicTacToeMove>(gameMove);
-                        return await _gameRepository.SaveTicTacToeMove(ticTacToeMove);
+                throw new Exception();
                     }
-                    catch (Exception ex)
-                    {
-                        await Console.Out.WriteLineAsync(ex.Message);
-                    }
-                    break;
 
-                case "Battleship":
-                    break;
-                case "Checkers":
-                    break;
-                default:
-                    break;
-            }
-
-            throw new NotImplementedException();
+            return move;
+            
         }
 
-
+       
     }
 }

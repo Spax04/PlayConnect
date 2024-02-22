@@ -16,21 +16,22 @@ function TicTacToeGamePage () {
   const [mySign, setMySign] = useState('')
   const [opponentName, setOpponentName] = useState('')
   const [isMyTurn, setIsMyTurn] = useState(false)
-  const [winner,setWinner] = useState(null)
+  const [winner, setWinner] = useState(null)
 
   const [show, setShow] = useState(false)
   const handleClose = () => {
     setShow(false)
     navigate(ROUTES.HOME_PAGE)
-
   }
   const handleShow = () => setShow(true)
 
   const game = useSelector(state => state.game)
   const user = useSelector(state => state.user)
 
-  
-  
+  const isBoardFull = squares => {
+    return squares.every(square => square !== null)
+  }
+
   const handleClick = i => {
     if (isMyTurn) {
       const newHistory = history.slice(0, stepNumber + 1)
@@ -42,8 +43,6 @@ function TicTacToeGamePage () {
       }
 
       squares[i] = mySign
-
-      
 
       const guid = generateGuid()
       const gameMove = JSON.stringify({
@@ -82,14 +81,28 @@ function TicTacToeGamePage () {
       setCurrentBoard(
         game.currentSession.gameHistory[game.currentSession.moveNumber]
       )
-      setWinner(calculateWinner( game.currentSession.gameHistory[game.currentSession.moveNumber].squares))
-     
+      setWinner(
+        calculateWinner(
+          game.currentSession.gameHistory[game.currentSession.moveNumber]
+            .squares
+        )
+      )
+
+      // CHECK HERE IS GAME IS TIE
+      if (
+        !winner &&
+        isBoardFull(
+          game.currentSession.gameHistory[game.currentSession.moveNumber]
+            .squares
+        )
+      ) {
+        setWinner('Tie')
+      }
     }
   }, [game.currentSession.gameHistory])
 
   useEffect(() => {
-    if(winner){
-
+    if (winner) {
       handleShow()
     }
   }, [winner])
@@ -110,14 +123,21 @@ function TicTacToeGamePage () {
 
   return (
     <div className='game'>
-      <GameResultModal show={show} handleClose={handleClose} isWon={winner=== mySign? true:false} />
+      <GameResultModal
+        show={show}
+        handleClose={handleClose}
+        isWon={winner === mySign ? true : false}
+        isTie={winner === 'Tie' ? true : false}
+      />
       <div className='game-board'>
         <TicTicToeBoard squares={currentBoard.squares} onClick={handleClick} />
       </div>
       <div className='game-info'>
         <div>
           {winner
-            ? `Winner: ${winner=== mySign? "Me":opponentName}`
+            ? winner === 'Tie'
+              ? 'TIE'
+              : `Winner: ${winner === mySign ? 'Me' : opponentName}`
             : `Current players turn: ${isMyTurn ? 'Me' : opponentName}`}
         </div>
         {/* <ol>{renderMoves()}</ol> */}

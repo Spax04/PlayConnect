@@ -20,7 +20,7 @@ namespace Game.Models.Models
         [ForeignKey("PlayerId")]
         public Player? Player { get; set; }
         public int Level { get; set; }
-        public int Points { get; set; }
+        public double Points { get; set; }
 
         public ICollection<GameResult> Results { get; set; }
 

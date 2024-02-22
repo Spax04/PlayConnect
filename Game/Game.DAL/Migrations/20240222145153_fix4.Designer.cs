@@ -3,6 +3,7 @@ using System;
 using Game.DAL.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Game.DAL.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240222145153_fix4")]
+    partial class fix4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.25");
@@ -80,32 +82,17 @@ namespace Game.DAL.Migrations
                     b.Property<Guid>("GameSessionId")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("GameTypeId")
-                        .HasColumnType("TEXT");
-
                     b.Property<bool>("IsWinner")
                         .HasColumnType("INTEGER");
 
-                    b.Property<Guid>("OpponentId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("PlayedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("PlayerId")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("Score")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
                     b.HasIndex("GamePlayerStatsId");
 
                     b.HasIndex("GameSessionId");
-
-                    b.HasIndex("GameTypeId");
-
-                    b.HasIndex("OpponentId");
-
-                    b.HasIndex("PlayerId");
 
                     b.ToTable("GameResults");
                 });
@@ -170,10 +157,6 @@ namespace Game.DAL.Migrations
                     b.Property<Guid>("GameTypeId")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("MoveHistoryJson")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.Property<int>("MoveNumber")
                         .HasColumnType("INTEGER");
 
@@ -198,6 +181,17 @@ namespace Game.DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Players");
+                });
+
+            modelBuilder.Entity("Game.Models.Tic_Tac_Toe.TicTacToeMove", b =>
+                {
+                    b.HasBaseType("Game.Models.Models.Move");
+
+                    b.Property<string>("MoveHistoryJson")
+                        .IsRequired()
+                        .HasColumnType("json");
+
+                    b.ToTable("TicTacToeMoves", (string)null);
                 });
 
             modelBuilder.Entity("Game.Models.Models.Connection", b =>
@@ -244,33 +238,9 @@ namespace Game.DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Game.Models.Models.GameType", "GameType")
-                        .WithMany()
-                        .HasForeignKey("GameTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Game.Models.Models.Player", "Loser")
-                        .WithMany()
-                        .HasForeignKey("OpponentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Game.Models.Models.Player", "Winner")
-                        .WithMany()
-                        .HasForeignKey("PlayerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("GamePlayerStats");
 
                     b.Navigation("GameSession");
-
-                    b.Navigation("GameType");
-
-                    b.Navigation("Loser");
-
-                    b.Navigation("Winner");
                 });
 
             modelBuilder.Entity("Game.Models.Models.GameSession", b =>
@@ -309,6 +279,15 @@ namespace Game.DAL.Migrations
                     b.Navigation("GameSession");
 
                     b.Navigation("GameType");
+                });
+
+            modelBuilder.Entity("Game.Models.Tic_Tac_Toe.TicTacToeMove", b =>
+                {
+                    b.HasOne("Game.Models.Models.Move", null)
+                        .WithOne()
+                        .HasForeignKey("Game.Models.Tic_Tac_Toe.TicTacToeMove", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Game.Models.Models.GamePlayerStat", b =>

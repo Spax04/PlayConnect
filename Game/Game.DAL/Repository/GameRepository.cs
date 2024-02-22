@@ -2,7 +2,6 @@
 using Game.DAL.Interfaces;
 using Game.Models.Dto.Requests;
 using Game.Models.Models;
-using Game.Models.Tic_Tac_Toe;
 using Microsoft.EntityFrameworkCore;
 
 namespace Game.DAL.Repository
@@ -66,9 +65,9 @@ namespace Game.DAL.Repository
             return await _context.GameTypes.FirstOrDefaultAsync(x => x.Id == gameTypeId);
         }
 
-        public async Task<bool> SaveTicTacToeMove(TicTacToeMove ticTacToeMove)
+        public async Task<bool> SaveGameMoveAsync(Move move)
         {
-            await _context.TicTacToeMoves.AddAsync(ticTacToeMove);
+            await _context.Moves.AddAsync(move);
 
             return await Save();
         }
@@ -83,6 +82,59 @@ namespace Game.DAL.Repository
             return saved > 0 ? true : false;
         }
 
+        public async Task<GamePlayerStat> CreateGamePlayerStats(Guid gameTypeId, Guid playerId)
+        {
+            GamePlayerStat newGamePlayerStat = new GamePlayerStat()
+            {
+                Id = Guid.NewGuid(),
+                GameTypeId = gameTypeId,
+                PlayerId = playerId,
+                Level = 1,
+                Points = 0
+            };
+            await _context.GamePlayerStats.AddAsync(newGamePlayerStat);
 
+            if (await Save()){
+                return newGamePlayerStat;
+            }
+            else
+            {
+               throw new Exception();
+            }
+
+        }
+
+        public async Task<bool> UpdateGamePlayerStatsAsync(Guid playerId, Guid gameTypeId, int lvl, double points)
+        {
+            GamePlayerStat gamePlayerStats = await GetGamePlayerStatByPlayerAndGameIdAsync(playerId, gameTypeId);
+
+            gamePlayerStats.Points = points;
+            gamePlayerStats.Level = lvl;
+
+            return await Save();
+        }
+
+        public async Task<bool> CreateGameResultAsync(Guid sessionId, Guid gamePlayerStats, Guid gameTypeId, Guid playerId, Guid opponentId, bool isWinner)
+        {
+            GameResult newGameResult = new GameResult()
+            {
+                Id = Guid.NewGuid(),
+                GameSessionId = sessionId,
+                GameTypeId = gameTypeId,
+                PlayerId = playerId,
+                OpponentId = opponentId,
+                PlayedAt = DateTime.UtcNow,
+                IsWinner = isWinner
+            };
+
+            await _context.GameResults.AddAsync(newGameResult);
+            return await Save();
+        }
+
+        public async Task<GameResult> GetGameResultBySessionIdAsync(Guid sessionId )
+        {
+            return  await _context.GameResults.FirstOrDefaultAsync(gr => gr.GameSessionId == sessionId);
+
+        }
     }
 }

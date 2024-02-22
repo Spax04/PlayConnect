@@ -1,9 +1,11 @@
-﻿namespace Game.DAL.Interfaces
+﻿using Game.Models.Models;
+
+namespace Game.DAL.Interfaces
 {
     public interface IGameService
     {
 
         bool IsStartsFirst();
-        Task<bool> RecognizeAndSaveGameMoveAsync(Guid gameTypeId, string gameMove);
+        Task<Move> ConvertJsonToGameMoveAsync(Guid gameTypeId, string gameMove);
     }
 }

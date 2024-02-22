@@ -1,6 +1,5 @@
 ﻿using Game.Models.Dto.Requests;
 using Game.Models.Models;
-using Game.Models.Tic_Tac_Toe;
 
 namespace Game.DAL.Interfaces
 {
@@ -11,8 +10,12 @@ namespace Game.DAL.Interfaces
         Task<GameType> GetGameTypeByIdAsync(Guid gameTypeId);
         Task<GameSession> CreateGameSessionAsync(Guid hostId, Guid guestId);
         Task<bool> UpdateSessionTimeAsync(Guid gameSessionId, bool isStart);  // If 'isStart' is true,that means game just startet,if 'isStart' false,that means game is finished
-        Task<bool> SaveTicTacToeMove(TicTacToeMove ticTacToeMove);
+        Task<bool> SaveGameMoveAsync(Move move);
         Task<GamePlayerStat> GetGamePlayerStatByPlayerAndGameIdAsync(Guid playerId, Guid gameTypeId);
+        Task<GamePlayerStat> CreateGamePlayerStats(Guid gameTypeId, Guid playerId);
+        Task<bool> UpdateGamePlayerStatsAsync(Guid playerId, Guid gameTypeId, int lvl, double points);
+        Task<bool> CreateGameResultAsync(Guid sessionId,Guid gamePlayerStats,Guid gameTypeId,Guid playerId, Guid opponentId,bool isWinner);
+        Task<GameResult> GetGameResultBySessionIdAsync(Guid sessionId);
         Task<bool> Save();
 
 
