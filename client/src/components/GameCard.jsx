@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
 import Spinner from 'react-bootstrap/Spinner'
+import {blobToURL} from '../utils/blobToURL'
 import './styles/gameCard.css'
 
 function GameCard ({
@@ -18,30 +19,30 @@ function GameCard ({
     setCurrentGameTypeId(gameTypeId)
   }
 
-  const blobToURL = () => {
-    const promise = new Promise(async resolve => {
-      const byteCharacters = atob(imgBg)
+  // const blobToURL = (imageBg) => {
+  //   const promise = new Promise(async resolve => {
+  //     const byteCharacters = atob(imageBg)
 
-      // Convert the byte string to a Uint8Array
-      const byteNumbers = new Uint8Array(byteCharacters.length)
-      for (let i = 0; i < byteCharacters.length; i++) {
-        byteNumbers[i] = byteCharacters.charCodeAt(i)
-      }
+  //     // Convert the byte string to a Uint8Array
+  //     const byteNumbers = new Uint8Array(byteCharacters.length)
+  //     for (let i = 0; i < byteCharacters.length; i++) {
+  //       byteNumbers[i] = byteCharacters.charCodeAt(i)
+  //     }
 
-      // Create a Blob object from the Uint8Array
-      const byteArray = new Blob([byteNumbers], { type: 'image/jpeg' })
+  //     // Create a Blob object from the Uint8Array
+  //     const byteArray = new Blob([byteNumbers], { type: 'image/jpeg' })
 
-      // Create a data URL
-      const imageUrl = URL.createObjectURL(byteArray)
-      resolve(imageUrl)
-    })
+  //     // Create a data URL
+  //     const imageUrl = URL.createObjectURL(byteArray)
+  //     resolve(imageUrl)
+  //   })
 
-    return promise
-  }
+  //   return promise
+  // }
 
   useEffect(() => {
     const createImage = async () => {
-      const imgUrl = await blobToURL()
+      const imgUrl = await blobToURL(imgBg)
       setGameImage(imgUrl)
     }
     createImage()

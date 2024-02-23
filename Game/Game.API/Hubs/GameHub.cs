@@ -95,6 +95,8 @@ namespace Game.API.Hubs
                 GamePlayerStat guestStats = await _gameRepository.GetGamePlayerStatByPlayerAndGameIdAsync(guestId, gameTypeId);
 
                 if (hostStats != null)
+                {
+
                     await Clients.Group(newGameSession.Id.ToString()).SendAsync("JoinedToGame", new JoinToGameResponse
                     {
                         GameSessionId = newGameSession.Id.ToString(),
@@ -105,9 +107,10 @@ namespace Game.API.Hubs
                         GameLevel = hostStats.Level,
                         GamePoints = hostStats.Points,
                     });
+                }
                 else
                 {
-                    await _gameRepository.CreateGamePlayerStats(hostId, gameTypeId);
+                   await _gameRepository.CreateGamePlayerStats(gameTypeId, hostId);
                     await Clients.Group(newGameSession.Id.ToString()).SendAsync("JoinedToGame", new JoinToGameResponse
                     {
                         GameSessionId = newGameSession.Id.ToString(),
@@ -122,6 +125,8 @@ namespace Game.API.Hubs
 
 
                 if (guestStats != null)
+                {
+
                     await Clients.Group(newGameSession.Id.ToString()).SendAsync("JoinedToGame", new JoinToGameResponse
                     {
                         GameSessionId = newGameSession.Id.ToString(),
@@ -132,10 +137,11 @@ namespace Game.API.Hubs
                         GameLevel = guestStats.Level,
                         GamePoints = guestStats.Points,
                     });
+                }
                 else
                 {
 
-                    await _gameRepository.CreateGamePlayerStats(guestId, gameTypeId);
+                   await _gameRepository.CreateGamePlayerStats(gameTypeId,guestId);
 
                     await Clients.Group(newGameSession.Id.ToString()).SendAsync("JoinedToGame", new JoinToGameResponse
                     {

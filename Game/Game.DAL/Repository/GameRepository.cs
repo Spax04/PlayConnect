@@ -82,7 +82,7 @@ namespace Game.DAL.Repository
             return saved > 0 ? true : false;
         }
 
-        public async Task<GamePlayerStat> CreateGamePlayerStats(Guid gameTypeId, Guid playerId)
+        public async Task<bool> CreateGamePlayerStats(Guid gameTypeId, Guid playerId)
         {
             GamePlayerStat newGamePlayerStat = new GamePlayerStat()
             {
@@ -94,13 +94,7 @@ namespace Game.DAL.Repository
             };
             await _context.GamePlayerStats.AddAsync(newGamePlayerStat);
 
-            if (await Save()){
-                return newGamePlayerStat;
-            }
-            else
-            {
-               throw new Exception();
-            }
+            return await Save();
 
         }
 
@@ -121,6 +115,7 @@ namespace Game.DAL.Repository
                 Id = Guid.NewGuid(),
                 GameSessionId = sessionId,
                 GameTypeId = gameTypeId,
+                GamePlayerStatsId = gamePlayerStats,
                 PlayerId = playerId,
                 OpponentId = opponentId,
                 PlayedAt = DateTime.UtcNow,
@@ -131,10 +126,15 @@ namespace Game.DAL.Repository
             return await Save();
         }
 
-        public async Task<GameResult> GetGameResultBySessionIdAsync(Guid sessionId )
+        public async Task<GameResult> GetGameResultBySessionIdAsync(Guid sessionId)
         {
-            return  await _context.GameResults.FirstOrDefaultAsync(gr => gr.GameSessionId == sessionId);
+            return await _context.GameResults.FirstOrDefaultAsync(gr => gr.GameSessionId == sessionId);
 
+        }
+
+        public async Task<IEnumerable<GameResult>> GetGameResultsByUserIdAsync(Guid userId)
+        {
+            return await _context.GameResults.Where(gr => gr.PlayerId == userId).OrderBy(gr => gr.PlayedAt).ToListAsync();
         }
     }
 }

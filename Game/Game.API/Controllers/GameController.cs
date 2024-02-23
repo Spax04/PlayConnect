@@ -1,10 +1,6 @@
 ﻿using Game.DAL.Interfaces;
 using Game.Models.Dto.Requests;
-using Game.Models.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System;
 
 namespace Game.API.Controllers
 {
@@ -13,7 +9,7 @@ namespace Game.API.Controllers
     public class GameController : ControllerBase
     {
         private IGameRepository _gameRepository;
-        public GameController( IGameRepository gameRepository)
+        public GameController(IGameRepository gameRepository)
         {
             _gameRepository = gameRepository;
         }
@@ -49,7 +45,7 @@ namespace Game.API.Controllers
                 img = memoryStream.ToArray();
             }
 
-            await _gameRepository.CreateGameTypeAsync(new GameTypeCreateRequest { Name = gameName,Image = img});
+            await _gameRepository.CreateGameTypeAsync(new GameTypeCreateRequest { Name = gameName, Image = img });
 
             return Ok();
         }
@@ -58,8 +54,18 @@ namespace Game.API.Controllers
         public async Task<IActionResult> GatGameTypes()
         {
             var gameTypes = await _gameRepository.GetGameTypesAsync();
-            
-            return gameTypes == null? BadRequest() : Ok(gameTypes);
+
+            return gameTypes == null ? BadRequest() : Ok(gameTypes);
+
+        }
+        [HttpGet("last-games/{userId}")]
+        public async Task<IActionResult> GetLastUsersResults(string userId)
+        {
+            if (!Guid.TryParse(userId, out var userIdGuid))
+            {
+                return NotFound("Not correct user id");
+            }
+            return Ok(await _gameRepository.GetGameResultsByUserIdAsync(userIdGuid));
 
         }
     }

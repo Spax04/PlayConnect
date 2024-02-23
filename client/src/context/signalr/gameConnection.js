@@ -137,7 +137,6 @@ export function createGameConnection (navigate) {
 
       dispatch(setNewMove({ moveHistory, moveNumber: gameMove.moveNumber }))
 
-      // TODO: Need to recive an object from API and put it to history,need update to 2 users
     })
 
   const signal = signalMiddleware({

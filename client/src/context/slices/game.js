@@ -56,6 +56,18 @@ export const gameSlice = createSlice({
 
       state.currentSession.moveNumber = action.payload.moveNumber
       state.currentSession.isMyTurn = !state.currentSession.isMyTurn
+    },
+    setGameOver:(state,action) =>{
+      state.inGame = false
+      state.currentSession.sessionId = null
+      state.currentSession.gameTypeId = null
+      state.currentSession.isMyTurn = false
+      state.currentSession.isPlayer = false
+      state.currentSession.gameTypeStats.gameLvl = null
+      state.currentSession.gameTypeStats.gamePoints = null
+      state.currentSession.participants = []
+      state.currentSession.moveNumber = null
+      state.currentSession.gameHistory = []
     }
   }
 })

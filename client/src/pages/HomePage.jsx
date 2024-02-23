@@ -80,14 +80,16 @@ function HomePage () {
           containerClass='lastGames-inner'
           sliderClass='slider'
         >
-          <GameHistory isWin={false} />
-          <GameHistory isWin={true} />
-          <GameHistory isWin={false} />
-          <GameHistory isWin={true} />
-          <GameHistory isWin={false} />
-          <GameHistory isWin={true} />
-          <GameHistory isWin={false} />
-          <GameHistory isWin={true} />
+          <GameHistory
+            isWin={false}
+            gameTypeId={'96536109-ba26-480c-9fb7-9136f8bc536d'}
+            gameDate={'2024-02-22T19:29:49.021253'}
+          />
+          <GameHistory
+            isWin={true}
+            gameTypeId={'96536109-ba26-480c-9fb7-9136f8bc536d'}
+            gameDate={'2024-02-22T19:29:49.021253'}
+          />
         </Carousel>
       </div>
       <Row className='mt-5'>
@@ -105,7 +107,7 @@ function HomePage () {
               <p className='scoreText'>Best of the week</p>
             </div>
             <div className='tableDiv'>
-              <Table className='tableCustome'  hover size='sm'>
+              <Table className='tableCustome' hover size='sm'>
                 <thead>
                   <tr>
                     <th>#</th>
@@ -182,7 +184,7 @@ function HomePage () {
               </div>
               <p className='challengesText'>My Weekly challenges</p>
             </div>
-            {chellanges.map(( i,index) => (
+            {chellanges.map((i, index) => (
               <Challenge
                 key={index}
                 title={i.title}

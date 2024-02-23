@@ -25,23 +25,28 @@ function GameResultModal ({ show, handleClose, isWon, isTie }) {
         isTie
       )
       const opponent = game.currentSession.participants.find(
-        p => p.participantId !== user.userid && p.isPlayer === true
+        p =>  p.isPlayer === true
       )
+
+      console.log("Opponent: ", opponent);
       setLvl(newLvl)
       setPoints(newPoints)
 
       setProgress(
         Math.min(Math.min((newPoints / pointsToNextLvl) * 100, 100)).toFixed(2)
       )
-      game.connection.invoke(EVENTS.GAME.SERVER.GAME_OVER, {
+      const data = {
         gameSessionId: game.currentSession.sessionId,
         playerId: user.userid,
-        opponentId: opponent.opponentId,
+        opponentId: opponent.participantId,
         gameTypeId: game.currentSession.gameTypeId,
         newLevel: newLvl,
         newPoints: newPoints,
         isWinner: isWon
-      })
+      }
+
+      console.log("Data: ",data);
+      game.connection.invoke(EVENTS.GAME.SERVER.GAME_OVER,data)
     }
   }, [show])
 

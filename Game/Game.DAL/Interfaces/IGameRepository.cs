@@ -12,10 +12,11 @@ namespace Game.DAL.Interfaces
         Task<bool> UpdateSessionTimeAsync(Guid gameSessionId, bool isStart);  // If 'isStart' is true,that means game just startet,if 'isStart' false,that means game is finished
         Task<bool> SaveGameMoveAsync(Move move);
         Task<GamePlayerStat> GetGamePlayerStatByPlayerAndGameIdAsync(Guid playerId, Guid gameTypeId);
-        Task<GamePlayerStat> CreateGamePlayerStats(Guid gameTypeId, Guid playerId);
+        Task<bool> CreateGamePlayerStats(Guid gameTypeId, Guid playerId);
         Task<bool> UpdateGamePlayerStatsAsync(Guid playerId, Guid gameTypeId, int lvl, double points);
         Task<bool> CreateGameResultAsync(Guid sessionId,Guid gamePlayerStats,Guid gameTypeId,Guid playerId, Guid opponentId,bool isWinner);
         Task<GameResult> GetGameResultBySessionIdAsync(Guid sessionId);
+        Task<IEnumerable<GameResult>> GetGameResultsByUserIdAsync(Guid userId);
         Task<bool> Save();
 
 
