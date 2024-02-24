@@ -5,7 +5,7 @@
     align-items: center;
     /* Test field */
     height: 180px;
-  
+
 }
 
 .lastGames-inner {
@@ -16,12 +16,12 @@
     /* overflow-x: hidden; */
 }
 
-.lastGamesHeader{
+.lastGamesHeader {
     font-family: 'Sedgwick Ave Display', cursive;
-    color:#fffada;
+    color: #fffada;
 }
 
-.tableCustome{
+.tableCustome {
     --bs-table-bg: #fffff0 !important;
 }
 
@@ -42,51 +42,68 @@
     padding-bottom: 1rem;
 }
 
-.tableDiv{
+.tableDiv {
     padding: 2rem;
 }
 
-.scoreBoardImg{
+.scoreBoardImg {
     width: 100%;
     height: 80px;
     display: flex;
     flex-direction: column;
-    align-items:center;
+    align-items: center;
     padding-top: 1rem;
 }
 
-.scoreImgDiv{
+.scoreImgDiv {
     width: 70px;
     height: 70px;
 }
 
-.scoreText{
+.scoreText {
     font-family: 'Kanit', sans-serif;
     font-size: 1.5rem;
 }
 
-.challengesBoardImg{
-    margin-left: 10% ;
+.challengesBoardImg {
+    margin-left: 10%;
     margin-right: 10%;
     height: 80px;
     display: flex;
-    align-items:center;
-   
-    
+    align-items: center;
+
+
     padding-top: 2rem;
     padding-left: 2rem;
     padding-bottom: 1.5rem;
     border-bottom: 1px solid black;
 }
 
-.challengesImgDiv{
+.challengesImgDiv {
     width: 70px;
     height: 70px;
 }
 
-.challengesText{
+.challengesText {
     font-family: 'Kanit', sans-serif;
     font-size: 2rem;
     margin: 0;
     padding-left: 0.5rem;
+}
+
+.spinner-container {
+    display: flex;
+    justify-content: center;
+    /* align items horizontally */
+    align-items: center;
+    /* align items vertically */
+    height: 180px;
+    /* adjust height as needed */
+
+}
+
+.spinnereText{
+    margin-left: 1rem;
+    font-size: 1.5rem;
+    color:white
 }

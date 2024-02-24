@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import '../styles/friendListModal.css'
 import { EVENTS } from '../../constants'
 
+
+// TODO: Change input of button to spinner on click
 function FriendListModal ({ show, handleClose, currentGameTypeId }) {
   const [friendList, setFriendList] = useState([])
   const friends = useSelector(state => state.friends)

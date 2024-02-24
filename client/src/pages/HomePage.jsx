@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Col, Container, Row } from 'react-bootstrap'
 import Nav from 'react-bootstrap/Nav'
@@ -11,6 +11,7 @@ import Carousel from 'react-multi-carousel'
 import 'react-multi-carousel/lib/styles.css'
 import Table from 'react-bootstrap/Table'
 import Challenge from '../components/Challenge'
+import Spinner from 'react-bootstrap/Spinner'
 
 const chellanges = [
   {
@@ -61,36 +62,50 @@ const responsive = {
 }
 
 function HomePage () {
+  const game = useSelector(state => state.game)
   const navigate = useNavigate()
   const user = useSelector(state => state.user)
+
+  const [gameResults, setGameResults] = useState([])
   useEffect(() => {
     if (!user.token) {
       navigate(ROUTES.LOGIN_PAGE)
     }
   }, [user])
 
+  useEffect(() => {
+    // TODO: Get request of game result only when there are game types in state
+  }, [game.gameTypes])
+
   return (
     <Container id='container'>
       <div>
         <h1 className='lastGamesHeader'>Last games</h1>
-        <Carousel
-          className='lastGames'
-          responsive={responsive}
-          infinite={false}
-          containerClass='lastGames-inner'
-          sliderClass='slider'
-        >
-          <GameHistory
-            isWin={false}
-            gameTypeId={'96536109-ba26-480c-9fb7-9136f8bc536d'}
-            gameDate={'2024-02-22T19:29:49.021253'}
-          />
-          <GameHistory
-            isWin={true}
-            gameTypeId={'96536109-ba26-480c-9fb7-9136f8bc536d'}
-            gameDate={'2024-02-22T19:29:49.021253'}
-          />
-        </Carousel>
+        {gameResults ? (
+          <Carousel
+            className='lastGames'
+            responsive={responsive}
+            infinite={false}
+            containerClass='lastGames-inner'
+            sliderClass='slider'
+          >
+            <GameHistory
+              isWin={false}
+              gameTypeId={'96536109-ba26-480c-9fb7-9136f8bc536d'}
+              gameDate={'2024-02-22T19:29:49.021253'}
+            />
+            <GameHistory
+              isWin={true}
+              gameTypeId={'96536109-ba26-480c-9fb7-9136f8bc536d'}
+              gameDate={'2024-02-22T19:29:49.021253'}
+            />
+          </Carousel>
+        ) : (
+          <div className='spinner-container'>
+          <Spinner animation='border' variant="light" style={{ width: "3rem", height: "3rem" }} role='status' />
+          <p className='spinnereText'>Loading last games...</p>
+        </div>
+        )}
       </div>
       <Row className='mt-5'>
         <Col lg={4}>
