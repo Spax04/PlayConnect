@@ -9,7 +9,9 @@ namespace Game.Models.Models
         public Guid GamePlayerStatsId { get; set; }
         public Guid GameTypeId { get; set; }
         public Guid PlayerId { get; set; }
+        public string PlayerName { get; set; }
         public Guid OpponentId { get; set; }
+        public string OpponentName { get; set; }
         public bool IsWinner { get; set; }
         public DateTime PlayedAt { get; set; }
 

@@ -6,12 +6,14 @@ import NavDropdown from 'react-bootstrap/NavDropdown'
 import './styles/home.css'
 import { COLORS, ROUTES } from '../constants'
 import GameHistory from '../components/GameHistory'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import Carousel from 'react-multi-carousel'
 import 'react-multi-carousel/lib/styles.css'
 import Table from 'react-bootstrap/Table'
 import Challenge from '../components/Challenge'
 import Spinner from 'react-bootstrap/Spinner'
+import axios from 'axios'
+import { setGameResults } from '../context/slices/game'
 
 const chellanges = [
   {
@@ -65,23 +67,51 @@ function HomePage () {
   const game = useSelector(state => state.game)
   const navigate = useNavigate()
   const user = useSelector(state => state.user)
+  const dispatch = useDispatch()
+  const [noGamesResult, setNoGamesResult] = useState(false)
 
-  const [gameResults, setGameResults] = useState([])
+  const [gameResultList, setGameResultList] = useState([])
   useEffect(() => {
     if (!user.token) {
       navigate(ROUTES.LOGIN_PAGE)
     }
   }, [user])
 
+  const getLastGesults = async () => {
+    await axios
+      .get(
+        `${process.env.REACT_APP_GAME_SERVICE_URL}/api/game/last-games/${user.userid}`
+      )
+      .then(({ data }) => {
+        console.log(data)
+        console.log(data.length)
+        if (data.length === 0) {
+          setNoGamesResult(true)
+        } else {
+          dispatch(setGameResults(data))
+          setGameResultList(data)
+        }
+      })
+      .catch(err => console.error(err))
+  }
+
   useEffect(() => {
     // TODO: Get request of game result only when there are game types in state
+    if (game.gameResults.length === 0 && noGamesResult === false) {
+      getLastGesults()
+    }
   }, [game.gameTypes])
+
+  useEffect(() => {
+    if (game.gameResults.length !== 0 && gameResultList === 0)
+      setGameResultList(game.gameResults)
+  }, [])
 
   return (
     <Container id='container'>
       <div>
         <h1 className='lastGamesHeader'>Last games</h1>
-        {gameResults ? (
+        {gameResultList.length !== 0 ? (
           <Carousel
             className='lastGames'
             responsive={responsive}
@@ -89,22 +119,30 @@ function HomePage () {
             containerClass='lastGames-inner'
             sliderClass='slider'
           >
-            <GameHistory
-              isWin={false}
-              gameTypeId={'96536109-ba26-480c-9fb7-9136f8bc536d'}
-              gameDate={'2024-02-22T19:29:49.021253'}
-            />
-            <GameHistory
-              isWin={true}
-              gameTypeId={'96536109-ba26-480c-9fb7-9136f8bc536d'}
-              gameDate={'2024-02-22T19:29:49.021253'}
-            />
+            {gameResultList.map(r => (
+              <GameHistory
+                isWin={r.isWinner}
+                gameTypeId={r.gameTypeId}
+                gameDate={r.playedAt}
+              />
+            ))}
           </Carousel>
         ) : (
           <div className='spinner-container'>
-          <Spinner animation='border' variant="light" style={{ width: "3rem", height: "3rem" }} role='status' />
-          <p className='spinnereText'>Loading last games...</p>
-        </div>
+            {noGamesResult ? (
+              <p className='spinnereText'>You didint play any game yeat</p>
+            ) : (
+              <>
+                <Spinner
+                  animation='border'
+                  variant='light'
+                  style={{ width: '3rem', height: '3rem' }}
+                  role='status'
+                />
+                <p className='spinnereText'>Loading last games...</p>
+              </>
+            )}
+          </div>
         )}
       </div>
       <Row className='mt-5'>

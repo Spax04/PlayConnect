@@ -14,7 +14,7 @@ namespace Game.DAL.Interfaces
         Task<GamePlayerStat> GetGamePlayerStatByPlayerAndGameIdAsync(Guid playerId, Guid gameTypeId);
         Task<bool> CreateGamePlayerStats(Guid gameTypeId, Guid playerId);
         Task<bool> UpdateGamePlayerStatsAsync(Guid playerId, Guid gameTypeId, int lvl, double points);
-        Task<bool> CreateGameResultAsync(Guid sessionId,Guid gamePlayerStats,Guid gameTypeId,Guid playerId, Guid opponentId,bool isWinner);
+        Task<bool> CreateGameResultAsync(Guid sessionId,Guid gamePlayerStats,Guid gameTypeId,Guid playerId, Guid opponentId,bool isWinner,string opponentName,string playerName);
         Task<GameResult> GetGameResultBySessionIdAsync(Guid sessionId);
         Task<IEnumerable<GameResult>> GetGameResultsByUserIdAsync(Guid userId);
         Task<bool> Save();

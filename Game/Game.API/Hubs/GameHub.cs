@@ -110,7 +110,7 @@ namespace Game.API.Hubs
                 }
                 else
                 {
-                   await _gameRepository.CreateGamePlayerStats(gameTypeId, hostId);
+                    await _gameRepository.CreateGamePlayerStats(gameTypeId, hostId);
                     await Clients.Group(newGameSession.Id.ToString()).SendAsync("JoinedToGame", new JoinToGameResponse
                     {
                         GameSessionId = newGameSession.Id.ToString(),
@@ -141,7 +141,7 @@ namespace Game.API.Hubs
                 else
                 {
 
-                   await _gameRepository.CreateGamePlayerStats(gameTypeId,guestId);
+                    await _gameRepository.CreateGamePlayerStats(gameTypeId, guestId);
 
                     await Clients.Group(newGameSession.Id.ToString()).SendAsync("JoinedToGame", new JoinToGameResponse
                     {
@@ -210,7 +210,8 @@ namespace Game.API.Hubs
 
             await _gameRepository.UpdateGamePlayerStatsAsync(playerId, gameTypeId, gameOverRequest.NewLevel, gameOverRequest.NewPoints);
             gamePlayerStats = await _gameRepository.GetGamePlayerStatByPlayerAndGameIdAsync(playerId, gameTypeId);
-            await _gameRepository.CreateGameResultAsync(gameSessionId, gamePlayerStats.Id, gameTypeId, playerId, opponentId, gameOverRequest.IsWinner);
+            await _gameRepository.CreateGameResultAsync(gameSessionId, gamePlayerStats.Id, gameTypeId, playerId, opponentId, gameOverRequest.IsWinner, gameOverRequest.OpponentName, gameOverRequest.PlayerName
+                );
 
 
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, gameOverRequest.GameSessionId);

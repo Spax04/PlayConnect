@@ -7,7 +7,7 @@ import { EVENTS, ROUTES } from '../../constants'
 import ProgressBar from 'react-bootstrap/ProgressBar'
 import { calculateGameResult } from '../../utils/calculateGameResult'
 
-function GameResultModal ({ show, handleClose, isWon, isTie }) {
+function GameResultModal ({ show, handleClose, isWon, isTie, seconds, steps ,maxPointPreGame}) {
   const game = useSelector(state => state.game)
   const user = useSelector(state => state.user)
   const [progress, setProgress] = useState()
@@ -22,13 +22,15 @@ function GameResultModal ({ show, handleClose, isWon, isTie }) {
         game.currentSession.gameTypeStats.gameLvl,
         game.currentSession.gameTypeStats.gamePoints,
         isWon,
-        isTie
+        isTie,
+        steps,
+        seconds,maxPointPreGame
       )
       const opponent = game.currentSession.participants.find(
-        p =>  p.isPlayer === true
+        p => p.isPlayer === true
       )
 
-      console.log("Opponent: ", opponent);
+      console.log('Opponent: ', opponent)
       setLvl(newLvl)
       setPoints(newPoints)
 
@@ -38,22 +40,32 @@ function GameResultModal ({ show, handleClose, isWon, isTie }) {
       const data = {
         gameSessionId: game.currentSession.sessionId,
         playerId: user.userid,
+        playerName: user.username,
         opponentId: opponent.participantId,
+        opponentName: opponent.participantName,
         gameTypeId: game.currentSession.gameTypeId,
         newLevel: newLvl,
         newPoints: newPoints,
         isWinner: isWon
       }
 
-      console.log("Data: ",data);
-      game.connection.invoke(EVENTS.GAME.SERVER.GAME_OVER,data)
+      if(isWon){
+
+        console.log("Winner",data);
+      }else{
+        console.log("Loser",data);
+
+      }
+
+      console.log('Data: ', data)
+      game.connection.invoke(EVENTS.GAME.SERVER.GAME_OVER, data)
     }
   }, [show])
 
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>{isWon ? 'You winner' : 'You loser'}</Modal.Title>
+        <Modal.Title>{isWon ? 'You winner' : 'You defeat'}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <p>Old Points: {game.currentSession.gameTypeStats.gamePoints}</p>

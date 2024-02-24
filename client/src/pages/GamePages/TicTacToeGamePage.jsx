@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import TicTicToeBoard from '../../components/gameComponents/ticTacToe/TicTicToeBoard'
 import '../styles/ticTacToe.css'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { EVENTS, ROUTES } from '../../constants'
 import { generateGuid } from '../../utils/generateGuid'
 import GameResultModal from '../../components/modals/GameResultModal'
 import { useNavigate } from 'react-router-dom'
+import { setGameOver } from '../../context/slices/game'
 
 function TicTacToeGamePage () {
   const navigate = useNavigate()
@@ -17,11 +18,16 @@ function TicTacToeGamePage () {
   const [opponentName, setOpponentName] = useState('')
   const [isMyTurn, setIsMyTurn] = useState(false)
   const [winner, setWinner] = useState(null)
-
+  const [timer, setTimer] = useState(0); // New state for timer
   const [show, setShow] = useState(false)
+  const [minutes, setMinutes] = useState(0); // New state for minutes
+  const [seconds, setSeconds] = useState(0);
+  const dispatch = useDispatch()
+
   const handleClose = () => {
     setShow(false)
     navigate(ROUTES.HOME_PAGE)
+    dispatch(setGameOver())
   }
   const handleShow = () => setShow(true)
 
@@ -31,6 +37,27 @@ function TicTacToeGamePage () {
   const isBoardFull = squares => {
     return squares.every(square => square !== null)
   }
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTimer(prevTimer => prevTimer + 1);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    // Calculate minutes and seconds from timer
+    const updatedMinutes = Math.floor(timer / 60);
+    const updatedSeconds = timer % 60;
+    setMinutes(updatedMinutes);
+    setSeconds(updatedSeconds);
+  }, [timer]);
+
+  const formatTime = (time) => {
+    return `${time < 10 ? '0' + time : time}`;
+  };
+
 
   const handleClick = i => {
     if (isMyTurn) {
@@ -88,7 +115,6 @@ function TicTacToeGamePage () {
         )
       )
 
-      // CHECK HERE IS GAME IS TIE
       if (
         !winner &&
         isBoardFull(
@@ -128,8 +154,12 @@ function TicTacToeGamePage () {
         handleClose={handleClose}
         isWon={winner === mySign ? true : false}
         isTie={winner === 'Tie' ? true : false}
+        steps={stepNumber}
+        seconds={timer} 
+        maxPointPreGame={50}
       />
       <div className='game-board'>
+        <h2>{formatTime(minutes)} : {formatTime(seconds)}</h2>
         <TicTicToeBoard squares={currentBoard.squares} onClick={handleClick} />
       </div>
       <div className='game-info'>
@@ -140,7 +170,6 @@ function TicTacToeGamePage () {
               : `Winner: ${winner === mySign ? 'Me' : opponentName}`
             : `Current players turn: ${isMyTurn ? 'Me' : opponentName}`}
         </div>
-        {/* <ol>{renderMoves()}</ol> */}
       </div>
     </div>
   )

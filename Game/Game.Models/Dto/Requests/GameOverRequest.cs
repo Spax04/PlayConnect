@@ -11,7 +11,9 @@ namespace Game.Models.Dto.Requests
         public string GameSessionId { get; set; }
         public string GameTypeId { get; set; }
         public string PlayerId { get; set; }
+        public string PlayerName { get; set; }
         public string OpponentId { get; set;}
+        public string OpponentName { get; set; }
         public int NewLevel { get; set; }
         public double NewPoints { get; set; }
         public bool IsWinner { get; set; }

@@ -7,6 +7,7 @@ export const gameSlice = createSlice({
     connection: null,
     gameTypes: [],
     inGame: false,
+    gameResults: [],
     currentSession: {
       sessionId: null,
       participants: [], // {participantId:"",participantName:"", isPlayer:true}
@@ -41,7 +42,7 @@ export const gameSlice = createSlice({
       const participant = state.currentSession.participants.find(
         p => p.participantId === action.payload.participantId
       )
-      console.log(participant);
+      console.log(participant)
 
       if (!participant) {
         state.currentSession.participants = [
@@ -57,7 +58,7 @@ export const gameSlice = createSlice({
       state.currentSession.moveNumber = action.payload.moveNumber
       state.currentSession.isMyTurn = !state.currentSession.isMyTurn
     },
-    setGameOver:(state,action) =>{
+    setGameOver: (state, action) => {
       state.inGame = false
       state.currentSession.sessionId = null
       state.currentSession.gameTypeId = null
@@ -68,6 +69,9 @@ export const gameSlice = createSlice({
       state.currentSession.participants = []
       state.currentSession.moveNumber = null
       state.currentSession.gameHistory = []
+    },
+    setGameResults: (state, action) => {
+      state.gameResults = action.payload
     }
   }
 })
@@ -77,7 +81,9 @@ export const {
   setGameTypes,
   gameStart,
   addParticipant,
-  setNewMove
+  setNewMove,
+  setGameResults,
+  setGameOver
 } = gameSlice.actions
 
 export default gameSlice.reducer

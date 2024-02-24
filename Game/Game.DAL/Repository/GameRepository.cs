@@ -108,7 +108,7 @@ namespace Game.DAL.Repository
             return await Save();
         }
 
-        public async Task<bool> CreateGameResultAsync(Guid sessionId, Guid gamePlayerStats, Guid gameTypeId, Guid playerId, Guid opponentId, bool isWinner)
+        public async Task<bool> CreateGameResultAsync(Guid sessionId, Guid gamePlayerStats, Guid gameTypeId, Guid playerId, Guid opponentId, bool isWinner, string opponentName, string playerName)
         {
             GameResult newGameResult = new GameResult()
             {
@@ -119,7 +119,9 @@ namespace Game.DAL.Repository
                 PlayerId = playerId,
                 OpponentId = opponentId,
                 PlayedAt = DateTime.UtcNow,
-                IsWinner = isWinner
+                IsWinner = isWinner,
+                OpponentName = opponentName,
+                PlayerName = playerName
             };
 
             await _context.GameResults.AddAsync(newGameResult);
