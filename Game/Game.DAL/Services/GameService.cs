@@ -27,16 +27,22 @@ namespace Game.DAL.Services
             GameType gameType = await _gameRepository.GetGameTypeByIdAsync(gameTypeId);
             Move move = JsonConvert.DeserializeObject<Move>(gameMove);
 
-            if(move == null)
+            if (move == null)
             {
 
                 throw new Exception();
-                    }
+            }
 
             return move;
-            
+
         }
 
-       
+        public async Task<bool> SetGameSessionFinished(Guid sessionId)
+        {
+            GameSession gameSession = await _gameRepository.GetGameSessionByIdAsync(sessionId);
+
+            gameSession.IsFinished = true;
+            return await _gameRepository.Save();
+        }
     }
 }

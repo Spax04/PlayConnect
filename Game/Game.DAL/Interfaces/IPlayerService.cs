@@ -9,5 +9,6 @@ namespace Game.DAL.Interfaces
     public interface IPlayerService
     {
         Task<bool> IsPlayerExistAsync(Guid playerId);
+        Task<bool> UpdateInGamePlayerStatus(Guid playerId,bool status);
     }
 }

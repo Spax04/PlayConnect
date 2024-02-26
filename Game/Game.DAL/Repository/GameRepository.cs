@@ -13,7 +13,7 @@ namespace Game.DAL.Repository
         {
             _context = context;
         }
-        public async Task<GameSession?> CreateGameSessionAsync(Guid hostId, Guid guestId)
+        public async Task<GameSession?> CreateGameSessionAsync(Guid hostId, Guid guestId,Guid gameTypeId)
         {
             var newGameSession = new GameSession()
             {
@@ -21,6 +21,8 @@ namespace Game.DAL.Repository
                 HostId = hostId,
                 GuestId = guestId,
                 IsFinished = false,
+                StartTime = DateTime.UtcNow,
+                GameTypeId = gameTypeId
             };
 
             await _context.GameSessions.AddAsync(newGameSession);
@@ -137,6 +139,16 @@ namespace Game.DAL.Repository
         public async Task<IEnumerable<GameResult>> GetGameResultsByUserIdAsync(Guid userId)
         {
             return await _context.GameResults.Where(gr => gr.PlayerId == userId).OrderBy(gr => gr.PlayedAt).ToListAsync();
+        }
+
+        public async Task<GameSession> GetGameSessionByIdAsync(Guid sessionId)
+        {
+            return await _context.GameSessions.FindAsync(sessionId);
+        }
+
+        public async Task<GameSession> GetCurrentGameSessionByPlayerIdAsync(Guid playerId)
+        {
+            return await _context.GameSessions?.Where(p => (p.HostId == playerId || p.GuestId == playerId) && p.IsFinished == false).FirstOrDefaultAsync();
         }
     }
 }

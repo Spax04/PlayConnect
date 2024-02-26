@@ -3,5 +3,6 @@
     public class JoinToGameRequest
     {
         public string GameSessionId { get; set; }
+      
     }
 }

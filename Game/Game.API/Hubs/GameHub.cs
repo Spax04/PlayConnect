@@ -14,13 +14,15 @@ namespace Game.API.Hubs
         private IConnectionRepository _connectionRepository;
         private IGameRepository _gameRepository;
         private IGameService _gameService;
-        public GameHub(IPlayerRepository playerRepository, IConnectionService connectionService, IConnectionRepository connectionRepository, IGameRepository gameRepository, IGameService gameService)
+        private IPlayerService _playerService;
+        public GameHub(IPlayerRepository playerRepository, IConnectionService connectionService, IConnectionRepository connectionRepository, IGameRepository gameRepository, IGameService gameService, IPlayerService playerService)
         {
             _playerRepository = playerRepository;
             _connectionService = connectionService;
             _connectionRepository = connectionRepository;
             _gameRepository = gameRepository;
             _gameService = gameService;
+            _playerService = playerService;
         }
 
         public override async Task OnConnectedAsync()
@@ -37,7 +39,17 @@ namespace Game.API.Hubs
 
             var isFirstConnect = await _connectionService.ConnectPlayerAsync((Guid)player.Id, Context.ConnectionId);
 
+            GameSession gameSession = await _gameRepository.GetCurrentGameSessionByPlayerIdAsync(player.Id);
+
+            if(gameSession != null)
+            {
+                await Clients.Caller.SendAsync("ReconnectToGame",new ReconnectedResponse { GameSessionId = gameSession.Id,GameTypeId = gameSession.GameTypeId});
+            }
+
             await Clients.Others.SendAsync("PlayerConnected", player.Id.ToString());
+
+
+
         }
 
         public override async Task OnDisconnectedAsync(Exception? exception)
@@ -86,7 +98,7 @@ namespace Game.API.Hubs
 
             if (response.IsAccepted)
             {
-                GameSession newGameSession = await _gameRepository.CreateGameSessionAsync(hostId, guestId);
+                GameSession newGameSession = await _gameRepository.CreateGameSessionAsync(hostId, guestId,gameTypeId);
                 await Groups.AddToGroupAsync(Context.ConnectionId, newGameSession.Id.ToString());
                 await Groups.AddToGroupAsync(hostConnection.ConnectionId, newGameSession.Id.ToString());
 
@@ -166,7 +178,9 @@ namespace Game.API.Hubs
 
         public async Task JoinToGameSession(ReadyToGameRequest readyToGameResponse)
         {
+            if(!Guid.TryParse(readyToGameResponse.PlayerId, out var playerId)) {  return; }
             string status = readyToGameResponse.IsPlayer ? "Player" : "Guest";
+            await _playerService.UpdateInGamePlayerStatus(playerId, true);
 
             await Clients.Group(readyToGameResponse.GameSessionId).SendAsync(
                 "ReadyToGame",
@@ -212,7 +226,9 @@ namespace Game.API.Hubs
             gamePlayerStats = await _gameRepository.GetGamePlayerStatByPlayerAndGameIdAsync(playerId, gameTypeId);
             await _gameRepository.CreateGameResultAsync(gameSessionId, gamePlayerStats.Id, gameTypeId, playerId, opponentId, gameOverRequest.IsWinner, gameOverRequest.OpponentName, gameOverRequest.PlayerName
                 );
+            await _playerService.UpdateInGamePlayerStatus(playerId, false);
 
+            await _gameService.SetGameSessionFinished(gameSessionId);
 
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, gameOverRequest.GameSessionId);
         }

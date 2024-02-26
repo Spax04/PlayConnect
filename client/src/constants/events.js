@@ -24,7 +24,8 @@ export default {
       GET_REFUSAL_RESPONSE: 'GetRefusalResponse',
       JOINED_TO_GAME: 'JoinedToGame',
       READY_TO_GAME: 'ReadyToGame',
-      NEW_GAME_MOVE: 'NewGameMove'
+      NEW_GAME_MOVE: 'NewGameMove',
+      RECONNECT_TO_GAME:"ReconnectToGame"
     },
     SERVER: {
       INVITE_FRIEND_TO_GAME: 'InviteFriendToGame',

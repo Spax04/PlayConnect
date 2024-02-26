@@ -9,12 +9,16 @@ namespace Game.Models.Models
         public Guid Id { get; set; }
         public Guid HostId { get; set; }
         public Guid GuestId { get; set; }
+        public Guid GameTypeId { get; set; }
 
         [ForeignKey("HostId")]
         public Player? Host { get; set; }
 
         [ForeignKey("GuestId")]
         public virtual Player? Guest { get; set; }
+
+        [ForeignKey("GameTypeId")]
+        public virtual GameType GameType { get; set; }
 
         public bool IsFinished { get; set; }
         public DateTime StartTime { get; set; }

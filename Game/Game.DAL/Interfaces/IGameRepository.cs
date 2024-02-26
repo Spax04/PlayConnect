@@ -8,7 +8,7 @@ namespace Game.DAL.Interfaces
         Task CreateGameTypeAsync(GameTypeCreateRequest gameType);
         Task<IEnumerable<GameType>> GetGameTypesAsync();
         Task<GameType> GetGameTypeByIdAsync(Guid gameTypeId);
-        Task<GameSession> CreateGameSessionAsync(Guid hostId, Guid guestId);
+        Task<GameSession> CreateGameSessionAsync(Guid hostId, Guid guestId,Guid gameTypeId);
         Task<bool> UpdateSessionTimeAsync(Guid gameSessionId, bool isStart);  // If 'isStart' is true,that means game just startet,if 'isStart' false,that means game is finished
         Task<bool> SaveGameMoveAsync(Move move);
         Task<GamePlayerStat> GetGamePlayerStatByPlayerAndGameIdAsync(Guid playerId, Guid gameTypeId);
@@ -17,6 +17,8 @@ namespace Game.DAL.Interfaces
         Task<bool> CreateGameResultAsync(Guid sessionId,Guid gamePlayerStats,Guid gameTypeId,Guid playerId, Guid opponentId,bool isWinner,string opponentName,string playerName);
         Task<GameResult> GetGameResultBySessionIdAsync(Guid sessionId);
         Task<IEnumerable<GameResult>> GetGameResultsByUserIdAsync(Guid userId);
+        Task<GameSession> GetGameSessionByIdAsync(Guid sessionId);
+        Task<GameSession> GetCurrentGameSessionByPlayerIdAsync(Guid playerId);
         Task<bool> Save();
 
 

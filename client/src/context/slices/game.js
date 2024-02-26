@@ -36,6 +36,8 @@ export const gameSlice = createSlice({
       state.currentSession.isPlayer = action.payload.isPlayer
       state.currentSession.gameTypeStats.gameLvl = action.payload.gameLevel
       state.currentSession.gameTypeStats.gamePoints = action.payload.gamePoints
+
+      
     },
 
     addParticipant: (state, action) => {

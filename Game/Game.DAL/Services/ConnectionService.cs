@@ -36,7 +36,6 @@ namespace Game.DAL.Services
             if (player == null)
                 throw new ArgumentException("Not Found");
 
-            player.InGame = true;
             await Save();
         }
 
@@ -70,7 +69,6 @@ namespace Game.DAL.Services
             if (chatter == null)
                 throw new ArgumentException("Not Found");
 
-            chatter.InGame = false;
             return await Save();
         }
 

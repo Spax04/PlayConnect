@@ -17,5 +17,21 @@ namespace Game.DAL.Services
 
             return player != null ? true : false;
         }
+
+        public async Task<bool> UpdateInGamePlayerStatus(Guid playerId, bool status)
+        {
+            Player player = await _context.Players!.FindAsync(playerId);
+            if (player != null)
+            {
+                player.InGame = status;
+            }
+            else
+            {
+                throw new Exception();
+            }
+
+            var saved = await _context.SaveChangesAsync();
+            return saved > 0 ? true : false;
+        }
     }
 }

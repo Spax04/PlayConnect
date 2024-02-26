@@ -97,7 +97,7 @@ function HomePage () {
 
   useEffect(() => {
     // TODO: Get request of game result only when there are game types in state
-    if (game.gameResults.length === 0 && noGamesResult === false) {
+    if (game.gameResults.length === 0 && noGamesResult === false && game.gameTypes.length !== 0) {
       getLastGesults()
     }
   }, [game.gameTypes])
