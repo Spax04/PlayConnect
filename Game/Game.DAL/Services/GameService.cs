@@ -42,6 +42,7 @@ namespace Game.DAL.Services
             GameSession gameSession = await _gameRepository.GetGameSessionByIdAsync(sessionId);
 
             gameSession.IsFinished = true;
+            gameSession.EndTime = DateTime.UtcNow;
             return await _gameRepository.Save();
         }
     }

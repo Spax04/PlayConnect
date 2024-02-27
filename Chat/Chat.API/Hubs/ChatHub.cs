@@ -1,6 +1,7 @@
 ﻿using Chat.DAL.Interfaces;
 using Chat.Models.Helpers.ModelRequests;
 using Chat.Models.Helpers.ModelResponses;
+using Chat.Models.Helpers.Requests;
 using Chat.Models.Models;
 using Microsoft.AspNetCore.SignalR;
 using System.IdentityModel.Tokens.Jwt;
@@ -154,6 +155,17 @@ namespace Chat.API.Hubs
             if (connection == null) return;
 
             await Clients.Client(connection.ConnectionId).SendAsync("onGetFriends");
+        }
+
+        public async Task ConnectToChatGroup(ConnectToChatGroupRequest request)
+        {
+            await Groups.AddToGroupAsync(Context.ConnectionId, request.GameSessionId);
+            await Clients.Groups(request.GameSessionId).SendAsync("ConnectedToGroupChat", request);
+        }
+
+        public async Task SendGroupMessage(GroupMessageRequest request)
+        {
+            await Clients.Groups(request.GameSessionId).SendAsync("GroupMessageReceived", request);
         }
     }
 }

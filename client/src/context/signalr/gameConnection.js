@@ -5,16 +5,17 @@ import {
   withCallbacks,
   signalMiddleware
 } from 'updated-redux-signalr'
-import axios from 'axios'
-import { useDispatch, useSelector } from 'react-redux'
 import { EVENTS, ROUTES } from '../../constants'
 import { toast } from 'react-toastify'
-import { Button } from 'react-bootstrap'
-import { addParticipant, gameStart, setNewMove } from '../slices/game'
+import {
+  addParticipant,
+  gameStart,
+  reconnetToGame,
+  setNewMove,
+  setOpponentConnectionStatus,
+  setReconnectHandler
+} from '../slices/game'
 import InvitePopup from '../../components/popups/InvitePopup.jsx'
-import { useEffect } from 'react'
-import useNavigationToGamePage from '../../hooks/useNavigationToGamePage'
-import GameInviteResponsePopup from '../../components/popups/GameInviteResponsePopup.jsx'
 
 export function createGameConnection (navigate) {
   const token = JSON.parse(localStorage.getItem('user')).token
@@ -105,6 +106,7 @@ export function createGameConnection (navigate) {
     .add(EVENTS.GAME.CLIENT.READY_TO_GAME, response => dispatch => {
       const user = JSON.parse(localStorage.getItem('user'))
 
+      console.log(response)
       if (response.playerId !== user.userid) {
         dispatch(
           addParticipant({
@@ -132,11 +134,70 @@ export function createGameConnection (navigate) {
       const gameMove = JSON.parse(response.gameMove)
       const moveHistory = JSON.parse(gameMove.moveHistoryJson)
 
-      console.log('Game move: ', gameMove)
-      console.log('Move history: ', moveHistory)
-
       dispatch(setNewMove({ moveHistory, moveNumber: gameMove.moveNumber }))
+    })
+    .add(EVENTS.GAME.CLIENT.RECONNECT_TO_GAME, response => dispatch => {
+      const user = JSON.parse(localStorage.getItem('user'))
 
+     
+      if (response.playerId === user.userid) {
+        dispatch(reconnetToGame(response))
+      }
+
+      toast.success('Opponent reconnected', {
+        position: 'top-left',
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'colored'
+      })
+    })
+    .add(EVENTS.GAME.CLIENT.OPPONENT_DISCONECTED, response => dispatch => {
+      dispatch(
+        setOpponentConnectionStatus({
+          opponentId: response.opponentId,
+          status: false
+        })
+      )
+
+      toast.error('Opponent disconnected', {
+        position: 'top-left',
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'colored'
+      })
+    })
+    .add(EVENTS.GAME.CLIENT.RECONNECT_HANDLER, response => dispatch => {
+     
+      if (response.senderId !== user.userid) {
+        console.log("Reconnet Handler: ",response);
+        const participants = JSON.parse(response.participants)
+
+        participants.forEach(p => {
+          if (p.participantId !== user.userid) {
+            console.log(p)
+            dispatch(addParticipant(p))
+          }
+        })
+        dispatch(setReconnectHandler(response))
+      }
+    })
+    .add(EVENTS.GAME.CLIENT.OPPONENT_RECONNECTED, response => dispatch => {
+      if (response.playerId !== user.userid) {
+        dispatch(
+          setOpponentConnectionStatus({
+            opponentId: response.playerId,
+            status: true
+          })
+        )
+      }
     })
 
   const signal = signalMiddleware({

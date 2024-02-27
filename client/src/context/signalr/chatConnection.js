@@ -5,9 +5,9 @@ import {
   withCallbacks,
   signalMiddleware
 } from 'updated-redux-signalr'
-import { addMessage, setReceivedStatus } from '../slices/chat'
+import { addGroupeMessage, addMessage, connectedToGroupeChat, setReceivedStatus } from '../slices/chat'
 import { setFriends } from '../slices/friends'
-import { setFriendConnected, setFriendDisconnected} from '../slices/friends'
+import { setFriendConnected, setFriendDisconnected } from '../slices/friends'
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
 import { EVENTS } from '../../constants'
@@ -40,7 +40,7 @@ export function createChatConnection () {
           `${process.env.REACT_APP_IDENTITY_SERVICE_URL}/api/user/friends/${userid}`
         )
         .then(({ data }) => {
-          console.log("On Get Friend event");
+          console.log('On Get Friend event')
           console.log(data)
           dispatch(setFriends(data))
         })
@@ -63,6 +63,12 @@ export function createChatConnection () {
     })
     .add(EVENTS.CHAT.CLIENT.ON_MESSAGE_RECEIVED, message => dispatch => {
       dispatch(setReceivedStatus(message))
+    })
+    .add(EVENTS.CHAT.CLIENT.CONNECTED_TO_GROUP_CHAT, response => dispatch => {
+      dispatch(connectedToGroupeChat(response))
+    })
+    .add(EVENTS.CHAT.CLIENT.GROUP_MESSAGE_RECEIVED, response => dispatch => {
+      dispatch(addGroupeMessage(response))
     })
 
   const signal = signalMiddleware({

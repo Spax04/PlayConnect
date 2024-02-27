@@ -41,14 +41,23 @@ namespace Game.API.Hubs
 
             GameSession gameSession = await _gameRepository.GetCurrentGameSessionByPlayerIdAsync(player.Id);
 
-            if(gameSession != null)
+            if (gameSession != null)
             {
-                await Clients.Caller.SendAsync("ReconnectToGame",new ReconnectedResponse { GameSessionId = gameSession.Id,GameTypeId = gameSession.GameTypeId});
+
+                GamePlayerStat stat = await _gameRepository.GetGamePlayerStatByPlayerAndGameIdAsync(player.Id, gameSession.GameTypeId);
+                await Groups.AddToGroupAsync(Context.ConnectionId, gameSession.Id.ToString());
+
+                await Clients.Group(gameSession.Id.ToString()).SendAsync("ReconnectToGame", new ReconnectedResponse
+                {
+                    GameSessionId = gameSession.Id,
+                    GameTypeId = gameSession.GameTypeId,
+                    GameLevel = stat.Level,
+                    GamePoints = stat.Points,
+                    PlayerId = player.Id
+                });
             }
 
             await Clients.Others.SendAsync("PlayerConnected", player.Id.ToString());
-
-
 
         }
 
@@ -66,6 +75,19 @@ namespace Game.API.Hubs
 
             if (player == null)
                 return;
+            GameSession gameSession = await _gameRepository.GetCurrentGameSessionByPlayerIdAsync(player.Id);
+
+            if (gameSession != null)
+            {
+
+                GamePlayerStat stat = await _gameRepository.GetGamePlayerStatByPlayerAndGameIdAsync(player.Id, gameSession.GameTypeId);
+                await Groups.RemoveFromGroupAsync(Context.ConnectionId, gameSession.Id.ToString());
+
+                await Clients.Group(gameSession.Id.ToString()).SendAsync("OpponentDisconnected", new OpponentDisconectResponse
+                {
+                    OpponentId = player.Id
+                });
+            }
 
             if (await _connectionService.DisconnectPlayerAsync(player.Id, Context.ConnectionId))
             {
@@ -98,7 +120,7 @@ namespace Game.API.Hubs
 
             if (response.IsAccepted)
             {
-                GameSession newGameSession = await _gameRepository.CreateGameSessionAsync(hostId, guestId,gameTypeId);
+                GameSession newGameSession = await _gameRepository.CreateGameSessionAsync(hostId, guestId, gameTypeId);
                 await Groups.AddToGroupAsync(Context.ConnectionId, newGameSession.Id.ToString());
                 await Groups.AddToGroupAsync(hostConnection.ConnectionId, newGameSession.Id.ToString());
 
@@ -178,7 +200,7 @@ namespace Game.API.Hubs
 
         public async Task JoinToGameSession(ReadyToGameRequest readyToGameResponse)
         {
-            if(!Guid.TryParse(readyToGameResponse.PlayerId, out var playerId)) {  return; }
+            if (!Guid.TryParse(readyToGameResponse.PlayerId, out var playerId)) { return; }
             string status = readyToGameResponse.IsPlayer ? "Player" : "Guest";
             await _playerService.UpdateInGamePlayerStatus(playerId, true);
 
@@ -231,6 +253,21 @@ namespace Game.API.Hubs
             await _gameService.SetGameSessionFinished(gameSessionId);
 
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, gameOverRequest.GameSessionId);
+        }
+
+        public async Task OpponentReconnect(OpponentReconnectResponse opponentReconnectResponse)
+        {
+            await Clients.Group(opponentReconnectResponse.GameSessionId).SendAsync(
+               "ReconnectHandler", opponentReconnectResponse);
+
+        }
+
+        public async Task ReconnectComplited(OpponentReconnectRequest opponentReconnectRequest)
+        {
+
+            await Clients.Group(opponentReconnectRequest.GameSessionId).SendAsync(
+               "OpponentReconected", opponentReconnectRequest);
+
         }
     }
 }

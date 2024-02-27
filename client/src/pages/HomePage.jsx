@@ -88,8 +88,9 @@ function HomePage () {
         if (data.length === 0) {
           setNoGamesResult(true)
         } else {
-          dispatch(setGameResults(data))
-          setGameResultList(data)
+          const lastResults = data.reverse()
+          dispatch(setGameResults(lastResults))
+          setGameResultList(lastResults)
         }
       })
       .catch(err => console.error(err))

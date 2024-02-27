@@ -2,3 +2,9 @@
     width: 256px !important;
     height: 256px !important;
 }
+.gameTitle{
+    font-family: 'Sedgwick Ave Display', cursive;
+   margin-top: 1rem !important; 
+   text-align: center;
+   font-size: 1.5rem !important;
+}

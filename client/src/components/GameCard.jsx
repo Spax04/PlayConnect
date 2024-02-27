@@ -59,13 +59,19 @@ function GameCard ({
           </Spinner>
         )}
 
-        <Card.Title>{title}</Card.Title>
+        <Card.Title className='gameTitle'>{title}</Card.Title>
         <Card.Subtitle className='mb-2 text-muted'></Card.Subtitle>
         <Button className='m-1' variant='primary'>
           Play random
         </Button>
         <Button className='m-1' variant='success' onClick={openFriendsList}>
           Invite friend
+        </Button>
+        <Button className='m-1' variant='warning'>
+          Create game
+        </Button>
+        <Button className='m-1' variant='info'>
+          Search game
         </Button>
       </Card.Body>
     </Card>
