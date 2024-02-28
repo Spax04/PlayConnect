@@ -32,8 +32,7 @@ Contributions are welcome! If you find any bugs or have suggestions for improvem
 This project is licensed under the MIT License. See the `LICENSE` file for more information.
 
 ## Credits
-- Developed by [Your Name]
-- Inspired by [Any inspirations, libraries, or resources used]
+- Developed by Alexander Gotlib
 
 ## Contact
-For any inquiries or support, please contact [Your Email Address].
+For any inquiries or support, please contact gotlib14@gmail.com.
