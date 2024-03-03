@@ -144,16 +144,7 @@ export function createGameConnection (navigate) {
         dispatch(reconnetToGame(response))
       }
 
-      toast.success('Opponent reconnected', {
-        position: 'top-left',
-        autoClose: 3000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'colored'
-      })
+      
     })
     .add(EVENTS.GAME.CLIENT.OPPONENT_DISCONECTED, response => dispatch => {
       dispatch(
@@ -187,6 +178,17 @@ export function createGameConnection (navigate) {
           }
         })
         dispatch(setReconnectHandler(response))
+      }else{
+        toast.success('Opponent reconnected', {
+          position: 'top-left',
+          autoClose: 3000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'colored'
+        })
       }
     })
     .add(EVENTS.GAME.CLIENT.OPPONENT_RECONNECTED, response => dispatch => {

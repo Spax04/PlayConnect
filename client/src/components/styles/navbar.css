@@ -35,3 +35,14 @@
 #user-dropdown{
     color: #4a4a4a !important;
 }
+
+#notificationDropdown{
+    background-color:#FFFFF0 !important;
+    color:#4a4a4a;
+    width:4rem;
+    height: 3rem;
+}
+
+.dropdown-toggle::after{
+    display: none !important;
+}

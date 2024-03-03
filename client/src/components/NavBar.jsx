@@ -9,7 +9,25 @@ import { COLORS, ROUTES } from '../constants'
 import { removeUser } from '../context/slices/user'
 import { removeFriends } from '../context/slices/friends'
 import { useDispatch, useSelector } from 'react-redux'
-import { IoNotifications } from 'react-icons/io5'
+import { IoIosNotificationsOutline, IoMdNotifications } from 'react-icons/io'
+
+const testNotify = [
+  {
+    id: 1,
+    message: 'test1',
+    link: 'link'
+  },
+  {
+    id: 2,
+    message: 'test2',
+    link: 'link'
+  },
+  {
+    id: 3,
+    message: 'test3',
+    link: 'link'
+  }
+]
 
 function NavBar () {
   const navigate = useNavigate()
@@ -17,6 +35,9 @@ function NavBar () {
 
   const [inGame, setInGame] = useState(false)
   const [reconnected, setReconnected] = useState(false)
+  const [notificationIsOpend, setNotificationIsOpend] = useState(false)
+  const [notifications, setNotifications] = useState([])
+
   const [gamePath, setGamePath] = useState('')
   const chat = useSelector(state => state.chat)
   const user = useSelector(state => state.user)
@@ -34,7 +55,7 @@ function NavBar () {
     dispatch(removeFriends())
   }
 
-  const detachGameRoute =  () => {
+  const detachGameRoute = () => {
     if (game.gameTypes.length !== 0) {
       const gameTypes = game.gameTypes
 
@@ -65,29 +86,37 @@ function NavBar () {
     }
   }
   useEffect(() => {
-    console.log(game.currentSession);
+    console.log(game.currentSession)
     if (game.currentSession.sessionId !== null) {
       setInGame(true)
     } else {
       setInGame(false)
     }
 
-    const currentGamePath =  detachGameRoute()
+    const currentGamePath = detachGameRoute()
     if (
       game.currentSession.sessionId !== null &&
       currentGamePath !== location.pathname
     ) {
       setGamePath(currentGamePath)
       setReconnected(true)
-    }else if (currentGamePath === location.pathname){
+    } else if (currentGamePath === location.pathname) {
       setReconnected(false)
     }
-  }, [game.currentSession.sessionId, game.gameTypes,location.pathname])
+  }, [game.currentSession.sessionId, game.gameTypes, location.pathname])
 
   const comeBackToGame = () => {
     setReconnected(false)
-    console.log(gamePath);
+    console.log(gamePath)
     navigate(gamePath)
+  }
+
+  const handleToggle = isOpen => {
+    setNotificationIsOpend(isOpen)
+
+    if (isOpen && notifications.length === 0) {
+      setNotifications([{disabled:true,id:-1, link:'',message: 'There are no notifications yet' }]) // Set the notifications state properly
+    }
   }
 
   return (
@@ -110,6 +139,26 @@ function NavBar () {
           <></>
         )}
         <div className='navLinks d-flex'>
+          <NavDropdown
+            id='notificationDropdown'
+            onToggle={handleToggle}
+            title={
+              notificationIsOpend ? (
+                <IoMdNotifications style={{ width: '100%', height: '100%' }} />
+              ) : (
+                <IoIosNotificationsOutline
+                  style={{ width: '100%', height: '100%' }}
+                />
+              )
+            }
+            menuVariant='light'
+          >
+            {notifications.map(n => (
+              <NavDropdown.Item disabled={n.disabled}  href={n.link} key={n.id}>
+                {n.message}
+              </NavDropdown.Item>
+            ))}
+          </NavDropdown>
           <Nav.Item>
             <Nav.Link
               className='navLink'

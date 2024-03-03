@@ -9,15 +9,22 @@ import { setGameTypes } from '../../context/slices/game'
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
 import FriendListModal from '../../components/modals/FriendListModal'
+import { ROUTES } from '../../constants'
+import CreateNewGame from '../../components/modals/CreateNewGame'
 
 function GameMenuPage () {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const game = useSelector(state => state.game)
   const [gameTypeList, setGameTypeList] = useState([])
   const [currentGameTypeId,setCurrentGameTypeId] = useState();
-  const [show, setShow] = useState(false)
-  const handleClose = () => setShow(false)
-  const handleShow = () => setShow(true)
+  const [showFriends, setShowFriends] = useState(false)
+  const [showCreateGame, setShowCreateGame] = useState(false)
+  const handleCloseFriends = () => setShowFriends(false)
+  const handleShowFriends = () => setShowFriends(true)
+
+  const handleCloseCreateGame = () => setShowCreateGame(false)
+  const handleShowCreateGame = () => setShowCreateGame(true)
 
   const getGamesList = async () => {
 
@@ -56,23 +63,27 @@ function GameMenuPage () {
 
   return (
     <div className='gamePageMainBlock'>
-    <FriendListModal show={show} currentGameTypeId={currentGameTypeId} handleClose={handleClose} />
-
-      {gameTypeList.map(game => {
-        return (
+      <FriendListModal show={showFriends} currentGameTypeId={currentGameTypeId} handleClose={handleCloseFriends} />
+      <CreateNewGame show={showCreateGame}  handleClose={handleCloseCreateGame}/>
+      <div className="buttonContainer">
+        <Button variant="primary" onClick={()=>navigate(ROUTES.LOBBIES_PAGE)}>Search game</Button>
+        <Button variant="success"  onClick={handleShowCreateGame}>Create New Game</Button>
+      </div>
+      <div className="gameCardContainer">
+        {gameTypeList.map(game => (
           <GameCard
             key={game.id}
             gameTypeId={game.id}
             title={game.name}
             imgBg={game.image}
-            handleShow={handleShow}
+            handleShow={handleShowFriends}
             setCurrentGameTypeId={setCurrentGameTypeId}
           />
-        )
-      })}
-      
+        ))}
+      </div>
     </div>
   )
+  
 }
 
 export default GameMenuPage

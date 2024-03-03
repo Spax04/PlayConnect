@@ -1,0 +1,22 @@
+/* CustomDropdown.css */
+
+.custom-dropdown {
+    position: relative;
+  }
+  
+  .notification-icon {
+    cursor: pointer;
+    font-size: 24px; /* Adjust the font-size to make the icon bigger */
+  }
+  
+  .notification-badge {
+    position: absolute;
+    top: -8px; /* Adjust the positioning of the badge */
+    right: -8px; /* Adjust the positioning of the badge */
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 6px 10px; /* Adjust the padding to make the badge bigger */
+    font-size: 16px; /* Adjust the font-size to make the badge bigger */
+  }
+  

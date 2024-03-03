@@ -21,6 +21,8 @@ builder.Services.AddTransient<ICountryRepository, CountryRepository>();
 builder.Services.AddScoped<IJwtUtilits, JwtUtilits>();
 builder.Services.AddScoped<IHashUtilits, HashUtilits>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
+
 
 // Connecting DataBase
 if (builder.Environment.IsProduction())

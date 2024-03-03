@@ -1,6 +1,19 @@
-.gamePageMainBlock{
+.gamePageMainBlock {}
+
+.buttonContainer {
+    display: flex;
+    justify-content: end;
+    margin-top: 3rem;
+}
+
+.buttonContainer button {
+    margin-left: 10px;
+}
+
+.gameCardContainer {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
+    margin-top: 1rem;
 }

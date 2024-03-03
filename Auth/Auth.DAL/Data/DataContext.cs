@@ -14,6 +14,8 @@ namespace Auth.DAL.Data
         public DbSet<User>? Users { get; set; }
         public DbSet<Friendship> Friendships { get; set; }
         public DbSet<Country> Countrys { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

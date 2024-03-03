@@ -1,0 +1,17 @@
+.lobby-container {
+    margin: 20px auto;
+    width: 80%;
+    text-align: center;
+  }
+  
+  .game-lobbies {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  #lobby-header{
+    font-family: 'Sedgwick Ave Display', cursive;
+    color:#FFFFF0;
+    font-size: 4rem;
+    margin-bottom: 2rem;
+  }

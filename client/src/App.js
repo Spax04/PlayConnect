@@ -16,13 +16,15 @@ import useSocketConnection from './hooks/useSocketConnection'
 import ChatPage from './pages/ChatPage'
 import GameMenuPage from './pages/GamePages/GameMenuPage'
 import TicTacToeGamePage from './pages/GamePages/TicTacToeGamePage'
+import LobbiesPage from './pages/GamePages/LobbiesPage'
 function App () {
   const navigate = useNavigate()
   const { isOnline } = useSocketConnection(navigate)
 
   useEffect(() => {}, [isOnline])
 
-  return (<>
+  return (
+    <>
       <div className='d-flex flex-column'>
         <ToastContainer position='bottom-center' limit={1} />
 
@@ -43,12 +45,16 @@ function App () {
                 path={`${ROUTES.GAMES.TIC_TAC_TOE_GAME_PAGE}/:sessionId`}
                 element={<TicTacToeGamePage />}
               />
+              <Route
+                path={ROUTES.LOBBIES_PAGE}
+                element={<LobbiesPage />}
+              />
             </Routes>
           </main>
         </Container>
       </div>
       <Footer />
-  </>
+    </>
   )
 }
 

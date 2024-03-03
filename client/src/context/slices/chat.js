@@ -5,7 +5,8 @@ export const chatSlice = createSlice({
   initialState: {
     connection: null,
     chats: [],
-    currentGroupChat: [] // {senderName:"",message:""}
+    currentGroupChat: [], // {senderName:"",message:""}
+
   },
   reducers: {
     setConnection: (state, action) => {
@@ -27,6 +28,7 @@ export const chatSlice = createSlice({
     },
     addChat: (state, action) => {
       state.chats = [...state.chats, action.payload]
+      console.log("Current chats: ",state.chats);
     },
     setReceivedStatus: (state, action) => {
       //! O(n^2), need to find a better way

@@ -128,6 +128,10 @@ function TicTacToeGamePage () {
         playerId: user.userid,
         isPlayer: game.currentSession.isPlayer
       })
+      chat.connection.invoke(EVENTS.CHAT.SERVER.CONNECT_TO_CHAT_GROUP, {
+        gameSessionId: game.currentSession.sessionId,
+        senderName: user.username
+      })
       dispatch(setInGame())
     }
 

@@ -93,7 +93,7 @@ function FriendData ({
                 marginRight: '0.5rem'
               }}
             />
-            <h3 className='nameText'>{username}</h3>
+            <h3 className='friendNameText'>{username}</h3>
           </div>
           {isFriend ? (
             <h5

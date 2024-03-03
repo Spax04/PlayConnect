@@ -6,6 +6,7 @@ export default {
     FRIENDS_PAGE: '/friends',
     CHAT_PAGE:'/chat',
     GAMES_PAGE:'/gamePage',
+    LOBBIES_PAGE:'/lobbies',
     GAMES:{
       TIC_TAC_TOE_GAME_PAGE:'/tictactoe',
       BATTLESHIP_GAME_PAGE : '/battleship',

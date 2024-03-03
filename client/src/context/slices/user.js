@@ -23,13 +23,14 @@ export const userSlice = createSlice({
           name: ''
         }
       },
+  notifications: [], // { message:"",link:"",icon:""}
   reducers: {
     setUser: (state, action) => {
       state.token = action.payload.token
       state.userid = action.payload.userid
       state.username = action.payload.username
       state.email = action.payload.email
-      state.country = {...action.payload.country}
+      state.country = { ...action.payload.country }
       console.log('Payload: ' + JSON.stringify(action.payload))
       const user = {
         token: action.payload.token,
@@ -37,7 +38,7 @@ export const userSlice = createSlice({
         username: action.payload.username,
         email: action.payload.email,
         coins: action.payload.coins,
-        country: {...action.payload.country}
+        country: { ...action.payload.country }
       }
       console.log(user)
       localStorage.setItem('user', JSON.stringify(user))
@@ -55,6 +56,12 @@ export const userSlice = createSlice({
       }
 
       localStorage.removeItem('user')
+    },
+    setNotifications:(state,action)=>{
+      state.notifications = action.payload;
+    },
+    addNewNotification:(state,action)=>{
+      state.notifications = [...state.notifications,action.payload]
     }
   }
 })
